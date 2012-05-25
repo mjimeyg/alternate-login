@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?> 
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?> 
+<!--NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.--> 
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD.\nAlthough MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD.\nNo support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/--> 
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd"> 
+	<header> 
+		<meta name="generator" content="MODX file generated with PP MODX Creator by tumba25 (online version)"/> 
+		<license><![CDATA[http://opensource.org/licenses/gpl-license.php GNU General Public License v2]]></license> 
+		<title lang="en"><![CDATA[Alternate Login]]></title> 
+		<description lang="en"><![CDATA[Enable users to log in to a phpBB board via another website authentication method and synchronise profile information.  Currently available: Facebook, Twitter and Windows Live]]></description> 
+		<author-notes lang="en"><![CDATA[This is an RC version.  It has been tested on various servers but only a handful of users.]]></author-notes> 
+		<author-group> 
+			<author> 
+				<realname><![CDATA[Michael J Goonawardena]]></realname> 
+				<username><![CDATA[Mjimeyg]]></username> 
+				<homepage><![CDATA[http://www.consof.com]]></homepage> 
+				<email><![CDATA[michaelgoonawardena@googlemail.com]]></email> 
+			</author> 
+                        
+                        <author>
+                            <username>ExpoFrontier</username>
+                            <contributions-group>
+                                <contributions status="current" from="26-01-2021" position="Translator"></contributions>
+                            </contributions-group>
+                        </author>
+		</author-group> 
+                
+		<mod-version>2012.05.23.01</mod-version> 
+		<installation> 
+			<level>intermediate</level> 
+			<time>960</time> 
+			<target-version>3.0.10</target-version> 
+		</installation> 
+                <history>
+				<entry>
+                        <date>2012.05.23</date>
+                        <rev-version>2012.05.23.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_fb_connect.php : Removed lines 467 - 481 and corresponding if brackets.  COPPA and email registration not required for quick accounts.</change>
+                            <change>styles/prosilver/openid-en.js : Added entry for Steam.</change>
+							<change>styles/subsilver2/openid-en.js : Added entry for Steam.</change>
+							<change>styles/prosilver/openid-jquery.js : Changed value of 'no_sprite' to true.</change>
+							<change>styles/subsilver2/openid-jquery.js : Changed value of 'no_sprite' to true.</change>
+                        </changelog>
+                    </entry>
+					<entry>
+                        <date>2012.05.13</date>
+                        <rev-version>2012.05.13.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_fb_connect.php : Reversed the lines at 57 and 58 to strip relative path $from return_to_page.</change>
+                            <change>styles/prosilver/openid-en.js : Added entry for Steam.</change>
+							<change>styles/subsilver2/openid-en.js : Added entry for Steam.</change>
+							<change>styles/prosilver/openid-jquery.js : Changed value of 'no_sprite' to true.</change>
+							<change>styles/subsilver2/openid-jquery.js : Changed value of 'no_sprite' to true.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012.02.14</date>
+                        <rev-version>2012.02.15.01</rev-version>
+                        <changelog lang="en">
+                            <change>styles/prosilver/template/images.large/steam.gif : Added Steam image.</change>
+                            <change>styles/prosilver/template/js/openid-uk.js : Added Steam Provider.</change>
+                            <change>functions_alternatelogin.php : corrected all add_log function calls.</change>
+                            <change>functions_alternatelogin.php : Added 'global $user' declaration to get_fb_data() function.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012-02-12</date>
+                        <rev-version>2012.02.12.01</rev-version>
+                        <changelog lang="en">
+                            <change>functions_alternatelogin.php : Replaced AL_MYSPACE_LOGIN and AL_MYSPACE_PROFILE constants with AL_OPENID_LOGIN and AL_OPENID_PROFILE respectively.</change>
+                            <change>includes/acp/acp_alternatelogin.php : Added code to retrieve and set al_oi_login database entry.</change>
+                            <change>al_oi_connect.php : Added file to handle OpenID accounts.</change>
+                            <change>alternatelogin/openid/openid.php : Added 3rd party OpenID library.</change>
+                            <change>acp_alternatelogin.html : Added radio buttons for OpenID.</change>
+                            <change>styles/prosilver/template/index_body.php : Added OpenID login code.</change>
+                            <change>styles/subsilver2/template/index_body.php : Added OpenID login code.</change>
+                            <change>styles/prosilver/template/login_body.php : Added OpenID login code.</change>
+                            <change>styles/subsilver2/template/login_body.php : Added OpenID login code.</change>
+                            <change>info_acp_alternatelogin.php : Added entries for OPENID.</change>
+                            <change>info_ucp_alternatelogin.php : Added entries for OPENID.</change>
+                            <change>al_oi_auth.php : Added file to handle OpenID authentication.</change>
+                            <change>Added Google OpenID Selector directories to prosilver and subsilver2 directories.</change>
+                            <change>functions.php : Added style variable U_AL_OI_LOGIN to page_header function.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012-01-27</date>
+                        <rev-version>2012.01.27.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_fb_register.php : Replaced 3.0.9 anti-abuse header code with 3.0.10 code at line 277 (approx.)</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012-01-25</date>
+                        <rev-version>2012.01.25.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_fb_connect.php : Replaced $db->sql_fetchrow with $db->sql_fetchfield at line 250.</change>
+                            <change>al_tw_connect.php : Removed include for tmhUtilities class.</change>
+                            <change>al_tw_connect.php : Replaced call to tmhUtilities::php_self with php_self function.</change>
+                            <change>functions_alternatelogin.php : Added php_self function from tmhUtilities class.</change>
+                            <change>ucp_register.php : Removed include for tmhUtilities.php.</change>
+                            <change>ucp_register.php : Removed include for tmhUtilities.php.</change>
+                            <change>al_wl_connect.php : Changed include_once to include.</change>
+                            <change>al_fb_connect.php : Changed include_once to include.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012-01-20</date>
+                        <rev-version>2012.01.20.01</rev-version>
+                        <changelog lang="en">
+                            <change>styles/prosilver/template/index_body.html : Altered style aesthetics for Social Login buttons.</change>
+                            <change>styles/prosilver/template/login_body.html : Altered style aesthetics for Social Login buttons.</change>
+                            <change>al_fb_connect.php : Added database call to check if email address is already in use.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012-01-15</date>
+                        <rev-version>2012.01.15.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_wl_connect.php : Added boolean checks to Windows Live profile values on lines 196 and 197.</change>
+                            <change>al_tw_connect.php : Added boolean checks to Twitter profile values on lines 239 and 241.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012-01-14</date>
+                        <rev-version>2012.01.14.01</rev-version>
+                        <changelog lang="en">
+                            <change>ucp_profile.php : Added boolean checks to Windows Live profile values on lines 357 and 358 (approx.)</change>
+                            <change>ucp_profile.php : Added boolean checks to Twitter profile values on lines 364 and 365 (approx.)</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012-01-11</date>
+                        <rev-version>2012.01.11.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_tw_connect.php : Fixed miss use of variable '$tw_data' to '$tw_user' at line 340.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2012-01-02</date>
+                        <rev-version>2012.01.02.01</rev-version>
+                        <changelog lang="en">
+                            <change>alternatelogin_mod_install.php : Added SQL entry for field: al_fb_hide_like_box.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2011-12-21</date>
+                        <rev-version>2011.12.21.01</rev-version>
+                        <changelog lang="en">
+                            <change>functions_alternatelogin.php : replaced 'script' call with $template calls.</change>
+                            <change>prosilver/template/al_redirect.html :  Created the file as template to handle required redirects.</change>
+                            <change>subsilver2/template/al_redirect.html :  Created the file as template to handle required redirects.</change>
+                            <change>functions_alternatelogin.php : Replaced $_REQUEST call with request_var call.</change>
+                            <change>acp_alternatelogin.php : Replaced include_once with file_exists check.</change>
+                            <change>acp_alternatelogin.php : Replaced $_SERVER call with ''.</change>
+                            <change>acp_alternatelogin.html : Added form elements to enable and display a Facebook Like Box.</change>
+                            <change>info_acp_alternatelogin.php : Added entries for FACEBOOK_PAGE_URL and FACEBOOK_LIKE_BOX.</change>
+                            <change>functions.php : Added template entries for Facebook Like Box and Facebook Page Url.</change>
+                            <change>prosilver/template/index_body.html : Facebook Like Box code.</change>
+                            <change>subsilver2/template/index_body.html : Facebook Like Box code.</change>
+                            <change>prosilver/template/ucp_prefs_personal.html : Added form elements for user to hide Facebook Like Box.</change>
+                            <change>subsilver2/template/ucp_prefs_personal.html : Added form elements for user to hide Facebook Like Box.</change>
+                            <change>ucp_prefs.php : Added code to handle user hiding Facebook Like Box.</change>
+                            <change>info_ucp_alternatelogin.php : Added entries for AL_FB_HIDE_LIKE_BOX.</change>
+                            <change>subsilver2/template/index_body.html : Added code for Facebook Like Box.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2011-12-16</date>
+                        <rev-version>2011.12.16.01</rev-version>
+                        <changelog lang="en">
+                            <change>ucp_register.php : Altered $template->assign_vars entry 'S_AL_TW_ENABLED' to 'S_AL_TW_USER and added boolean check to see if user is a twitter user.</change>
+                            <change>ucp_register.html : Changed 'S_AL_TW_ENABLED' if statement to use 'S_AL_TW_USER'.</change>
+                            <change>al_tw_connect.php : Added reques_token to oauth/access_token call.</change>
+                            <change>ucp_register.php : Altered Twitter $data['email_confirm'] to use the $data['email'] as value.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2011-12-14</date>
+                        <rev-version>2011.12.14.01</rev-version>
+                        <changelog lang="en">
+                            <change>functions_alternatelogin.php : Added 'email' to permissions list in get_fb_access_token() function.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2011-11-29</date>
+                        <rev-version>2011.11.29.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_fb_register.php : Removed duplicate include call.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2011-11-28</date>
+                        <rev-version>2011.11.28.02</rev-version>
+                        <changelog lang="en">
+                            <change>al_fb_register.php : Removed an invalid add_lang function call.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2011-11-28</date>
+                        <rev-version>2011.11.28.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_fb_registration.php : Corrected the initialisation of the variable $agreed and included a check to make sure it is true otherwise to return to index.php.</change>
+                            <change>info_ucp_alternatelogin.php : Added language entry for trigger_error call to inform existing users how to link their accounts.</change>
+                        </changelog>
+                    </entry>
+                    <entry>
+                        <date>2011-11-22</date>
+                        <rev-version>2011.11.22.01</rev-version>
+                        <changelog lang="en">
+                            <change>al_fb_registration.php : Corrected the initialisation of the variable $agreed and included a check to make sure it is true otherwise to return to index.php.</change>
+                        </changelog>
+                    </entry>
+                </history>
+	</header> 
+	<action-group> 
+		<copy> 
+                    <file from="root/alternatelogin/al_fb_connect.php" to="alternatelogin/al_fb_connect.php"/>
+					
+		</copy> 
+                
+		<diy-instructions lang="en"><![CDATA[The following instructions assume that you have correctly copied all the files across, completed all the file edits, added and altered as necessary and setup the UCP and ACP pages as defined in the install_mod.xml MODX file and the alternatelogin_mod_install.php UMIL file.
+
+The following is dividing into sections, each section refers to a specific provider. Each provider acts independently of the others, you don't need to setup Windows Live to use Facebook, for example.
+
+-- Facebook --
+
+The first thing you need to do is head over to the Facebook Developers Site. Here you can create a new Application. Facebook requires you to create an Application to use their login authentication utilities.
+
+NOTE: You may need to go through some form of authentication, such as receiving a confirm code by SMS text message and entering it into their site before you can create an Application. This is usually only required for your first App.
+
+Follow the on screen instructions and fill out the required fields.
+
+Once you have finished creating your Application, you will need 2 pieces of information.
+
+*App ID/API Key
+*App Secret
+
+On your phpBB forum, login as an Administrator and go to Administration Control Panel->ConSof->Facebook Manager. Fill in the fields with the information you acquired when you created your Application.
+
+NOTE: The Site Domain should not include any trailing '/' characters or directories and should not include 'http://' or 'https://
+
+Once you have completed the fields you can choose which Facebook plugins you wish to enable. These will appear on the index page of the forum only.
+
+*Facebook Activity - This will show the most and recent and frequently 'liked' pages.
+*Facebook Facepile - This shows the Facebook Profile Pictures of the users who have 'liked' the page and the friends who have signed up.
+*Facebook Stream - This is a form of Instant Chat service that allows Facebook users to leave messages and discussions.
+
+Finally, click Submit.
+
+Now you can return to the main Alternate Login Manager page and enable Facebook Login.
+
+
+-- Windows Live --
+
+Go to the Windows Live Developers Site and sign in or sign up as needed. Create you application via following the on screen instructions.
+
+Once your application is created you will need 2 pieces of information from Windows:
+
+*Client ID
+*Client Secret
+
+Go to the Administration Control Panel->ConSof->Windows Live Manager. Fill in the fields as below. The 'Path to callback file' is the full url of the 'al_wl_connect.php' file.
+
+Finally, click Submit.
+
+Once this is complete you can enable the Windows Live login on the main Alternate Login Manager page.
+
+
+-- Twitter --
+
+Go to the Twitter Developers Site and sign up or sign in and follow the instructions for creating an Application.
+
+You will require 3 pieces of information from the Twitter Application:
+
+*Consumer Key
+*Consumer Secret
+*Callback URL
+
+Enter the data in the Twitter Manager page and fill in the fields.
+
+Finally, click Submit.
+
+Once this is complete you can enable the Windows Live login on the main Alternate Login Manager page.]]></diy-instructions> 
+	</action-group> 
+</mod> 

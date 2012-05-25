@@ -1,0 +1,148 @@
+2012-05-23		Michael Goonawardena    <webmaster@consof.com>
+
+	* al_fb_connect.php : Removed lines 467 - 481 and corresponding if brackets.  COPPA and email registration not required for quick accounts.
+	
+	
+2012-05-13		Michael Goonawardena    <webmaster@consof.com>
+
+	* al_fb_connect.php  : Reversed the lines at 57 and 58 to strip relative path from $return_to_page.
+	* styles/prosilver/template/js/openid-en.js : Added entry for Steam.
+	* styles/subsilver2/template/js/openid-en.js : Added entry for Steam.
+	* styles/prosilver/template/js/openid-jquery.js : Changed value of 'no_sprite' to true.
+	* styles/subsilver2/template/js/openid-jquery.js : Changed value of 'no_sprite' to true.
+
+
+2012-04-26		Michael Goonawardena    <webmaster@consof.com>
+
+	* styles/prosilver/template/index_body.html : Added missing AL_FB_LIKE_BOX variable to first IF statement.
+	* styles/subsilver2/template/index_body.html : Added missing AL_FB_LIKE_BOX variable to first IF statement.
+	* styles/prosilver/template/login_body.html : Moved Alternate Login buttons outside of login form to fix conflict with OI.
+	* styles/subsilver2/template/login_body.html : Moved Alternate Login buttons outside of login form to fix conflict with OI.
+	* styles/prosilver/template/login_body.html : Added Redirect variable to login urls.
+	* styles/subsilver2/template/login_body.html : Added Redirect variable to login urls.
+	* functions.php : Added template variable to assign redirect to login urls.
+	* functions_alternatelogin.php : Edited get_fb_access_token() function to pass redirect url.
+	* adm/index.php : Removed alterations to the file. File now remains unchanged on install.
+	* al_fb_connect.php : Added meta_refresh function call to redirect after successful login and pass redirect page through authentication.
+	* al_oi_connect.php : Added meta_refresh function call to redirect after successful login.
+	* al_tw_connect.php : Added meta_refresh function call to redirect after successful login.
+	* al_wl_connect.php : Added meta_refresh function call to redirect after successful login.
+	* includes/acp/acp_alternatelogin.php : Added function call to Facebook settings to increase max_name_chars if Quick Accounts is enabled.
+
+
+2012-03-13		Michael Goonawardena    <webmaster@consof.com>
+
+	* al_fb_connect.php : Completely overhauled.
+	* al_oi_connect.php : Completely overhauled.
+	* al_tw_connect.php : Completely overhauled.
+	* al_wl_connect.php : Completely overhauled.
+	* facebook_registration : Added password fields.
+	* ucp_register.php : Removed alteration of passwords.
+	* ucp_register.html : Removed changes to password fields.
+
+
+2012-02-14		Michael Goonawardena    <webmaster@consof.com>
+
+	* styles/prosilver/template/images.large/steam.gif : Added Steam image.
+	* styles/prosilver/template/js/openid-uk.js : Added Steam Provider.
+	* functions_alternatelogin.php : corrected all add_log function calls.
+	* functions_alternatelogin.php : Added 'global $user' declaration to get_fb_data() function.
+
+
+2012-02-12		Michael Goonawardena    <webmaster@consof.com>
+
+	* functions_alternatelogin.php : Replaced AL_MYSPACE_LOGIN and AL_MYSPACE_PROFILE constants with AL_OPENID_LOGIN and AL_OPENID_PROFILE respectively.
+	* includes/acp/acp_alternatelogin.php : Added code to retrieve and set al_oi_login database entry.
+	* al_oi_connect.php : Added file to handle OpenID accounts.
+	* alternatelogin/openid/openid.php : Added 3rd party OpenID library.
+	* acp_alternatelogin.html : Added radio buttons for OpenID.
+	* styles/prosilver/template/index_body.php : Added OpenID login code.
+	* styles/subsilver2/template/index_body.php : Added OpenID login code.
+	* styles/prosilver/template/login_body.php : Added OpenID login code.
+	* styles/subsilver2/template/login_body.php : Added OpenID login code.
+	* info_acp_alternatelogin.php : Added entries for OPENID.
+	* info_ucp_alternatelogin.php : Added entries for OPENID.
+	* al_oi_auth.php : Added file to handle OpenID authentication.
+	* Added Google OpenID Selector directories to prosilver and subsilver2 directories.
+	* functions.php : Added style variable U_AL_OI_LOGIN to page_header function.
+
+2012-01-27      Michael Goonawardena    <webmaster@consof.com>
+    
+    * al_fb_register.php : Replaced 3.0.9 anti-abuse header code with 3.0.10 code at line 277 (approx.)
+
+2012-01-25      Michael Goonawardena    <webmaster@consof.com>
+    
+    * al_fb_connect.php : Replaced $db->sql_fetchrow with $db->sql_fetchfield at line 250.
+    * al_tw_connect.php : Removed include for tmhUtilities class.
+    * al_tw_connect.php : Replaced call to tmhUtilities::php_self with php_self function.
+    * functions_alternatelogin.php : Added php_self function from tmhUtilities class.
+    * ucp_register.php : Removed include for tmhUtilities.php.
+    * ucp_profile.php : Removed include for tmhUtilities.php.
+    * al_fb_connect.php : Changed include_once to include.
+    * al_wl_connect.php : Changed include_once to include.
+
+2012-01-20      Michael Goonawardena    <webmaster@consof.com>
+    
+    * styles/prosilver/template/index_body.html : Altered style aesthetics for Social Login buttons.
+    * styles/prosilver/template/login_body.html : Altered style aesthetics for Social Login buttons.
+    * al_fb_connect.php : Added database call to check if email address is already in use.
+
+2012-01-15      Michael Goonawardena    <webmaster@consof.com>
+    
+    * al_wl_connect.php : Added boolean checks to Windows Live profile values on lines 196 and 197.
+    * al_tw_connect.php : Added boolean checks to Twitter profile values on lines 239 and 241.
+
+2012-01-14      Michael Goonawardena    <webmaster@consof.com>
+    
+    * ucp_profile.php : Added boolean checks to Windows Live profile values on lines 357 and 358 (approx.)
+    * ucp_profile.php : Added boolean checks to Twitter profile values on lines 364 and 365 (approx.)
+
+2012-01-11      Michael Goonawardena    <webmaster@consof.com>
+
+    * al_tw_connect.php : Fixed miss use of variable '$tw_data' to '$tw_user' at line 340.
+
+2012-01-02      Michael Goonawardena    <webmaster@consof.com>
+
+    * alternatelogin_mod_install.php : Added SQL entry for field: al_fb_hide_like_box.
+
+2011-12-21      Michael Goonawardena    <webmaster@consof.com>
+
+    * functions_alternatelogin.php : replaced '<script>' call with $template calls.
+    * prosilver/template/al_redirect.html :  Created the file as template to handle required redirects.
+    * subsilver2/template/al_redirect.html :  Created the file as template to handle required redirects.
+    * functions_alternatelogin.php : Replaced $_REQUEST call with request_var call.
+    * acp_alternatelogin.php : Replaced include_once with file_exists check.
+    * acp_alternatelogin.php : Replaced $_SERVER call with ''.
+    * acp_alternatelogin.html : Added form elements to enable and display a Facebook Like Box.
+    * info_acp_alternatelogin.php : Added entries for FACEBOOK_PAGE_URL and FACEBOOK_LIKE_BOX.
+    * functions.php : Added template entries for Facebook Like Box and Facebook Page Url.
+    * prosilver/template/index_body.html : Facebook Like Box code.
+    * subsilver2/template/index_body.html : Facebook Like Box code.
+    * prosilver/template/ucp_prefs_personal.html : Added form elements for user to hide Facebook Like Box.
+    * subsilver2/template/ucp_prefs_personal.html : Added form elements for user to hide Facebook Like Box.
+    * ucp_prefs.php : Added code to handle user hiding Facebook Like Box.
+    * info_ucp_alternatelogin.php : Added entries for AL_FB_HIDE_LIKE_BOX.
+    * subsilver2/template/index_body.html : Added code for Facebook Like Box.
+
+
+2011-12-14      Michael Goonawardena    <webmaster@consof.com>
+
+    * functions_alternatelogin.php : Added 'email' to permissions list in get_fb_access_token() function.
+
+2011-11-29      Michael Goonawardena    <webmaster@consof.com>
+
+    * al_fb_register.php : Removed duplicate include call.
+
+2011-11-28      Michael Goonawardena    <webmaster@consof.com>
+
+    * al_fb_register.php : Removed an invalid add_lang function call.
+
+2011-11-28      Michael Goonawardena    <webmaster@consof.com>
+
+    * al_fb_register.php : Added conditional elseif to handle missing scenario where existing users attempting to log into phpBB with Facebook are informed of how to proceed.
+    
+    * info_ucp_alternatelogin.php : Added language entry for trigger_error call to inform existing users how to link their accounts.
+
+2011-11-22      Michael Goonawardena    <webmaster@consof.com>
+
+    * al_fb_registration.php : Corrected the initialisation of the variable $agreed and included a check to make sure it is true otherwise to return to index.php.
