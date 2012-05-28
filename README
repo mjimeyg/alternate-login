@@ -26,3 +26,79 @@ MAKE SURE TO CLICK THE LINK IN THE SUMMARY OF THE INSTALLATION!!!
 
 
 At this point Alternate Login is installed and you need to move on to Post-Installation Instructions.
+
+
+**** Post installation instructions ****
+For three of the providers (Facebook, Twitter and Windows Live) you will need to visit the developers site for each provider and create an 'App' for your own site. These 'Apps' are FREE!
+
+OpenID can be initialised straight off the bat with no need for additional settings or creating 'Apps'. You can skip to the last section to see details on or to initialise it.
+
+== Setup Facebook ==
+
+Go to [https://developers.facebook.com/|Facebook Developer's site].
+
+Create an App, fill in as much of the details as you can. If you have never done this before you might be asked to verify you are who you say you are via SMS text messaging. It's relatively painless.
+
+Once you have created your App, take note of the App ID and App Secret.
+
+Go to your forum ACP and navigate to the ConSof page, Facebook Manager section.
+
+You now need to fill in various fields, the following are mandatory fields:
+
+:: a. Facebook App ID - You get this from the Facebook App you just created.
+
+:: b. Facebook Secret - You get this from the Facebook App you just created.
+
+:: c.Site Domain - This is the domain of your forum. If your forum is located at http://www.example.com/phpBB/index.php then your domain is example.com.
+
+The Page URL is optional and is only needed if you enable the Facebook Like Box. For more information about Facebook Pages see: [http://www.facebook.com/about/pages Facebook Pages]
+
+Finally, select the various plugins you want displayed on your index page and click submit.
+
+Now continue with the other providers or move onto the final steps.
+
+== Setup Twitter ==
+
+Go to the [https://dev.twitter.com/apps Twitter Developers Site].
+
+Sign in and create an App by following the on screen instructions. Fill in as much information as you can.
+
+:: '''NOTE!''' The callback should point to the al_tw_connect.php file. (i.e. http://www.example.com/phpBB/alternatelogin/al_tw_connect.php)
+
+3.Note down the Consumer Key, Consumer Secret and Callback URL.
+
+Go to your forum ACP and navigate to the ConSof page, Twitter Manager section.
+
+Now fill in ALL the fields using the values you noted down in step 3.
+
+Finally click submit.
+
+Now continue with the other providers or move onto the #Final Steps.
+
+== Setup Windows Live ==
+
+Go to the [http://msdn.microsoft.com/en-us/live/default.aspx Windows Live Developer's Site].
+
+Create an Application following the on screen instructions.
+
+:: '''NOTE!''' The callback should point to the al_wl_connect.php file. (i.e. http://www.example.com/phpBB/alternatelogin/al_wl_connect.php)
+
+Note down the Client ID and Client Secret and Callback URL.
+
+Go to your forum ACP and navigate to the ConSof page, Windows Live Manager section.
+
+Now fill in ALL the fields using the values you noted down in step 3.
+
+Finally click submit.
+
+Now move onto the #Final Steps.
+
+== Final Steps ==  
+
+Click on the Alternate Login Manager section of the ConSof ACP page.
+
+Enable each of the providers you wish to use and have set up for. (Remember that OpenID does not require additional settings.)
+
+Click Submit.
+
+You should now be able to log in with these providers.
