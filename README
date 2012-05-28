@@ -1,4 +1,7 @@
+The following instructions can be found on the Alternate Login GitHub Wiki: https://github.com/mjimeyg/alternate-login/wiki
+
 *** INSTALLATION INSTRUCTIONS ****
+
 Download AutoMOD from [http://www.phpbb.com/mods/automod/ phpBB AutoMOD]
 
 Upload the contents of the 'upload' folder into the root of your forum.
@@ -29,6 +32,7 @@ At this point Alternate Login is installed and you need to move on to Post-Insta
 
 
 **** Post installation instructions ****
+
 For three of the providers (Facebook, Twitter and Windows Live) you will need to visit the developers site for each provider and create an 'App' for your own site. These 'Apps' are FREE!
 
 OpenID can be initialised straight off the bat with no need for additional settings or creating 'Apps'. You can skip to the last section to see details on or to initialise it.
