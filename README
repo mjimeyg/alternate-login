@@ -1,0 +1,28 @@
+*** INSTALLATION INSTRUCTIONS ****
+Download AutoMOD from [http://www.phpbb.com/mods/automod/ phpBB AutoMOD]
+
+Upload the contents of the 'upload' folder into the root of your forum.
+
+Download UMIL from [http://www.phpbb.com/mods/umil/ phpBB UMIL]
+
+Upload the contents of the root folder to the root of your forum.
+
+Visit the install file in your browser i.e. http://www.example.com/myforum/install/install.php
+
+Follow the on screen instructions.
+
+Delete the install folder or rename it.
+
+Log into your forum's ACP and go to the AutoMOD page.
+
+Upload the Alternate Login zip file using the form provided.
+
+Click the install link for the Alternate Login MOD on the AutoMOD page.
+
+
+Follow the on screen instructions.
+
+MAKE SURE TO CLICK THE LINK IN THE SUMMARY OF THE INSTALLATION!!!
+
+
+At this point Alternate Login is installed and you need to move on to Post-Installation Instructions.
