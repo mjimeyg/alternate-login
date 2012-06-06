@@ -37,7 +37,14 @@
 			<target-version>3.0.10</target-version> 
 		</installation> 
                 <history>
-					<entry>
+                    <entry>
+                        <date>2012.06.07</date>
+                        <rev-version>2012.06.07.01</rev-version>
+                        <changelog lang="en">
+                            <change>includes/ucp/ucp_profile.php : Added function_exists call to check before including functions_alternatelogin.php file.</change>
+                        </changelog>
+                    </entry>
+		    <entry>
                         <date>2012.05.25</date>
                         <rev-version>2012.05.25.01</rev-version>
                         <changelog lang="en">
@@ -375,7 +382,10 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 		<open src="includes/ucp/ucp_profile.php"> 
 			<edit> 
 				<find><![CDATA[include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);]]></find> 
-				<action type="after-add"><![CDATA[                                include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
+				<action type="after-add"><![CDATA[                                if(!function_exists('al_validate_admin')
+				{
+					include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
+				}
                                 
                                 $fb_sync = (request_var('fb_sync', '') == 'on') ? 1 : 0;
                                 $wl_sync = (request_var('wl_sync', '') == 'on') ? 1 : 0;
@@ -517,7 +527,10 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 			<edit> 
 				<find><![CDATA[include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
 				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);]]></find> 
-				<action type="after-add"><![CDATA[                                include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
+				<action type="after-add"><![CDATA[                                if(!function_exists('al_validate_admin')
+				{
+					include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
+				}
  
                                 if($user->data['al_fb_id'])
                                 {
@@ -580,7 +593,10 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 			</edit> 
 			<edit> 
 				<find><![CDATA[$display_gallery = request_var('display_gallery', '0');]]></find> 
-				<action type="before-add"><![CDATA[                     include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
+				<action type="before-add"><![CDATA[                     if(!function_exists('al_validate_admin')
+				{
+					include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
+				}
                                 $fb_avatar = (request_var('fb_avatar', '') == 'on') ? 1 : 0;
                                 $wl_avatar = (request_var('wl_avatar', '') == 'on') ? 1 : 0;
                                 $tw_avatar = (request_var('tw_avatar', '') == 'on') ? 1 : 0;
