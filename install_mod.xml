@@ -37,6 +37,14 @@
 			<target-version>3.0.10</target-version> 
 		</installation> 
                 <history>
+               	    <entry>
+                        <date>2012.06.22</date>
+                        <rev-version>2012.06.22.01</rev-version>
+                        <changelog lang="en">
+                            <change>styles/prosilver/template/facebook_registration.html : Removed Location field from form.</change>
+							<change>styles/subsilver2/template/facebook_registration.html : Removed Location field from form.</change>
+                        </changelog>
+                    </entry>
                     <entry>
                         <date>2012.06.07</date>
                         <rev-version>2012.06.07.01</rev-version>
