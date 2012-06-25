@@ -31,7 +31,6 @@ include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);	// Cu
 $user->session_begin();
 $auth->acl($user->data);
 $user->setup('ucp');
-$user->add_lang('mods/alternatelogin');	// Global Alternate Login language file.
 $user->add_lang('mods/info_ucp_alternatelogin');
 
 
