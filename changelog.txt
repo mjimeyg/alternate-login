@@ -1,3 +1,9 @@
+2012-06-25		Michael Goonawardena    <webmaster@consof.com>
+
+	* alternatelogin/al_fb_login.php : Removed erroneous call to add non-existant language file.
+
+
+
 2012-06-07		Michael Goonawardena    <webmaster@consof.com>
 
 	* includes/ucp/ucp_profile.php : Added function_exists call to check before including functions_alternatelogin.php file.
