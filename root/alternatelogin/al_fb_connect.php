@@ -53,7 +53,6 @@ if(!$access_token)
     trigger_error($user->lang['FB_ERROR_ACCESS_TOKEN']);
 }
 $return_to_page = base64_decode($return_to_page);
-
 $return_to_page = str_replace("../", "", $return_to_page);
 $return_to_page = str_replace("./", "", $return_to_page);
 
@@ -464,26 +463,12 @@ else
 
                     $group_id = $row['group_id'];
 
-                    if (($coppa ||
-                            $config['require_activation'] == USER_ACTIVATION_SELF ||
-                            $config['require_activation'] == USER_ACTIVATION_ADMIN) && $config['email_enable'])
-                    {
-                        $user_actkey = gen_rand_string(10);
-                        $key_len = 54 - (strlen($server_url));
-                        $key_len = ($key_len < 6) ? 6 : $key_len;
-                        $user_actkey = substr($user_actkey, 0, $key_len);
-
-                        $user_type = USER_INACTIVE;
-                        $user_inactive_reason = INACTIVE_REGISTER;
-                        $user_inactive_time = time();
-                    }
-                    else
-                    {
+                    
                         $user_type = USER_NORMAL;
                         $user_actkey = '';
                         $user_inactive_reason = 0;
                         $user_inactive_time = 0;
-                    }
+                    
                     $bday = explode('/', $fb_user->birthday);
                     $user_row = array(
                         'username'				=> $data['username'],
@@ -536,6 +521,50 @@ else
                 }
             }
         }
+		else
+		{
+			
+				// If they are not anonymous then we can assume they are current users wishing
+				// to link their accounts.
+		
+				
+		
+				// Did we get data, if yes then the user has another account registered.
+				// We need to unlink that account as well.
+				$sql_array = array(
+					'al_fb_id'      => $fb_user->id,
+					'al_wl_id'      => 0,
+					'al_tw_id'      => 0,
+					'al_oi_id'      => 0,
+				);
+		
+				// Prepare the query to update the users Alternate Login record.
+				$sql = 'UPDATE ' . USERS_TABLE
+				. " SET " . $db->sql_build_array('UPDATE', $sql_array)
+				. " WHERE user_id='{$user->data['user_id']}'";
+		
+		
+				// Execute the query.
+				$result = $db->sql_query($sql);
+		
+						if(!$result)
+				{
+					trigger_error($user->lang['AL_PHPBB_DB_FAILURE']);
+				}
+		
+					   
+		
+				// Tell the user if they suceeded or not.
+				if(!$result)
+				{
+					trigger_error($user->lang['AL_PHPBB_DB_FAILURE']);
+				}
+				else
+				{
+					trigger_error(sprintf($user->lang['AL_LINK_SUCCESS'], $user->lang['FACEBOOK'], $user->lang['FACEBOOK']));
+				}
+			
+		}
 }
 
 ?>
