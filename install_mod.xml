@@ -30,13 +30,27 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.04.26.01-2012.05.13.01.xml" lang="en">Update file from version 2012.04.26.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
                 </link-group>
-		<mod-version>2012.05.23.01</mod-version> 
+		<mod-version>2012.07.05.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.10</target-version> 
 		</installation> 
                 <history>
+				<entry>
+                        <date>2012.07.05</date>
+                        <rev-version>2012.07.05.01</rev-version>
+                        <changelog lang="en">
+                            <change>root/contrib/languages/de : German template translations added.</change>
+							
+							<change>styles/subsilver2/template/ucp_altenatelogin.html : Added linking options.</change>
+							<change>styles/prosilver/template/ucp_altenatelogin.html : Added linking options.</change>
+							<change>styles/subsilver2/template/index_body.html : Added missing Facebook Like button.</change>
+							<change>styles/subsilver2/template/ucp_register.html : Removed old code to hide password fields.</change>
+							<change>alternatelogin/al_wl_connect.php : Removed requirement for anonymous user to process the auth code and added account linking option.</change>
+							<change>alternatelogin/al_fb_connect.php : Added account linking option.</change>
+                        </changelog>
+                    </entry>
                	    <entry>
                         <date>2012.06.22</date>
                         <rev-version>2012.06.22.01</rev-version>
