@@ -23,8 +23,16 @@
                                 <contributions status="current" from="26-01-2021" position="Translator"></contributions>
                             </contributions-group>
                         </author>
+						
+						<author>
+							<username>the_zoker_09</username>
+							<contributions-group>
+								<contributions status="current" from="17-06-2012" position="Translator"></contributions>
+							</contributions-group>
+						</author>
 		</author-group> 
                 <link-group>
+					<link type="language" href="root/contrib/language/de/" lang="en">German Language Template</link>
                     <link type="contrib" href="root/contrib/install_mod_update_2012.02.12.01-2012.02.14.01.xml" lang="en">Update file from version 2012.02.12.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.03.13.03-2012.02.14.01.xml" lang="en">Update file from version 2012.03.13.03</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.04.26.01-2012.05.13.01.xml" lang="en">Update file from version 2012.04.26.01</link>
@@ -37,7 +45,7 @@
 			<target-version>3.0.10</target-version> 
 		</installation> 
                 <history>
-				<entry>
+					<entry>
                         <date>2012.07.05</date>
                         <rev-version>2012.07.05.01</rev-version>
                         <changelog lang="en">
@@ -51,7 +59,7 @@
 							<change>alternatelogin/al_fb_connect.php : Added account linking option.</change>
                         </changelog>
                     </entry>
-               	    <entry>
+					<entry>
                         <date>2012.06.22</date>
                         <rev-version>2012.06.22.01</rev-version>
                         <changelog lang="en">
@@ -59,14 +67,21 @@
 							<change>styles/subsilver2/template/facebook_registration.html : Removed Location field from form.</change>
                         </changelog>
                     </entry>
-                    <entry>
+					<entry>
                         <date>2012.06.07</date>
                         <rev-version>2012.06.07.01</rev-version>
                         <changelog lang="en">
-                            <change>includes/ucp/ucp_profile.php : Added function_exists call to check before including functions_alternatelogin.php file.</change>
+							<change>includes/ucp/ucp_profile.php : Added function_exists call to check before including functions_alternatelogin.php file.</change>
                         </changelog>
                     </entry>
-		    <entry>
+					<entry>
+                        <date>2012.05.28</date>
+                        <rev-version>2012.05.28.01</rev-version>
+                        <changelog lang="en">
+                            <change>includes/functions_alternatelogin.php : Added argument to add_log function calls.</change>
+                        </changelog>
+                    </entry>
+					<entry>
                         <date>2012.05.25</date>
                         <rev-version>2012.05.25.01</rev-version>
                         <changelog lang="en">
@@ -301,7 +316,7 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 			<file from="root/language/en/email/coppa_welcome_inactive_alternatelogin.txt" to="language/en/email/coppa_welcome_inactive_alternatelogin.txt"/> 
 			<file from="root/language/en/email/user_welcome_alternatelogin.txt" to="language/en/email/user_welcome_alternatelogin.txt"/> 
 			<file from="root/language/en/email/user_welcome_inactive_alternatelogin.txt" to="language/en/email/user_welcome_inactive_alternatelogin.txt"/> 
-			<file from="root/styles/subsilver2/template/*.*" to="styles/subsilver2/template/*.*"/> 
+			<file from="root/styles/subsilver2/*.*" to="styles/subsilver2/template/*.*"/> 
 			<file from="root/styles/prosilver/template/*.*" to="styles/prosilver/template/*.*"/> 
 			<file from="root/*.*" to="*.*"/> 
 		</copy> 
@@ -404,10 +419,7 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 		<open src="includes/ucp/ucp_profile.php"> 
 			<edit> 
 				<find><![CDATA[include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);]]></find> 
-				<action type="after-add"><![CDATA[                                if(!function_exists('al_validate_admin')
-				{
-					include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
-				}
+				<action type="after-add"><![CDATA[                                include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
                                 
                                 $fb_sync = (request_var('fb_sync', '') == 'on') ? 1 : 0;
                                 $wl_sync = (request_var('wl_sync', '') == 'on') ? 1 : 0;
@@ -549,10 +561,7 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 			<edit> 
 				<find><![CDATA[include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
 				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);]]></find> 
-				<action type="after-add"><![CDATA[                                if(!function_exists('al_validate_admin')
-				{
-					include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
-				}
+				<action type="after-add"><![CDATA[                                include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
  
                                 if($user->data['al_fb_id'])
                                 {
@@ -615,10 +624,7 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 			</edit> 
 			<edit> 
 				<find><![CDATA[$display_gallery = request_var('display_gallery', '0');]]></find> 
-				<action type="before-add"><![CDATA[                     if(!function_exists('al_validate_admin')
-				{
-					include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
-				}
+				<action type="before-add"><![CDATA[                     include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
                                 $fb_avatar = (request_var('fb_avatar', '') == 'on') ? 1 : 0;
                                 $wl_avatar = (request_var('wl_avatar', '') == 'on') ? 1 : 0;
                                 $tw_avatar = (request_var('tw_avatar', '') == 'on') ? 1 : 0;
@@ -1381,7 +1387,8 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 		<open src="styles/subsilver2/template/index_body.html"> 
 			<edit> 
 				<find><![CDATA[<!-- INCLUDE forumlist_body.html -->]]></find> 
-				<action type="replace-with"><![CDATA[<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_FB_STREAM | AL_FB_LIKE_BOX -->  
+				<action type="replace-with"><![CDATA[<fb:like href="{BOARD_URL}" show_faces="false" width="450" font="arial"></fb:like>
+				<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_FB_STREAM | AL_FB_LIKE_BOX -->  
 <table width="100%"> 
     <tr> 
         <td valign="top"> 
@@ -1807,43 +1814,7 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 </div>
  <!-- ENDIF -->]]></action> 
 			</edit> 
-			<edit> 
-				<find><![CDATA[<tr> 
-	<td class="row1"><b class="genmed">{L_CONFIRM_EMAIL}: </b></td> 
-	<td class="row2"><input class="post" type="text" name="email_confirm" size="25" maxlength="100" value="{EMAIL_CONFIRM}" /></td> 
-</tr> 
-<tr> 
-	<td class="row1"><b class="genmed">{L_PASSWORD}: </b><br /><span class="gensmall">{L_PASSWORD_EXPLAIN}</span></td> 
-	<td class="row2"><input class="post" type="password" name="new_password" size="25" value="{PASSWORD}" /></td> 
-</tr> 
-<tr> 
-	<td class="row1"><b class="genmed">{L_CONFIRM_PASSWORD}: </b></td> 
-	<td class="row2"><input class="post" type="password" name="password_confirm" size="25" value="{PASSWORD_CONFIRM}" /></td> 
-</tr>]]></find> 
-				<action type="replace-with"><![CDATA[<!-- IF not S_AL_LOGIN --> 
-<tr> 
-	<td class="row1"><b class="genmed">{L_CONFIRM_EMAIL}: </b></td> 
-	<td class="row2"><input class="post" type="text" name="email_confirm" size="25" maxlength="100" value="{EMAIL_CONFIRM}" /></td> 
-</tr> 
- 
- 
-<tr> 
-	<td class="row1"><b class="genmed">{L_PASSWORD}: </b><br /><span class="gensmall">{L_PASSWORD_EXPLAIN}</span></td> 
-	<td class="row2"><input class="post" type="password" name="new_password" size="25" value="{PASSWORD}" /></td> 
-</tr> 
-<tr> 
-	<td class="row1"><b class="genmed">{L_CONFIRM_PASSWORD}: </b></td> 
-	<td class="row2"><input class="post" type="password" name="password_confirm" size="25" value="{PASSWORD_CONFIRM}" /></td> 
-</tr> 
-<!-- ENDIF --> 
- 
-<!-- IF S_AL_TWITTER or S_AL_OPENID --> 
-<tr> 
-	<td class="row1"><b class="genmed">{L_CONFIRM_EMAIL}: </b></td> 
-	<td class="row2"><input class="post" type="text" name="email_confirm" size="25" maxlength="100" value="{EMAIL_CONFIRM}" /></td> 
-</tr> 
-<!-- ENDIF -->]]></action> 
-			</edit> 
+			
 		</open> 
 		<open src="styles/subsilver2/template/viewtopic_body.html"> 
 			<edit> 
