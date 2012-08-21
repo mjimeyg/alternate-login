@@ -46,8 +46,7 @@ $mode = request_var('mode', '');
 
 
 
-if($user->data['user_id'] == ANONYMOUS)
-{
+
     $code = request_var('code', '');
     
     
@@ -69,13 +68,12 @@ if($user->data['user_id'] == ANONYMOUS)
         $db->sql_query($sql);
         
     }
-}
+
 
 if(($wl_user = get_wl_rest_request($token->access_token, 'me', HTTP_GET)) == NULL)
 {
     trigger_error($user->lang['ERROR_REST_CALL_FAILURE']);
 }
-
 // Select the user_id from the Alternate Login user data table which has the same Facebook Id.
 $sql_array = array(
     'SELECT'    => 'user_id, username',
@@ -285,6 +283,48 @@ else
 		
             redirect(append_sid("{$phpbb_root_path}ucp.$phpEx?mode=register"));
 		
+	}
+	else
+	{
+		// If they are not anonymous then we can assume they are current users wishing
+		// to link their accounts.
+
+		
+
+		// Did we get data, if yes then the user has another account registered.
+		// We need to unlink that account as well.
+		$sql_array = array(
+			'al_fb_id'      => 0,
+			'al_wl_id'      => $wl_user->id,
+			'al_tw_id'      => 0,
+			'al_oi_id'      => 0,
+		);
+
+		// Prepare the query to update the users Alternate Login record.
+		$sql = 'UPDATE ' . USERS_TABLE
+		. " SET " . $db->sql_build_array('UPDATE', $sql_array)
+		. " WHERE user_id='{$user->data['user_id']}'";
+
+
+		// Execute the query.
+		$result = $db->sql_query($sql);
+
+                if(!$result)
+		{
+			trigger_error($user->lang['AL_PHPBB_DB_FAILURE']);
+		}
+
+               
+
+		// Tell the user if they suceeded or not.
+		if(!$result)
+		{
+			trigger_error($user->lang['AL_PHPBB_DB_FAILURE']);
+		}
+		else
+		{
+			trigger_error(sprintf($user->lang['AL_LINK_SUCCESS'], $user->lang['WINDOWSLIVE'], $user->lang['WINDOWSLIVE']));
+		}
 	}
 	
 	
