@@ -523,7 +523,18 @@ else
         }
 		else
 		{
-			
+			// No user was registered with the associate Facebook Id.
+			// We need to see if they are anonymous.
+			// If they are then that means they might want to register.
+			// We will check to see if they wish to register.
+			if($user->data['user_id'] == ANONYMOUS)
+			{
+				
+					redirect(append_sid("{$phpbb_root_path}ucp.$phpEx?mode=register"));
+				
+			}
+			else
+			{
 				// If they are not anonymous then we can assume they are current users wishing
 				// to link their accounts.
 		
@@ -563,7 +574,7 @@ else
 				{
 					trigger_error(sprintf($user->lang['AL_LINK_SUCCESS'], $user->lang['FACEBOOK'], $user->lang['FACEBOOK']));
 				}
-			
+			}
 		}
 }
 
