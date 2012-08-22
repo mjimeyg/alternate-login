@@ -154,7 +154,23 @@ else
                 // Execute the query.
 		$result = $db->sql_query($sql);
 
-                
+                if(!$result)
+		{
+			trigger_error($user->lang['AL_PHPBB_DB_FAILURE']);
+		}
+
+                $sql_array = array(
+                    'user_password' => phpbb_hash($openid_identifier . $config['board_startdate']),
+                );
+
+                $sql = "UPDATE " . USERS_TABLE .
+                        " SET " . $db->sql_build_array('UPDATE', $sql_array) .
+                        " WHERE user_id=" . (int)$user->data['user_id'];
+
+
+
+		// Execute the query.
+		$result = $db->sql_query($sql);
 
 		// Tell the user if they suceeded or not.
 		if(!$result)
