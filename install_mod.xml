@@ -357,6 +357,7 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
 		'S_AL_WL_USER'					=> isset($user->data['al_wl_id']) ? $user->data['al_wl_id'] : false,
                 'S_AL_FB_USER'                                  => isset($user->data['al_fb_id']) ? $user->data['al_fb_id'] : false,
                 'S_AL_TW_USER'                                  => isset($user->data['al_tw_id']) ? $user->data['al_tw_id'] : false,
+				'S_AL_OI_USER'                                  => isset($user->data['al_oi_id']) ? $user->data['al_oi_id'] : false,
 		'AL_FB_APPID'					=> isset($config['al_fb_id']) ? $config['al_fb_id'] : false,
                 'AL_FB_SITE_DOMAIN'                             => isset($config['al_site_domain']) ? $config['al_site_domain'] : false,
                 'AL_FB_ACTIVITY'                                => isset($config['al_fb_activity']) ? $config['al_fb_activity'] : false,
