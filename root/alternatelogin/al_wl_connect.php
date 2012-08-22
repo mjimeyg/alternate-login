@@ -69,7 +69,6 @@ $mode = request_var('mode', '');
         
     }
 
-
 if(($wl_user = get_wl_rest_request($token->access_token, 'me', HTTP_GET)) == NULL)
 {
     trigger_error($user->lang['ERROR_REST_CALL_FAILURE']);
@@ -83,11 +82,11 @@ $sql_array = array(
     'WHERE'     => "al_wl_id='" . $wl_user->id . "'",
 );
 
+
 $sql = $db->sql_build_query('SELECT', $sql_array);
 
 // Execute the query.
 $result = $db->sql_query($sql);
-
 // Retrieve the row data.
 $row = $db->sql_fetchrow($result);
 
@@ -111,6 +110,8 @@ if ($row)   // User is registered already, let's log him in!
                 $SID = '?sid=';
                 $user->session_id = $_SID = '';
         }
+		$autologin = true;
+		$viewonline = true;
 
         $result = $user->session_create($row['user_id'], $admin, $autologin, $viewonline);
         
