@@ -1,29 +1,8 @@
 <!-- INCLUDE ucp_header.html -->
-
-<!-- IF S_MODE_WINDOWSLIVE -->
 	
 	
 	
-	<!-- IF S_AL_WL_USER -->
-		<table>
-			<tr>
-				<th colspan="2">{L_UCP_AL_DISABLE_WINDOWSLIVE_TEXT}</th>
-			</tr>
-			<tr>
-				<td>
-					{S_UCP_WINDOWSLIVE_DESCRIPTION}
-				</td>
-				<td>
-					<form method="post" action="{U_ACTION}">
-						
-					<input id="submit" name="submit" type="submit" value="{L_DISABLE_WINDOWSLIVE}" />
-					{S_FORM_TOKEN}
-                                        <input name="mode" id="mode" type="hidden" value="windowslive" />
-					</form>
-				</td>
-			</tr>
-		</table>	
-	<!-- ELSE -->
+	<!-- IF not S_AL_WL_USER -->
 		<table>
 			<tr>
 				<th colspan="2">{L_UCP_AL_ENABLE_WINDOWSLIVE_TEXT}</th>
@@ -37,33 +16,10 @@
 				</td> 
 			</tr>
 		</table>
-		
+	
 	<!-- ENDIF -->
-
-<!-- ELSEIF S_MODE_FACEBOOK --> 
-	
-	
-	
-	<!-- IF S_AL_FB_USER -->
-		<table>
-			<tr>
-				<th colspan="2">{L_UCP_AL_DISABLE_FACEBOOK_TEXT}</th>
-			</tr>
-			<tr>
-				<td>
-					{S_UCP_FACEBOOK_DESCRIPTION}
-				</td>
-				<td>
-					<form method="post" action="{U_ACTION}">
-						<input name="mode" id="mode" type="hidden" value="facebook" />
-						<input id="submit" name="submit" type="submit" value="{L_DISABLE_FACEBOOK}" />
-						{S_FORM_TOKEN}
-						<input name="mode" id="mode" type="hidden" value="facebook" />
-					</form>
-				</td>
-			</tr>
-		</table>	
-	<!-- ELSE -->
+		
+	<!-- IF not S_AL_FB_USER -->
 		<table>
 			<tr>
 				<th colspan="2">{L_UCP_AL_ENABLE_FACEBOOK_TEXT}</th>
@@ -87,31 +43,8 @@
 		
 	<!-- ENDIF -->
 	
-
-<!-- ELSEIF S_MODE_TWITTER -->
 	
-	
-	
-	<!-- IF S_AL_TW_USER -->
-		<table>
-			<tr>
-				<th colspan="2">{L_UCP_AL_DISABLE_TWITTER_TEXT}</th>
-			</tr>
-			<tr>
-				<td>
-					{S_UCP_TWITTER_DESCRIPTION}
-				</td>
-				<td>
-					<form method="post" action="{U_ACTION}">
-						<input name="mode" id="mode" type="hidden" value="twitter" />
-						<input id="submit" name="submit" type="submit" value="{L_DISABLE_TWITTER}" />
-						{S_FORM_TOKEN}
-						<input name="mode" id="mode" type="hidden" value="twitter" />
-					</form>
-				</td>
-			</tr>
-		</table>	
-	<!-- ELSE -->
+	<!-- IF not S_AL_TW_USER -->
 		<table>
 			<tr>
 				<th colspan="2">{L_UCP_AL_ENABLE_TWITTER_TEXT}</th>
@@ -128,9 +61,34 @@
 		</table>
 		
 	<!-- ENDIF -->
-
-
-<!-- ENDIF -->
+    
+    <!-- IF not S_AL_OI_USER -->
+    <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
+	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/jquery-1.2.6.min.js"></script>
+	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/openid-jquery.js"></script>
+	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/openid-en.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			openid.init('openid_identifier');
+			
+		});
+	</script>
+        <form action="{U_AL_OI_LOGIN}" method="get" id="openid_form">
+		<input type="hidden" name="action" value="verify" />
+		<fieldset>
+			
+			<div id="openid_choice">
+				
+				<div id="openid_btns"></div>
+			</div>
+			<div id="openid_input_area">
+				<input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
+				<input id="openid_submit" type="submit" value="Sign-In"/>
+			</div>
+			
+		</fieldset>
+	</form>
+    <!-- ENDIF -->
 
 
 <!-- INCLUDE ucp_footer.html -->
