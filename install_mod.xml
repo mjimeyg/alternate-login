@@ -1008,7 +1008,7 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
  
                     <div class="panel"> 
                         
-                        <fb:facepile href="{AL_FB_SITE_DOMAIN}" width="200" max_rows="1"></fb:facepile> 
+                        <fb:facepile href="{BOARD_URL}" width="200" max_rows="1"></fb:facepile> 
                     </div> 
                         <span class="corners-bottom"><span></span></span></div> 
 	</div> 
@@ -1445,7 +1445,7 @@ ADD  `session_tw_access_token` LONGTEXT NULL]]></sql>
  
                     <div class="panel"> 
                         
-                        <fb:facepile href="{AL_FB_SITE_DOMAIN}" width="200" max_rows="1"></fb:facepile> 
+                        <fb:facepile href="{BOARD_URL}" width="200" max_rows="1"></fb:facepile> 
                     </div> 
                         <span class="corners-bottom"><span></span></span></div> 
 	</div> 
