@@ -26,9 +26,7 @@ class ucp_alternatelogin_info
 			'title'		=> 'UCP_ALTERNATELOGIN',
 			'version'	=> '1.0.0',
 			'modes'		=> array(
-				'windowslive'		=> array('title' => 'UCP_AL_WINDOWSLIVE', 'auth' => '', 'cat' => array('UCP_ALTERNATELOGIN')),
-				'facebook'		=> array('title' => 'UCP_AL_FACEBOOK', 'auth' => '', 'cat' => array('UCP_ALTERNATELOGIN')),
-                                'twitter'		=> array('title' => 'UCP_AL_TWITTER', 'auth' => '', 'cat' => array('UCP_ALTERNATELOGIN')),
+				'main'		=> array('title' => 'UCP_AL_MAIN', 'auth' => '', 'cat' => array('UCP_ALTERNATELOGIN')),
 			),
 		);
 	}
