@@ -72,7 +72,7 @@ $options = array(
 */
 $versions = array(
 	// Version 0.3.0
-	'2012.04.28'	=> array(
+	'2012.08.26'	=> array(
 
 
                 'table_column_add' => array(
@@ -134,7 +134,7 @@ $versions = array(
 
                         array('ucp', 'SOCIAL_LOGIN_OPTIONS', array(
 					'module_basename'		=> 'alternatelogin',
-					'modes'					=> array('twitter'),
+					'modes'					=> array('main'),
 				),
 			),
 		),
