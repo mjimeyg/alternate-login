@@ -38,7 +38,7 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.04.26.01-2012.05.13.01.xml" lang="en">Update file from version 2012.04.26.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
                 </link-group>
-		<mod-version>2012.08.25.01</mod-version> 
+		<mod-version>2012.08.26.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
@@ -46,9 +46,10 @@
 		</installation> 
                 <history>
 					<entry>
-                        <date>2012.07.05</date>
+                        <date>2012.08.26</date>
                         <rev-version>2012.07.05.01</rev-version>
                         <changelog lang="en">
+							<change>alternatelogin_mod_install.php: Updated version number and replaced ucp mode twitter with main.</change>
 							<change>includes/ucp/info/ucp_alternatelogin.php: Replaced three seperate modes with one.</change>
 							<change>includes/ucp/ucp_alternatelogin.php: Removed submit code for deprecated unlinking code.</change>
 							
