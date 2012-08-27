@@ -95,6 +95,7 @@ $lang = array_merge($lang, array(
 
 	'UCP_ALTERNATELOGIN'					=> 'Alternate Login Manager',
 	'UCP_ALTERNATELOGIN_SETTINGS'			=> 'Alternate Login Settings',
+	'UCP_AL_MAIN'							=> 'Main',
 	'UCP_AL_FACEBOOK'						=> 'Facebook Manager',
 	'UCP_AL_WINDOWSLIVE'					=> 'Windows Live Manager',
         'UCP_AL_TWITTER'					=> 'Twitter Manager',
