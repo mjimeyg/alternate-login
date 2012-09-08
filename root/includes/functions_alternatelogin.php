@@ -263,7 +263,7 @@ function get_wl_tokens($cid, $authorization_code, $refresh_token)
     
     if(curl_errno($ch))
     {
-        add_log('critical', $user->data['user_id'], 'WL_GET_ACCESS_TOKEN_ERROR', curl_error($ch));
+        add_log('critical', 'WL_GET_ACCESS_TOKEN_ERROR', $user->data['user_id'], 'WL_GET_ACCESS_TOKEN_ERROR', curl_error($ch));
         trigger_error($user->lang['ERROR_RETRIEVING_TOKENS']);
     }
 
@@ -308,7 +308,7 @@ function get_wl_rest_request($access_token, $path, $method = HTTP_GET, $headers 
     
     if(curl_errno($ch))
     {
-        add_log('critical', $user->data['user_id'], 'WL_CURL_REQUEST_ERROR', curl_error($ch));
+        add_log('critical', 'WL_CURL_REQUEST_ERROR', $user->data['user_id'], 'WL_CURL_REQUEST_ERROR', curl_error($ch));
         return false;
     }
 
@@ -333,8 +333,6 @@ function get_fb_access_token($return_to_page)
     if(empty($code)) {
         $dialog_url = "http://www.facebook.com/dialog/oauth?client_id="
             . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email";
-
-        //echo("<script> top.location.href='" . $dialog_url . "'</script>");
 
         
         page_header($user->lang['FB_REDIRECT']);
@@ -367,7 +365,7 @@ function get_fb_access_token($return_to_page)
     
     if(curl_errno($ch))
     {
-        add_log('critical', $user->data['user_id'], 'FB_GET_ACCESS_TOKEN_ERROR', curl_error($ch));
+        add_log('critical', 'FB_GET_ACCESS_TOKEN_ERROR', $user->data['user_id'], 'FB_GET_ACCESS_TOKEN_ERROR', curl_error($ch));
         return false;
     }
 
@@ -377,6 +375,67 @@ function get_fb_access_token($return_to_page)
 
     return $access_token;
 }
+
+function refresh_fb_access_token($return_to_page)
+{
+    global $config, $db, $user, $template;
+    
+	$my_url = $return_to_page;
+	
+    $code = request_var('code', '');
+
+    if(empty($code)) {
+        $dialog_url = "http://www.facebook.com/dialog/oauth?client_id="
+            . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email";
+
+        
+        page_header($user->lang['FB_REDIRECT']);
+        
+        $template->set_filenames(array(
+            'body'      => 'al_redirect.html',
+        ));
+        
+        $template->assign_vars(array(
+            'S_DIALOG_URL'  => $dialog_url,
+        ));
+        
+        page_footer();
+         
+    }
+    
+    $token_url = "https://graph.facebook.com/oauth/access_token?client_id="
+        . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&client_secret="
+        . $config['al_fb_secret'] . "&code=" . $code;
+
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_URL, $token_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    
+    curl_setopt($ch, CURLOPT_HTTPGET, true);
+    
+    
+    $access_token = curl_exec($ch);
+    
+    if(curl_errno($ch))
+    {
+        add_log('critical', 'FB_GET_ACCESS_TOKEN_ERROR', $user->data['user_id'], 'FB_GET_ACCESS_TOKEN_ERROR', curl_error($ch));
+        return false;
+    }
+
+    curl_close($ch);
+    
+    $sql_array = array(
+		'session_fb_access_token'   => $access_token,
+	);
+
+	$sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
+	
+	$db->sql_query($sql);
+
+    redirect($my_url);
+}
+
 
 function get_fb_data($url)
 { 
@@ -392,9 +451,20 @@ function get_fb_data($url)
     
     if(curl_errno($ch))
     {
-        add_log('critical', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
+        add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
         return false;
     }
+	
+	$error_check = json_decode($data);
+	
+	if(isset($error_check->error))
+	{
+		if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
+		{
+			
+			refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
+		}
+	}
     
     curl_close($ch);
     
