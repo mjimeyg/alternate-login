@@ -118,8 +118,11 @@ if ($row)   // User is registered already, let's log him in!
                 $user->session_id = $_SID = '';
         }
 
+        $admin = false;
+		$autologin = true;
+		$viewonline = true;
         $result = $user->session_create($row['user_id'], $admin, $autologin, $viewonline);
-        
+		
         // Successful session creation
         if ($result === true)
         {
