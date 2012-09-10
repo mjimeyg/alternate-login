@@ -51,11 +51,11 @@
                         <changelog lang="en">
 							<change>alternatelogin_mod_install.php: Updated version number and replaced ucp mode twitter with main.</change>
 							<change>includes/ucp/info/ucp_alternatelogin.php: Replaced three seperate modes with one.</change>
-							<change>includes/ucp/ucp_alternatelogin.php: Removed submit code for deprecated unlinking code.</change>
+							<change>includes/ucp/ucp_alternatelogin.php: Removed submit code for deprecated unlinking code and added linking options and consolidated profile syncing options.</change>
 							
                             <change>root/contrib/languages/de : German template translations added.</change>
 							
-							<change>styles/subsilver2/template/ucp_altenatelogin.html : Added linking options.</change>
+							<change>styles/subsilver2/template/ucp_altenatelogin.html : Added linking options and consolidated profile syncing options.</change>
 							<change>styles/prosilver/template/ucp_altenatelogin.html : Added linking options.</change>
 							<change>styles/subsilver2/template/index_body.html : Added missing Facebook Like button.</change>
 							<change>styles/subsilver2/template/ucp_register.html : Removed old code to hide password fields.</change>
