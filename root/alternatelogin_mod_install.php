@@ -112,7 +112,8 @@ $versions = array(
                     array('al_fb_facepile', 0, 1),
                     array('al_fb_activity', 0, 1),
                     array('al_fb_stream', 0, 1),
-                    
+                    array('al_fb_quick_accounts', 0, 1),
+					array('al_wl_quick_accounts', 0, 1),
                 ),
 
 
