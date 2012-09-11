@@ -110,12 +110,10 @@ if ($row)   // User is registered already, let's log him in!
                 $SID = '?sid=';
                 $user->session_id = $_SID = '';
         }
-		
-        $admin = false;
 		$autologin = true;
 		$viewonline = true;
+
         $result = $user->session_create($row['user_id'], $admin, $autologin, $viewonline);
-		
         
         // Successful session creation
         if ($result === true)
@@ -283,9 +281,174 @@ else
 	// We will check to see if they wish to register.
 	if($user->data['user_id'] == ANONYMOUS)
 	{
-		
+		if(!$config['al_wl_quick_accounts'])
+		{
             redirect(append_sid("{$phpbb_root_path}ucp.$phpEx?mode=register"));
-		
+		}
+		else
+		{
+			$data = array(
+				'username'		=> $wl_user->name,
+				'email'			=> strtolower($wl_user->emails->preferred),
+				'email_confirm'		=> strtolower($wl_user->emails->preferred),
+				'lang'                   => substr($wl_user->locale, 0, 2),
+				'tz'			=> (float) $config['board_timezone'],
+			);
+			
+			$sql_array = array(
+				'SELECT'	=> 'COUNT(username) AS username_exists',
+				'FROM'		=> array(USERS_TABLE => 'u'),
+				'WHERE'		=> "username='" . $data['username'] . "'",
+			);
+			
+			$sql = $db->sql_build_query('SELECT', $sql_array);
+			
+			$result = $db->sql_query($sql);
+			
+			$username_exists = $db->sql_fetchfield('username_exists');
+			
+			$db->sql_freeresult($result);
+			
+			if($username_exists > 0)
+			{
+				$data['username'] = $data['username'] . '_' . $username_exists;
+			}
+			
+			$validate_username = validate_username($data['username']);
+
+			$new_password = $wl_user->id . $config['al_wl_client_id'] . $config['al_wl_secret'];
+
+
+			$data['new_password'] = $new_password;
+			$data['password_confirm'] = $new_password;
+			
+			$error = validate_data($data, array(
+				'username'			=> array(
+													array('string', false, $config['min_name_chars'], $config['max_name_chars']),
+													array('username', '')),
+
+				'email'                     => array(
+													array('string', false, 6, 60),
+													array('email')),
+				'email_confirm'		=> array('string', false, 6, 60),
+				'tz'			=> array('num', false, -14, 14),
+				'lang'			=> array('match', false, '#^[a-z_\-]{2,}$#i'),
+			));
+
+
+	
+			// DNSBL check
+			if ($config['check_dnsbl'])
+			{
+				if (($dnsbl = $user->check_dnsbl('register')) !== false)
+				{
+					$error[] = sprintf($user->lang['IP_BLACKLISTED'], $user->ip, $dnsbl[1]);
+				}
+			}
+
+			if (!sizeof($error))
+			{
+				if ($data['new_password'] != $data['password_confirm'])
+				{
+					$error[] = $user->lang['NEW_PASSWORD_ERROR'];
+				}
+
+				if ($data['email'] != $data['email_confirm'])
+				{
+					$error[] = $user->lang['NEW_EMAIL_ERROR'];
+				}
+			}
+
+			if (!sizeof($error))
+			{
+				$server_url = generate_board_url();
+
+				// Which group by default?
+				$group_name = ($coppa) ? 'REGISTERED_COPPA' : 'REGISTERED';
+
+				$sql = 'SELECT group_id
+						FROM ' . GROUPS_TABLE . "
+						WHERE group_name = '" . $db->sql_escape($group_name) . "'
+								AND group_type = " . GROUP_SPECIAL;
+				$result = $db->sql_query($sql);
+				$row = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
+
+				if (!$row)
+				{
+					trigger_error('NO_GROUP');
+				}
+
+				$group_id = $row['group_id'];
+
+				
+					$user_type = USER_NORMAL;
+					$user_actkey = '';
+					$user_inactive_reason = 0;
+					$user_inactive_time = 0;
+					
+				if(isset($wl_user->addresses->personal->city) && isset($wl_user->addresses->personal->region))
+				{
+					$user_locale = $wl_user->addresses->personal->city . ', ' . $wl_user->addresses->personal->region;
+					
+				}
+				elseif(isset($wl_user->addresses->personal->city))
+				{
+					$user_locale = $wl_user->addresses->personal->city;
+					
+				}
+				elseif(isset($wl_user->addresses->personal->region))
+				{
+					$user_locale = $wl_user->addresses->personal->region;
+					
+				}
+				else
+				{
+					$user_locale = false;
+				}
+				$user_row = array(
+					'username'				=> $data['username'],
+					'user_password'			=> phpbb_hash($data['new_password']),
+					'user_email'			=> $data['email'],
+					'group_id'				=> (int) $group_id,
+					'user_timezone'			=> (float) $data['tz'],
+					'user_dst'				=> $is_dst,
+					'user_lang'				=> $data['lang'],
+					'user_type'				=> $user_type,
+					'user_actkey'			=> $user_actkey,
+					'user_ip'				=> $user->ip,
+					'user_regdate'			=> time(),
+					'user_inactive_reason'	=> $user_inactive_reason,
+					'user_inactive_time'	=> $user_inactive_time,
+					'al_wl_id'              => $wl_user->id,
+					'al_fb_profile_sync'    => 1,
+				
+					'user_from'                   => (!$user_locale) ? '' : $user_locale,
+					'user_occ'                 => (!$wl_user->work[0]->employer->name) ? '' : $wl_user->work[0]->employer->name,
+					'user_birthday'              => sprintf('%2d-%2d-%4d', $wl_user->birth_day, $wl_user->birth_month, $wl_user->birth_year),
+				);
+				
+				if ($config['new_member_post_limit'])
+				{
+					$user_row['user_new'] = 1;
+				}
+				
+				// Register user...
+				$user_id = user_add($user_row, $cp_data);
+
+				// This should not happen, because the required variables are listed above...
+				if ($user_id === false)
+				{
+					trigger_error('NO_USER', E_USER_ERROR);
+				}
+				
+				redirect("{$phpbb_root_path}/alternatelogin/al_wl_connect.{$phpEx}");
+			}
+			else
+			{
+				trigger_error(implode('<br />', $error));
+			}
+		}
 	}
 	else
 	{
