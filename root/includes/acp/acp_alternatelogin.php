@@ -100,43 +100,43 @@ class acp_alternatelogin
 					
 					set_config('al_fb_secret', $facebook_secret, true);
 
-                                        $facebook_key = request_var('facebook_key', '');
+                    $facebook_key = request_var('facebook_key', '');
 
 					set_config('al_fb_key', $facebook_key, true);
                                         
-                                        $facebook_page_url = request_var('facebook_page_url', '');
+                    $facebook_page_url = request_var('facebook_page_url', '');
 
 					set_config('al_fb_page_url', $facebook_page_url, true);
                                         
-                                        $site_domain = request_var('site_domain', '');
+					$site_domain = request_var('site_domain', '');
 
-                                        set_config('al_site_domain', $site_domain);
-                                        
-                                        $facebook_quick_accounts = request_var('facebook_quick_accounts', 0);
-
-                                        set_config('al_fb_quick_accounts', $facebook_quick_accounts);
-
-                                        $facebook_activity = request_var('facebook_activity', 0);
-
-                                        set_config('al_fb_activity', $facebook_activity);
-
-                                        $facebook_facepile = request_var('facebook_facepile', 0);
-
-                                        set_config('al_fb_facepile', $facebook_facepile);
-
-                                        $facebook_stream = request_var('facebook_stream', 0);
-
-                                        set_config('al_fb_stream', $facebook_stream);
-                                        
-                                        $facebook_like_box = request_var('facebook_like_box', 0);
-
-                                        set_config('al_fb_like_box', $facebook_like_box);
-                                        
-                                        if($facebook_quick_accounts)
-                                        {
-                                            set_config('max_name_chars', 30);
-                                        }
+					set_config('al_site_domain', $site_domain);
 					
+					$facebook_quick_accounts = request_var('facebook_quick_accounts', 0);
+
+					set_config('al_fb_quick_accounts', $facebook_quick_accounts);
+
+					$facebook_activity = request_var('facebook_activity', 0);
+
+					set_config('al_fb_activity', $facebook_activity);
+
+					$facebook_facepile = request_var('facebook_facepile', 0);
+
+					set_config('al_fb_facepile', $facebook_facepile);
+
+					$facebook_stream = request_var('facebook_stream', 0);
+
+					set_config('al_fb_stream', $facebook_stream);
+					
+					$facebook_like_box = request_var('facebook_like_box', 0);
+
+					set_config('al_fb_like_box', $facebook_like_box);
+					
+					if($facebook_quick_accounts)
+					{
+						set_config('max_name_chars', 30);
+					}
+
 					trigger_error($user->lang['ACP_ALTERNATELOGIN_SETTINGS_UPDATED'] . adm_back_link($this->u_action));
 				
 				break;
@@ -147,14 +147,18 @@ class acp_alternatelogin
 					
 					$app_secret = request_var('windowslive_secret', '');
                                         
-                                        $app_callback = request_var('windowslive_callback', '');
-                                        
+					$app_callback = request_var('windowslive_callback', '');
 					
-                                        set_config('al_wl_client_id', $app_id);
-                                        
-                                        set_config('al_wl_secret', $app_secret);
-                                        
-                                        set_config('al_wl_callback', $app_callback);
+					$windowslive_quick_accounts = request_var('windowslive_quick_accounts', 0);
+					
+
+					set_config('al_wl_client_id', $app_id);
+					
+					set_config('al_wl_secret', $app_secret);
+					
+					set_config('al_wl_callback', $app_callback);
+					
+					set_config('al_wl_quick_accounts', $windowslive_quick_accounts);
                                         
 					trigger_error($user->lang['ACP_AL_SAVE_SUCCESS'] . adm_back_link($this->u_action));
 					
@@ -197,22 +201,22 @@ class acp_alternatelogin
 			case 'facebook':
 				
 				$template->assign_vars(array(
-					'FACEBOOK_APP_ID'			=> $config['al_fb_id'],
-					'FACEBOOK_SECRET'			=> $config['al_fb_secret'],
-                                        'FACEBOOK_KEY'  			=> $config['al_fb_key'],
-                                        'FACEBOOK_PAGE_URL'                     => $config['al_fb_page_url'],
-                                        'SITE_DOMAIN'                           => $config['al_site_domain'],
-                                        'FACEBOOK_QUICK_ACCOUNTS_YES'           => $config['al_fb_quick_accounts'] ? 'checked="checked"' : '',
-                                        'FACEBOOK_QUICK_ACCOUNTS_NO'            => $config['al_fb_quick_accounts'] ? '' : 'checked="checked"',
-                                        'FACEBOOK_ACTIVITY_YES'                 => $config['al_fb_activity'] ? 'checked="checked"' : '',
-                                        'FACEBOOK_ACTIVITY_NO'                  => $config['al_fb_activity'] ? '' : 'checked="checked"',
-                                        'FACEBOOK_FACEPILE_YES'                 => $config['al_fb_facepile'] ? 'checked="checked"' : '',
-                                        'FACEBOOK_FACEPILE_NO'                  => $config['al_fb_facepile'] ? '' : 'checked="checked"',
-                                        'FACEBOOK_STREAM_YES'                   => $config['al_fb_stream'] ? 'checked="checked"' : '',
-                                        'FACEBOOK_STREAM_NO'                    => $config['al_fb_stream'] ? '' : 'checked="checked"',
-                                        'FACEBOOK_LIKE_BOX_YES'                 => $config['al_fb_like_box'] ? 'checked="checked"' : '',
-                                        'FACEBOOK_LIKE_BOX_NO'                  => $config['al_fb_like_box'] ? '' : 'checked="checked"',
-					'S_MODE_FACEBOOK'			=> true,
+					'FACEBOOK_APP_ID'						=> $config['al_fb_id'],
+					'FACEBOOK_SECRET'						=> $config['al_fb_secret'],
+					'FACEBOOK_KEY'  						=> $config['al_fb_key'],
+					'FACEBOOK_PAGE_URL'                     => $config['al_fb_page_url'],
+					'SITE_DOMAIN'                           => $config['al_site_domain'],
+					'FACEBOOK_QUICK_ACCOUNTS_YES'           => $config['al_fb_quick_accounts'] ? 'checked="checked"' : '',
+					'FACEBOOK_QUICK_ACCOUNTS_NO'            => $config['al_fb_quick_accounts'] ? '' : 'checked="checked"',
+					'FACEBOOK_ACTIVITY_YES'                 => $config['al_fb_activity'] ? 'checked="checked"' : '',
+					'FACEBOOK_ACTIVITY_NO'                  => $config['al_fb_activity'] ? '' : 'checked="checked"',
+					'FACEBOOK_FACEPILE_YES'                 => $config['al_fb_facepile'] ? 'checked="checked"' : '',
+					'FACEBOOK_FACEPILE_NO'                  => $config['al_fb_facepile'] ? '' : 'checked="checked"',
+					'FACEBOOK_STREAM_YES'                   => $config['al_fb_stream'] ? 'checked="checked"' : '',
+					'FACEBOOK_STREAM_NO'                    => $config['al_fb_stream'] ? '' : 'checked="checked"',
+					'FACEBOOK_LIKE_BOX_YES'                 => $config['al_fb_like_box'] ? 'checked="checked"' : '',
+					'FACEBOOK_LIKE_BOX_NO'                  => $config['al_fb_like_box'] ? '' : 'checked="checked"',
+					'S_MODE_FACEBOOK'						=> true,
 					'U_ACTION'                              => $this->u_action,
 				));
 
@@ -226,9 +230,11 @@ class acp_alternatelogin
 					
 					
 					$template->assign_vars(array(
-						'WINDOWSLIVE_APP_ID'			=> $config['al_wl_client_id'],
-						'WINDOWSLIVE_SECRET'			=> $config['al_wl_secret'],
-                                                'WINDOWSLIVE_CALLBACK'                  => $config['al_wl_callback'],
+						'WINDOWSLIVE_APP_ID'						=> $config['al_wl_client_id'],
+						'WINDOWSLIVE_SECRET'						=> $config['al_wl_secret'],
+                        'WINDOWSLIVE_CALLBACK'          			=> $config['al_wl_callback'],
+						'WINDOWSLIVE_QUICK_ACCOUNTS_YES'           	=> $config['al_wl_quick_accounts'] ? 'checked="checked"' : '',
+						'WINDOWSLIVE_QUICK_ACCOUNTS_NO'            	=> $config['al_wl_quick_accounts'] ? '' : 'checked="checked"',
 						'S_MODE_WINDOWSLIVE'			=> true,
 						'U_ACTION'				=> $this->u_action,
 					));
