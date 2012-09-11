@@ -86,6 +86,7 @@ $lang = array_merge($lang, array(
         'WINDOWSLIVE_SECRET'                                    => 'Windows Live Secret',
         'WINDOWSLIVE_CALLBACK'                                  => 'Path to callback file',
         'WINDOWSLIVE_CHANNEL'                                   => 'Path to channel file',
+		'WINDOWSLIVE_QUICK_ACCOUNTS'                            => 'Windows Live Quick Accounts',
     
         'TITLE_GENERAL_SETTINGS'                                => 'General Settings',
         'REQUIRE_PASSWORD'                                      => 'Require Password',
