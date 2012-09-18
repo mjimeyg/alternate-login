@@ -94,7 +94,6 @@ $versions = array(
                         array(USERS_TABLE, 'al_tw_profile_sync', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_tw_status_sync', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_tw_avatar_sync', array('BOOL', '0')),
-                        array(SESSIONS_TABLE, 'session_fb_access_token', array('VCHAR', 'NULL')),
                         
 		),
 
