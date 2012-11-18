@@ -1084,9 +1084,7 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 		</open> 
 		<open src="styles/prosilver/template/login_body.html"> 
 			<edit> 
-				<find><![CDATA[</fieldset> 
-    
-	</div>]]></find> 
+				<find><![CDATA[</form>]]></find> 
 				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED) and not S_ADMIN_AUTH -->
  <div class="panel bg3">
    <div class="inner"><span class="corners-top"><span></span></span>
