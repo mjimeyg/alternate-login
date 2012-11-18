@@ -6,7 +6,7 @@
 	<header> 
 		<meta name="generator" content="MODX file generated with PP MODX Creator by tumba25 (online version)"/> 
 		<license><![CDATA[http://opensource.org/licenses/gpl-license.php GNU General Public License v2]]></license> 
-		<title lang="en"><![CDATA[Alternate Login]]></title> 
+		<title lang="en"><![CDATA[Alternate Login - Update]]></title> 
 		<description lang="en"><![CDATA[Enable users to log in to a phpBB board via another website authentication method and synchronise profile information.  Currently available: Facebook, Twitter and Windows Live]]></description> 
 		<author-notes lang="en"><![CDATA[This is an RC version.  It has been tested on various servers but only a handful of users.]]></author-notes> 
 		<author-group> 
