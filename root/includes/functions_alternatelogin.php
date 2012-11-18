@@ -254,8 +254,11 @@ function get_wl_tokens($cid, $authorization_code, $refresh_token)
     }
     
     $ch = curl_init();
-    
+	
+	$ca = $phpbb_root_path . '/includes/cacert.crt';
+    curl_setopt($ch, CURLOPT_CAINFO, $ca);
     curl_setopt($ch, CURLOPT_URL, $url);
+	
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
  
     
@@ -285,7 +288,8 @@ function get_wl_rest_request($access_token, $path, $method = HTTP_GET, $headers 
     $url = "https://apis.live.net/v5.0/{$path}/?access_token={$access_token}";
     
     $ch = curl_init();
-    
+    $ca = $phpbb_root_path . '/includes/cacert.crt';
+    curl_setopt($ch, CURLOPT_CAINFO, $ca);
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     
@@ -354,7 +358,8 @@ function get_fb_access_token($return_to_page)
         . $config['al_fb_secret'] . "&code=" . $code;
 
     $ch = curl_init();
-    
+    $ca = $phpbb_root_path . '/includes/cacert.crt';
+    curl_setopt($ch, CURLOPT_CAINFO, $ca);
     curl_setopt($ch, CURLOPT_URL, $token_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     
@@ -381,7 +386,8 @@ function refresh_fb_access_token($return_to_page)
     global $config, $db, $user, $template;
     
 	$my_url = $return_to_page;
-	
+	echo 'here' . $my_url;
+	exit;
     $code = request_var('code', '');
 
     if(empty($code)) {
@@ -408,7 +414,8 @@ function refresh_fb_access_token($return_to_page)
         . $config['al_fb_secret'] . "&code=" . $code;
 
     $ch = curl_init();
-    
+    $ca = $phpbb_root_path . '/includes/cacert.crt';
+    curl_setopt($ch, CURLOPT_CAINFO, $ca);
     curl_setopt($ch, CURLOPT_URL, $token_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     
@@ -440,7 +447,8 @@ function refresh_fb_access_token($return_to_page)
 function get_fb_data($url)
 { 
     $ch = curl_init();
-    
+    $ca = $phpbb_root_path . '/includes/cacert.crt';
+    curl_setopt($ch, CURLOPT_CAINFO, $ca);
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     
