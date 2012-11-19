@@ -383,8 +383,8 @@ function refresh_fb_access_token($return_to_page)
     global $config, $db, $user, $template;
     
 	$my_url = $return_to_page;
-	//echo 'here' . $my_url;
-	//exit;
+	echo 'here' . $my_url;
+	exit;
     $code = request_var('code', '');
 
     if(empty($code)) {
@@ -442,8 +442,6 @@ function refresh_fb_access_token($return_to_page)
 
 function get_fb_data($url)
 { 
-    global $user;
-    
     $ch = curl_init();
     
 	curl_setopt($ch, CURLOPT_URL, $url);
