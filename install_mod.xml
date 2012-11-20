@@ -1040,9 +1040,7 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"> 
-                    <img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Login with your Facebook account!" /> 
-            </a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
       <!-- IF S_AL_TW_ENABLED --> 
         <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Twitter" /></a> 
@@ -1096,9 +1094,7 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#"> 
-                    <img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Login with your Facebook account!" /> 
-            </a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
       <!-- IF S_AL_TW_ENABLED --> 
         <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Windows Live Connect" /></a> 
@@ -1339,9 +1335,7 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"> 
-                    <img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Login with your Facebook account!" /> 
-            </a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
       <!-- IF S_AL_TW_ENABLED --> 
         <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Twitter" /></a> 
@@ -1476,9 +1470,7 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
                             <!-- ENDIF --> 
  
                             <!-- IF S_AL_FB_ENABLED --> 
-                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"> 
-                                    <img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Login with your Facebook account!" /> 
-                            </a> 
+                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
                             <!-- ENDIF --> 
  
                             <!-- IF S_AL_TW_ENABLED --> 
@@ -1533,11 +1525,7 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#"> 
-                    <img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Login with your Facebook account!" /> 
-            </a> 
- 
- 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
         
         <!-- IF S_AL_TW_ENABLED --> 
@@ -1777,11 +1765,9 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"> 
-                    <img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Login with your Facebook account!" /> 
-            </a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
-      <!-- IF S_AL_TW_ENABLED --> 
+        <!-- IF S_AL_TW_ENABLED --> 
         <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Twitter" /></a> 
         <!-- ENDIF --> 
         
