@@ -30,6 +30,13 @@
 								<contributions status="current" from="17-06-2012" position="Translator"></contributions>
 							</contributions-group>
 						</author>
+						
+						<author>
+							<username>Malou_pitawawa</username>
+							<contributions-group>
+								<contributions status="current" from="20-11-2012" position="Translator, Coder"></contributions>
+							</contributions-group>
+						</author>
 		</author-group> 
                 <link-group>
 					<link type="language" href="root/contrib/language/de/" lang="en">German Language Template</link>
