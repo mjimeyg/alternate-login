@@ -1,0 +1,20 @@
+Subject: Bienvenue sur "{SITENAME}"
+
+{WELCOME_MSG}
+
+Veuillez conserver cet e-mail dans vos archives. Les informations concernant votre compte sont les suivantes :
+
+----------------------------
+Nom d'utilisateur : {USERNAME}
+
+Lien du forum : {U_BOARD}
+----------------------------
+
+Votre compte est actuellement inactif et devra être approuvé par un administrateur avant que vous ne puissiez vous connecter. Un autre e-mail sera envoyé lorsque cela aura été effectué.
+
+Vous pourrez vous connecter en utilisant le bouton {AL_LOGIN_TYPE}.
+Si vous dissocier votre compte ou si vous n'avez plus accès à votre compte {AL_LOGIN_TYPE}, vous pourrez demandé un nouveau mot de passe.
+
+Nous vous remercions de votre inscription.
+
+{EMAIL_SIG}
