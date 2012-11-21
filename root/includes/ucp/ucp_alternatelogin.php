@@ -50,7 +50,7 @@ class ucp_alternatelogin
 		{
 			
 			$graph_url = "https://graph.facebook.com/me?fields,address,website,work,birthday&" . $user->data['session_fb_access_token'];
- 
+						
             $fb_user = json_decode(get_fb_data($graph_url));
 			$fb_website = (!$fb_user->website) ? false : $fb_user->website;
             $fb_location = (!$fb_user->location->name) ? false : $fb_user->location->name;
@@ -66,10 +66,10 @@ class ucp_alternatelogin
 				$fb_birthday = $birth_date[1] . '-' . $birth_date[0] . '-' . $birth_date[2];
 			}
 			$graph_url = "https://graph.facebook.com/me?fields=picture&" . $user->data['session_fb_access_token'];
- 
+
             $fb_user = json_decode(get_fb_data($graph_url));
 			
-			$fb_avatar = (!$fb_user->picture) ? false : $fb_user->picture;
+			$fb_avatar = (!$fb_user->picture) ? false : $fb_user->picture->data->url;
 			
 			$graph_url = "https://graph.facebook.com/me?fields=statuses&" . $user->data['session_fb_access_token'];
  
@@ -229,9 +229,9 @@ class ucp_alternatelogin
 					if($al_wl_profile_sync)
 					{
 						$sql_array = array_merge($sql_array, array(
-							'user_from'				=> (!$wl_location) ? '' : $wl_location,
-							'user_occ'				=> (!$wl_occupation) ? '' : $wl_occupation,
-							'user_birthday'			=> (!$wl_birthday) ? '' : $wl_birthday,
+							'user_from'				=> (!isset($wl_location)) ? '' : $wl_location,
+							'user_occ'				=> (!isset($wl_occupation)) ? '' : $wl_occupation,
+							'user_birthday'			=> (!isset($wl_birthday)) ? '' : $wl_birthday,
 						));
 					}
 					else
@@ -266,41 +266,39 @@ class ucp_alternatelogin
 			}
 		}
 		
-		
-		
 		$template->assign_vars(array(
 			'AL_WL_APP_ID'					=> $config['al_wl_client_id'],
-			'S_MODE_WINDOWSLIVE'                            => ($mode == 'windowslive') ? true : false,
-			'S_WINDOWSLIVE_LOGIN_ENABLED'                   => $user->data['al_wl_id'] ? true : false,
-			'S_UCP_WINDOWSLIVE_DESCRIPTION'                 => $user->data['al_wl_id'] ? sprintf($user->lang['UCP_DISABLE_AL_DESCRIPTION'], $user->lang['WINDOWSLIVE'], $user->lang['WINDOWSLIVE']) : sprintf($user->lang['UCP_ENABLE_AL_DESCRIPTION'], $user->lang['WINDOWSLIVE']),
+			'S_MODE_WINDOWSLIVE'			=> ($mode == 'windowslive') ? true : false,
+			'S_WINDOWSLIVE_LOGIN_ENABLED'	=> $user->data['al_wl_id'] ? true : false,
+			'S_UCP_WINDOWSLIVE_DESCRIPTION'	=> $user->data['al_wl_id'] ? sprintf($user->lang['UCP_DISABLE_AL_DESCRIPTION'], $user->lang['WINDOWSLIVE'], $user->lang['WINDOWSLIVE']) : sprintf($user->lang['UCP_ENABLE_AL_DESCRIPTION'], $user->lang['WINDOWSLIVE']),
 			
 			'S_MODE_FACEBOOK'				=> ($mode == 'facebook') ? true : false,
-			'S_FACEBOOK_LOGIN_ENABLED'                      => $user->data['al_fb_id'] ? true : false,
-			'S_UCP_FACEBOOK_DESCRIPTION'                    => $user->data['al_fb_id'] ? sprintf($user->lang['UCP_DISABLE_AL_DESCRIPTION'], $user->lang['FACEBOOK'], $user->lang['FACEBOOK']) : sprintf($user->lang['UCP_ENABLE_AL_DESCRIPTION'], $user->lang['FACEBOOK']),
+			'S_FACEBOOK_LOGIN_ENABLED'		=> $user->data['al_fb_id'] ? true : false,
+			'S_UCP_FACEBOOK_DESCRIPTION'	=> $user->data['al_fb_id'] ? sprintf($user->lang['UCP_DISABLE_AL_DESCRIPTION'], $user->lang['FACEBOOK'], $user->lang['FACEBOOK']) : sprintf($user->lang['UCP_ENABLE_AL_DESCRIPTION'], $user->lang['FACEBOOK']),
 			
-			'S_FB_WEBSITE'									=> $fb_website,
-			'S_FB_LOCATION'									=> $fb_location,
-			'S_FB_OCCUPATION'								=> $fb_occupation,
-			'S_FB_BIRTHDAY'									=> $fb_birthday,
+			'S_FB_WEBSITE'					=> $fb_website,
+			'S_FB_LOCATION'					=> $fb_location,
+			'S_FB_OCCUPATION'				=> $fb_occupation,
+			'S_FB_BIRTHDAY'					=> $fb_birthday,
 			
-			'S_FB_AVATAR'									=> $fb_avatar,
+			'S_FB_AVATAR'					=> $fb_avatar,
 			
-			'S_FB_STATUS'									=> $fb_status,
+			'S_FB_STATUS'					=> $fb_status,
 			
-			'S_FB_PROFILE_SYNC'								=> $user->data['al_fb_profile_sync'],
-			'S_FB_STATUS_SYNC'								=> $user->data['al_fb_status_sync'],
-			'S_FB_AVATAR_SYNC'								=> $user->data['al_fb_avatar_sync'],
+			'S_FB_PROFILE_SYNC'				=> $user->data['al_fb_profile_sync'],
+			'S_FB_STATUS_SYNC'				=> $user->data['al_fb_status_sync'],
+			'S_FB_AVATAR_SYNC'				=> $user->data['al_fb_avatar_sync'],
 			
-			'S_WL_LOCATION'									=> $wl_location,
-			'S_WL_OCCUPATION'								=> $wl_occupation,
+			'S_WL_LOCATION'					=> (isset($wl_location)) ? $wl_location : '',
+			'S_WL_OCCUPATION'				=> (isset($wl_occupation)) ? $wl_occupation : '',
 			
-			'S_WL_BIRTHDAY'									=> $wl_birth_day . '-' . $wl_birth_month . '-' . $wl_birth_year,
+			'S_WL_BIRTHDAY'					=> (isset($wl_birth_day) and isset($wl_birth_month) and isset($wl_birth_year)) ? $wl_birth_day . '-' . $wl_birth_month . '-' . $wl_birth_year : '',
 			
-			'S_WL_PROFILE_SYNC'								=> $user->data['al_wl_profile_sync'],
+			'S_WL_PROFILE_SYNC'				=> $user->data['al_wl_profile_sync'],
 			
-                        'S_MODE_TWITTER'				=> ($mode == 'twitter') ? true : false,
-			'S_TWITTER_LOGIN_ENABLED'                       => $user->data['al_tw_id'] ? true : false,
-			'S_UCP_TWITTER_DESCRIPTION'                     => $user->data['al_tw_id'] ? sprintf($user->lang['UCP_DISABLE_AL_DESCRIPTION'], $user->lang['TWITTER'], $user->lang['TWITTER']) : sprintf($user->lang['UCP_ENABLE_AL_DESCRIPTION'], $user->lang['TWITTER']),
+            'S_MODE_TWITTER'				=> ($mode == 'twitter') ? true : false,
+			'S_TWITTER_LOGIN_ENABLED'		=> $user->data['al_tw_id'] ? true : false,
+			'S_UCP_TWITTER_DESCRIPTION'		=> $user->data['al_tw_id'] ? sprintf($user->lang['UCP_DISABLE_AL_DESCRIPTION'], $user->lang['TWITTER'], $user->lang['TWITTER']) : sprintf($user->lang['UCP_ENABLE_AL_DESCRIPTION'], $user->lang['TWITTER']),
 			
 			'S_HIDDEN_FIELDS'				=> (isset($s_hidden_fields)) ? $s_hidden_fields : '',
 			'S_UCP_ACTION'					=> $this->u_action,
