@@ -3,7 +3,7 @@
 	<!-- IF not S_AL_FB_ENABLED  -->
 		<span>Social Login not enabled by Administrators.</span>
     <!-- ELSE -->
-        <!-- IF not S_AL_WL_USER -->
+        <!-- IF not S_AL_WL_USER and S_AL_WL_ENABLED -->
             <table>
                 <tr>
                     <th colspan="2">{L_UCP_AL_ENABLE_WINDOWSLIVE_TEXT}</th>
@@ -20,7 +20,7 @@
         
         <!-- ENDIF -->
             
-        <!-- IF not S_AL_FB_USER -->
+        <!-- IF not S_AL_FB_USER and S_AL_FB_ENABLED -->
             <table>
                 <tr>
                     <th colspan="2">{L_UCP_AL_ENABLE_FACEBOOK_TEXT}</th>
@@ -31,9 +31,7 @@
                     </td>
                     <td>
                         <form method="post" action="{U_ACTION}">
-                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#">
-                                <img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Login with your Facebook account!" />
-                            </a>						
+                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a>						
                             {S_FORM_TOKEN}
                             
                         </form>
@@ -45,7 +43,7 @@
         <!-- ENDIF -->
         
         
-        <!-- IF not S_AL_TW_USER -->
+        <!-- IF not S_AL_TW_USER and S_AL_TW_ENABLED -->
             <table>
                 <tr>
                     <th colspan="2">{L_UCP_AL_ENABLE_TWITTER_TEXT}</th>
@@ -63,7 +61,7 @@
             
         <!-- ENDIF -->
         
-        <!-- IF not S_AL_OI_USER -->
+        <!-- IF not S_AL_OI_USER and S_AL_OI_ENABLED -->
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
         <script type="text/javascript" src="{T_TEMPLATE_PATH}/js/jquery-1.2.6.min.js"></script>
         <script type="text/javascript" src="{T_TEMPLATE_PATH}/js/openid-jquery.js"></script>
