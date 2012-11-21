@@ -132,6 +132,12 @@ class acp_alternatelogin
 
 					set_config('al_fb_like_box', $facebook_like_box);
 					
+					$facebook_default_lang = request_var('facebook_default_lang', 'en_GB');
+
+					set_config('al_fb_default_lang', $facebook_default_lang);
+					
+					
+					
 					if($facebook_quick_accounts)
 					{
 						set_config('max_name_chars', 30);
@@ -206,6 +212,7 @@ class acp_alternatelogin
 					'FACEBOOK_KEY'  						=> $config['al_fb_key'],
 					'FACEBOOK_PAGE_URL'                     => $config['al_fb_page_url'],
 					'SITE_DOMAIN'                           => $config['al_site_domain'],
+					'FACEBOOK_DEFAULT_LANG'                 => (!isset($config['al_fb_default_lang'])) ? $this->fb_language_select('en_US') : $this->fb_language_select($config['al_fb_default_lang']),
 					'FACEBOOK_QUICK_ACCOUNTS_YES'           => $config['al_fb_quick_accounts'] ? 'checked="checked"' : '',
 					'FACEBOOK_QUICK_ACCOUNTS_NO'            => $config['al_fb_quick_accounts'] ? '' : 'checked="checked"',
 					'FACEBOOK_ACTIVITY_YES'                 => $config['al_fb_activity'] ? 'checked="checked"' : '',
@@ -339,6 +346,21 @@ class acp_alternatelogin
 		}
 	}
 	
+	function fb_language_select($default = '')
+    {
+        global $config, $phpbb_root_path ;
+        $get_locale =	simplexml_load_file($phpbb_root_path . '/alternatelogin/FacebookLocales.xml');
+        $arr = $get_locale->locale;
+
+        $fb_lang_options = '';
+        foreach($arr as $locale)
+        {
+            $selected = ($locale->codes->code->standard->representation == $default) ? ' selected="selected"' : '';
+            $fb_lang_options .= '<option name="' . $locale->codes->code->standard->representation . '" id="' . $locale->codes->code->standard->representation . '" value="' . $locale->codes->code->standard->representation . '"' . $selected . '>' . $locale->englishName . '</option>';
+        }
+
+        return $fb_lang_options;
+    }
 }
 
 ?>

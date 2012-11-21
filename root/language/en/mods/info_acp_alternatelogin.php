@@ -71,6 +71,7 @@ $lang = array_merge($lang, array(
         'FACEBOOK_KEY'                                          => 'Facebook Key',
         'FACEBOOK_SECRET'                                       => 'Facebook Secret',
         'FACEBOOK_PAGE_URL'                                     => 'Facebook Page Url',
+        'FACEBOOK_DEFAULT_LANG'									=> 'Facebook Plugins default language',
         'SITE_DOMAIN'                                           => 'Site Domain',
 
         'FACEBOOK_ACTIVITY'                                     => 'Facebook Activity',

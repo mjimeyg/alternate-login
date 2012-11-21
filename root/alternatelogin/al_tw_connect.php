@@ -29,19 +29,18 @@ include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);// Add the custom phpBB Alternate Login functions file
 include($phpbb_root_path . 'alternatelogin/twitter/tmhOAuth.' . $phpEx);
 
-if($config['al_tw_login'] == 0)
-{
-	// Inform the user that this feature is unavailable
-	trigger_error(sprintf($user->lang['AL_LOGIN_UNAVAILABLE'], $user->lang['WINDOWS_LIVE']));
-}
-
-
 // Set up a new user session.
 $user->session_begin();
 $auth->acl($user->data);
 $user->setup('ucp'); 
 $user->add_lang('mods/info_acp_alternatelogin');
 $user->add_lang('mods/info_ucp_alternatelogin');// Global Alternate Login language file.
+
+if($config['al_tw_login'] == 0)
+{
+	// Inform the user that this feature is unavailable
+	trigger_error(sprintf($user->lang['AL_LOGIN_UNAVAILABLE'], $user->lang['TWITTER']));
+}
 
 $tmhOAuth = new tmhOAuth(array(
   'consumer_key'    => $config['al_tw_key'],
