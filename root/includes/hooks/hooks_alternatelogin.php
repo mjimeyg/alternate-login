@@ -22,21 +22,21 @@ class CSAlternateLogin
         }
 		
 		$template->assign_vars(array(
-			'S_AL_FB_ENABLED'				=> isset($config['al_fb_login']) ? $config['al_fb_login'] : false,
-			'S_AL_TW_ENABLED'				=> isset($config['al_tw_login']) ? $config['al_tw_login'] : false,
-			'S_AL_WL_ENABLED'				=> isset($config['al_wl_login']) ? $config['al_wl_login'] : false,
+			'S_AL_FB_ENABLED'								=> isset($config['al_fb_login']) ? $config['al_fb_login'] : false,
+			'S_AL_TW_ENABLED'								=> isset($config['al_tw_login']) ? $config['al_tw_login'] : false,
+			'S_AL_WL_ENABLED'								=> isset($config['al_wl_login']) ? $config['al_wl_login'] : false,
             'S_AL_OI_ENABLED'                               => isset($config['al_oi_login']) ? $config['al_oi_login'] : false,
-			'S_AL_WL_USER'					=> isset($user->data['al_wl_id']) ? $user->data['al_wl_id'] : false,
+			'S_AL_WL_USER'									=> isset($user->data['al_wl_id']) ? $user->data['al_wl_id'] : false,
 			'S_AL_FB_USER'                                  => isset($user->data['al_fb_id']) ? $user->data['al_fb_id'] : false,
 			'S_AL_TW_USER'                                  => isset($user->data['al_tw_id']) ? $user->data['al_tw_id'] : false,
 			'S_AL_OI_USER'                                  => isset($user->data['al_oi_id']) ? $user->data['al_oi_id'] : false,
-			'AL_FB_APPID'					=> isset($config['al_fb_id']) ? $config['al_fb_id'] : false,
+			'AL_FB_APPID'									=> isset($config['al_fb_id']) ? $config['al_fb_id'] : false,
 			'AL_FB_SITE_DOMAIN'                             => isset($config['al_site_domain']) ? $config['al_site_domain'] : false,
 			'AL_FB_ACTIVITY'                                => isset($config['al_fb_activity']) ? $config['al_fb_activity'] : false,
 			'AL_FB_FACEPILE'                                => isset($config['al_fb_facepile']) ? $config['al_fb_facepile'] : false,
 			'AL_FB_STREAM'                                  => isset($config['al_fb_stream']) ? $config['al_fb_stream'] : false,
 			'AL_FB_LIKE_BOX'                                => isset($config['al_fb_like_box']) ? $config['al_fb_like_box'] : false,
-			'S_AL_WL_CLIENT_ID'				=> isset($config['al_wl_client_id']) ? $config['al_wl_client_id'] : false,
+			'S_AL_WL_CLIENT_ID'								=> isset($config['al_wl_client_id']) ? $config['al_wl_client_id'] : false,
 			'S_AL_WL_WRAP_CALLBACK'                         => isset($config['al_wl_callback']) ? $config['al_wl_callback'] : false,
 			'S_AL_WL_WRAP_CHANNEL'                          => isset($config['al_wl_channel']) ? $config['al_wl_channel'] : false,
 			'AL_FB_APP_ID'                                  => isset($config['al_fb_id']) ? $config['al_fb_id'] : false,
@@ -51,7 +51,11 @@ class CSAlternateLogin
 			'U_AL_OI_LOGIN'                                 => "{$phpbb_root_path}alternatelogin/al_oi_auth.{$phpEx}",
 			'S_FB_LOCALE'                                   => ($fb_lang) ? $fb_lang : 'en_GB',
 			'S_RETURN_TO_PAGE'                              => "?return_to_page=" . base64_encode(build_url()),
+			
+			'U_PAGE_URL'                    				=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
 		));
+		
+		
 	}
 }
 
