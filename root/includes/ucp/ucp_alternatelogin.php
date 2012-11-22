@@ -46,6 +46,10 @@ class ucp_alternatelogin
 
 		$submit = isset($_POST['submit']) ? true : false;
 		
+		//Define default vars
+		$fb_website = $fb_location = $fb_occupation = $fb_birthday = $fb_avatar = $fb_status = "";
+		$wl_location = $wl_occupation = "";
+		
 		if($user->data['al_fb_id'])
 		{
 			
@@ -289,8 +293,8 @@ class ucp_alternatelogin
 			'S_FB_STATUS_SYNC'				=> $user->data['al_fb_status_sync'],
 			'S_FB_AVATAR_SYNC'				=> $user->data['al_fb_avatar_sync'],
 			
-			'S_WL_LOCATION'					=> (isset($wl_location)) ? $wl_location : '',
-			'S_WL_OCCUPATION'				=> (isset($wl_occupation)) ? $wl_occupation : '',
+			'S_WL_LOCATION'					=> $wl_location,
+			'S_WL_OCCUPATION'				=> $wl_occupation,
 			
 			'S_WL_BIRTHDAY'					=> (isset($wl_birth_day) and isset($wl_birth_month) and isset($wl_birth_year)) ? $wl_birth_day . '-' . $wl_birth_month . '-' . $wl_birth_year : '',
 			
