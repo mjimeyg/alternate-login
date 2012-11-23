@@ -318,6 +318,7 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 			<file from="root/alternatelogin/*.*" to="alternatelogin/*.*"/> 
 			<file from="root/adm/style/acp_alternatelogin.html" to="adm/style/acp_alternatelogin.html"/> 
 			<file from="root/includes/functions_alternatelogin.php" to="includes/functions_alternatelogin.php"/> 
+			<file from="root/includes/hooks/*.*" to="includes/hooks/*.*"/> 
 			<file from="root/includes/acp/acp_alternatelogin.php" to="includes/acp/acp_alternatelogin.php"/> 
 			<file from="root/includes/acp/info/acp_alternatelogin.php" to="includes/acp/info/acp_alternatelogin.php"/> 
 			<file from="root/includes/ucp/ucp_alternatelogin.php" to="includes/ucp/ucp_alternatelogin.php"/> 
