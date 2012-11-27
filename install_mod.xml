@@ -1118,6 +1118,8 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 		<php-installer><![CDATA[alternatelogin_mod_install.php]]></php-installer> 
 		<diy-instructions lang="en"><![CDATA[The following instructions assume that you have correctly copied all the files across, completed all the file edits, added and altered as necessary and setup the UCP and ACP pages as defined in the install_mod.xml MODX file and the alternatelogin_mod_install.php UMIL file.
 
+In the ACP Purge the cache.  If you don't do this it is unlikely this mod will work at all.
+
 The following is dividing into sections, each section refers to a specific provider. Each provider acts independently of the others, you don't need to setup Windows Live to use Facebook, for example.
 
 -- Facebook --
