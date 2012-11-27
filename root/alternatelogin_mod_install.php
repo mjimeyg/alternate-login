@@ -32,7 +32,7 @@ $mod_name = 'ConSof Alternate Login System';
 * The name of the config variable which will hold the currently installed version
 * UMIL will handle checking, setting, and updating the version itself.
 */
-$version_config_name = '1.0.0';
+$version_config_name = '2012.11.27.01';
 
 /*
 * The language file which will be included when installing
