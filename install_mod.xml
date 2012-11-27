@@ -45,13 +45,21 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.04.26.01-2012.05.13.01.xml" lang="en">Update file from version 2012.04.26.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
                 </link-group>
-		<mod-version>2012.11.24.01</mod-version> 
+		<mod-version>2012.11.27.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.10</target-version> 
 		</installation> 
                 <history>
+				<entry>
+                        <date>2012.11.27</date>
+                        <rev-version>2012.11.27.01</rev-version>
+                        <changelog lang="en">
+							<change>functions_alternatelogin.php: Removed deprecated function al_validate_admin.</change>
+							
+                        </changelog>
+                    </entry>
 				<entry>
                         <date>2012.11.24</date>
                         <rev-version>2012.11.24.01</rev-version>
