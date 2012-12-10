@@ -52,6 +52,16 @@
 			<target-version>3.0.10</target-version> 
 		</installation> 
                 <history>
+				
+				<entry>
+                        <date>2012.12.10</date>
+                        <rev-version>2012.12.10.01</rev-version>
+                        <changelog lang="en">
+							<change>functions_alternatelogin.php: Added function_exists check for all functions to combat redeclaration error.</change>
+							<change>hook_alternatelogin.php: Added missing $phpEx global declaration.</change>
+                        </changelog>
+                    </entry>
+				<entry>
 				<entry>
                         <date>2012.11.27</date>
                         <rev-version>2012.11.27.01</rev-version>
