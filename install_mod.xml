@@ -781,36 +781,6 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
   window.fbAsyncInit = function() {
     FB.init({appId: '{AL_FB_APPID}', status: true, cookie: true,
              xfbml: true});
-			 
-	FB.Event.subscribe('auth.login', function(response){
-			if(response.status == 'connected'){
-				console.log('Logged in.');
-			}
-		});
-		
-		FB.getLoginStatus(function(response){
-			
-			if(response.status == 'connected'){
-				console.log('Logged in still.');
-				if(is_user_logged_in()){
-					console.log('phpBB user is logged in.');
-				}
-				else{
-					console.log('phpBBuser is NOT logged in.');
-					$('#fb_in_phpbb_out').show();
-					$('#fb_out_phpbb_out').hide();
-					$('#fb_access_token').val(response.authResponse.accessToken);
-					
-					
-				}
-			}
-			else{
-				console.log('phpBBuser and FB are NOT logged in.');
-				$('#fb_in_phpbb_out').hide();
-				$('#fb_out_phpbb_out').show();
-			}
-		});
-  
   };
   (function() {
     var e = document.createElement('script'); e.async = true;
