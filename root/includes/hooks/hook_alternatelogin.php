@@ -4,7 +4,7 @@ class CSAlternateLogin
 {
 	function page_header(&$hook)
 	{
-		global $template, $user, $phpbb_root_path, $config;
+		global $template, $user, $phpbb_root_path, $phpEx, $config;
 		
 		$result = $hook->previous_hook_result('phpbb_user_session_handler');
 		
