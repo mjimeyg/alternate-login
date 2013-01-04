@@ -43,7 +43,7 @@ $user->add_lang('mods/info_acp_alternatelogin');
 $user->add_lang('mods/info_ucp_alternatelogin');// Global Alternate Login language file.
 
 $mode = request_var('mode', '');
-
+$admin = request_var('admin', 0);
 
 
 

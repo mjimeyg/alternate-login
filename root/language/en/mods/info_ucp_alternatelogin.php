@@ -61,6 +61,7 @@ $lang = array_merge($lang, array(
         'FB_STATUS'                                                     => 'Sync signature with Facebook status',
         'FB_AVATAR'                                                     => 'Facebook Profile Picture',
         'FB_AVATAR_EXPLAIN'                                             => 'Sync your Facebook Profile Picture with your Avatar.',
+		'FB_REDIRECT'													=> 'Facebook is redirecting...',
     
         'WL_SYNC'                                                       => 'Sync profile with Windows Live profile',
         'WL_STATUS'                                                     => 'Sync signature with Windows Live status',
