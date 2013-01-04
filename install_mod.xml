@@ -46,14 +46,22 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2012.11.27.01</mod-version> 
+		<mod-version>2012.12.18.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
-			<target-version>3.0.10</target-version> 
+			<target-version>3.0.11</target-version> 
 		</installation> 
                 <history>
-				
+				<entry>
+                        <date>2012.12.17</date>
+                        <rev-version>2012.12.17.01</rev-version>
+                        <changelog lang="en">
+							<change>install_mod.xml: Removed duplicated entry tag.</change>
+							<change>hook_alternatelogin.php: Uncommented and added check for the Windows Live Callback template value.</change>
+							<change>functions_alternatelogin.php: Removed deprecated defines and added check for pre-defined constants.</change>
+                        </changelog>
+                    </entry>
 				<entry>
                         <date>2012.12.10</date>
                         <rev-version>2012.12.10.01</rev-version>
@@ -374,7 +382,9 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 			</edit> 
 			<edit> 
 				<find><![CDATA[$user_lang		= request_var('lang', $user->lang_name);]]></find> 
-				<action type="after-add"><![CDATA[		$sql_array = array(
+				<action type="after-add"><![CDATA[		$al_login		= request_var('al_login', -1);
+		$al_login_type	= request_var('al_login_type', -1);
+		$sql_array = array(
                     'SELECT'    => 'session_wl_access_token, session_tw_access_token',
                     'FROM'      =>array(SESSIONS_TABLE => 's'),
                     'WHERE'     => "session_id='" . $user->data['session_id'] . "'",
@@ -393,10 +403,12 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
                     $al_login = 1;
                     $al_login_type = AL_WINDOWSLIVE_LOGIN;
                 }
-                
-                $tw_access_token = json_decode($user->data['session_tw_access_token']);
-                
-                if($tw_access_token->oauth_token)
+                if(isset($user->data['session_tw_access_token']))
+				{
+                	$tw_access_token = json_decode($user->data['session_tw_access_token']);
+				}
+				
+                if(isset($tw_access_token->oauth_token))
                 {   
                     include($phpbb_root_path . 'alternatelogin/twitter/tmhOAuth.' . $phpEx);
                     
@@ -791,6 +803,36 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
   window.fbAsyncInit = function() {
     FB.init({appId: '{AL_FB_APPID}', status: true, cookie: true,
              xfbml: true});
+			 
+	FB.Event.subscribe('auth.login', function(response){
+			if(response.status == 'connected'){
+				console.log('Logged in.');
+			}
+		});
+		
+		FB.getLoginStatus(function(response){
+			
+			if(response.status == 'connected'){
+				console.log('Logged in still.');
+				if(is_user_logged_in()){
+					console.log('phpBB user is logged in.');
+				}
+				else{
+					console.log('phpBBuser is NOT logged in.');
+					$('#fb_in_phpbb_out').show();
+					$('#fb_out_phpbb_out').hide();
+					$('#fb_access_token').val(response.authResponse.accessToken);
+					
+					
+				}
+			}
+			else{
+				console.log('phpBBuser and FB are NOT logged in.');
+				$('#fb_in_phpbb_out').hide();
+				$('#fb_out_phpbb_out').show();
+			}
+		});
+  
   };
   (function() {
     var e = document.createElement('script'); e.async = true;
