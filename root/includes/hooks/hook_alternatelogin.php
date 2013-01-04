@@ -5,19 +5,17 @@ class CSAlternateLogin
 	function page_header(&$hook)
 	{
 		global $template, $user, $phpbb_root_path, $phpEx, $config;
-<<<<<<< HEAD
-=======
+
 		
 		$forum_id = request_var('f', 0);
 		$topic_id = request_var('t', 0);
->>>>>>> 8a227aa5338b7e7e149d7bbc826e91538f698419
 		
 		$result = $hook->previous_hook_result('phpbb_user_session_handler');
 		
 		// Begin Alternate Login code
         require_once($phpbb_root_path . 'includes/functions_alternatelogin.php'); // Include the functions for Alternate Login module
         $user->add_lang('mods/info_ucp_alternatelogin');
-        if($user->data['session_fb_access_token'])
+        if(isset($user->data['session_fb_access_token']))
         {
             $graph_url = "https://graph.facebook.com/me?" . $user->data['session_fb_access_token'];
 
@@ -51,7 +49,7 @@ class CSAlternateLogin
 			'AL_FB_USER_HIDE_STREAM'                        => isset($user->data['al_fb_hide_stream']) ? $user->data['al_fb_hide_stream'] : false,
 			'AL_FB_USER_HIDE_FACEPILE'                      => isset($user->data['al_fb_hide_facepile']) ? $user->data['al_fb_hide_facepile'] : false,
 			'AL_FB_USER_HIDE_LIKE_BOX'                      => isset($user->data['al_fb_hide_like_box']) ? $user->data['al_fb_hide_like_box'] : false,
-			//'U_AL_WL_AUTHORIZE'                             => "https://oauth.live.com/authorize?client_id={$config['al_wl_client_id']}&scope=wl.signin%20wl.basic%20wl.birthday%20wl.emails%20wl.work_profile%20wl.postal_addresses&response_type=code&redirect_uri=" . urlencode($config['al_wl_callback']),
+			'U_AL_WL_AUTHORIZE'                             => (isset($config['al_wl_client_id']) && isset($config['al_wl_callback'])) ? "https://oauth.live.com/authorize?client_id={$config['al_wl_client_id']}&scope=wl.signin%20wl.basic%20wl.birthday%20wl.emails%20wl.work_profile%20wl.postal_addresses&response_type=code&redirect_uri=" . urlencode($config['al_wl_callback']) : '',
 			'U_AL_TW_REQUEST'                               => "{$phpbb_root_path}alternatelogin/al_tw_connect.{$phpEx}?authentication=1",
 			'U_AL_OI_LOGIN'                                 => "{$phpbb_root_path}alternatelogin/al_oi_auth.{$phpEx}",
 			'S_FB_LOCALE'                                   => isset($fb_lang) ? $fb_lang : 'en_GB',
