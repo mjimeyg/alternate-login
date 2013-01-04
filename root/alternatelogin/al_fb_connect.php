@@ -44,6 +44,7 @@ if($config['al_fb_login'] == 0)
 }
 
 $return_to_page = request_var('return_to_page', base64_encode("{$phpbb_root_path}index.{$phpEx}"));
+$admin = request_var('admin', 0);
 
 $access_token = get_fb_access_token($return_to_page);
 
@@ -154,11 +155,14 @@ if ($row)   // User is registered already, let's log him in!
 
                     $fb_user = json_decode(get_fb_data($graph_url));
 
-                    $data['user_website']                    = (!$fb_user->website) ? '' : $fb_user->website;
-                    $data['user_from']                   = (!$fb_user->location->name) ? '' : $fb_user->location->name;
-                    $data['user_occ']                 = (!$fb_user->work[0]->employer->name) ? '' : $fb_user->work[0]->employer->name;
-                    $bday = explode('/', $fb_user->birthday);
-                    $data['user_birthday']              = sprintf('%2d-%2d-%4d', $bday[1], $bday[0], $bday[2]);
+                    $data['user_website']                    = isset($fb_user->website) ? $fb_user->website : '';
+                    $data['user_from']                   = isset($fb_user->location->name) ? $fb_user->location->name : '';
+                    $data['user_occ']                 = isset($fb_user->work[0]->employer->name) ? $fb_user->work[0]->employer->name : '';
+					if(isset($fb_user->birthday))
+					{
+						$bday = explode('/', $fb_user->birthday);
+						$data['user_birthday']              = sprintf('%2d-%2d-%4d', $bday[1], $bday[0], $bday[2]);
+					}
 
                 }
 

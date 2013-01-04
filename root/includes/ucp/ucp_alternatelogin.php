@@ -56,9 +56,9 @@ class ucp_alternatelogin
 			$graph_url = "https://graph.facebook.com/me?fields,address,website,work,birthday&" . $user->data['session_fb_access_token'];
 						
             $fb_user = json_decode(get_fb_data($graph_url));
-			$fb_website = (!$fb_user->website) ? false : $fb_user->website;
-            $fb_location = (!$fb_user->location->name) ? false : $fb_user->location->name;
-            $fb_occupation = (!$fb_user->work[0]->employer->name) ? false : $fb_user->work[0]->employer->name;
+			$fb_website = isset($fb_user->website) ? $fb_user->website : false;
+            $fb_location = isset($fb_user->location->name) ? $fb_user->location->name : false;
+            $fb_occupation = isset($fb_user->work[0]->employer->name) ? $fb_user->work[0]->employer->name : false;
 			
 			if(!$fb_user->birthday)
 			{
