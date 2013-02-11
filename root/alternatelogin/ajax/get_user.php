@@ -20,7 +20,7 @@
 
 // Basic setup of phpBB variables.
 define('IN_PHPBB', true);
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
 // Load include files.
