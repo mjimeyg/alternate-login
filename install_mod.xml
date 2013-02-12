@@ -703,7 +703,10 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+        	<div id="fb_in_phpbb_out">
+            	<a id="fb_in_phpbb_out_button" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+            </div>
+            
         <!-- ENDIF --> 
       <!-- IF S_AL_TW_ENABLED --> 
         <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Twitter" /></a> 
@@ -746,24 +749,27 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 		<open src="styles/prosilver/template/login_body.html"> 
 			<edit> 
 				<find><![CDATA[</form>]]></find> 
-				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED) and not S_ADMIN_AUTH -->
+				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED or S_AL_OI_ENABLED) and not S_ADMIN_AUTH -->
  <div class="panel bg3">
    <div class="inner"><span class="corners-top"><span></span></span>
       
  <h3>{L_SOCIAL_LOGIN_OPTIONS}</h3> 
                 <br /> 
             <!-- IF S_AL_WL_ENABLED --> 
-            <a href="{U_AL_WL_AUTHORIZE}"><img src="alternatelogin/images/windows_live_connect.png" alt="Windows Live Connect" /></a> 
+            <a href="{U_AL_WL_AUTHORIZE}"><img src="alternatelogin/images/windows_live_connect.png" alt="Windows Live" /></a> 
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+        	<div id="fb_in_phpbb_out">
+            	<a id="fb_in_phpbb_out_button" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+            </div>
+            
         <!-- ENDIF --> 
       <!-- IF S_AL_TW_ENABLED --> 
-        <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Windows Live Connect" /></a> 
+        <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Twitter" /></a> 
         <!-- ENDIF --> 
-      
-      <!-- IF S_AL_OI_ENABLED --> 
+        
+        <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
 	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/jquery-1.2.6.min.js"></script>
 	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/openid-jquery.js"></script>
@@ -777,9 +783,9 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <form action="{U_AL_OI_LOGIN}" method="get" id="openid_form">
 		<input type="hidden" name="action" value="verify" />
 		<fieldset>
-			<legend>Sign-in or Create New Account</legend>
+			
 			<div id="openid_choice">
-				<p>Please click your account provider:</p>
+				
 				<div id="openid_btns"></div>
 			</div>
 			<div id="openid_input_area">
@@ -790,23 +796,77 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 		</fieldset>
 	</form>
         <!-- ENDIF --> 
+      
+
    <span class="corners-bottom"><span></span></span></div>
 </div>
  <!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		<open src="styles/prosilver/template/overall_header.html"> 
+		<edit> 
+				<find><![CDATA[<link href="{T_THEME_PATH}/large.css" rel="alternate stylesheet" type="text/css" title="A++" />]]></find> 
+				<action type="after-add"><![CDATA[<link href="{T_THEME_PATH}/alternatelogin.css" rel="stylesheet" type="text/css" />]]></action>
+		</edit>
 			<edit> 
 				<find><![CDATA[<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}">]]></find> 
-				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED --><div id="fb-root"></div><script src="http://connect.facebook.net/{S_FB_LOCALE}/all.js#appId={AL_FB_APPID}&xfbml=1"></script>  
-<script> 
-  window.fbAsyncInit = function() {
+				<action type="after-add"><![CDATA[<div id="mask"></div>
+<div id="modal_dialog" class="forabg"> 
+		<div class="inner"><span class="corners-top"><span></span></span>
+    <div id="modal_dialog_title"></div>
+    <div id="modal_dialog_panel" class="panel">
+    	<span id="modal_dialog_message"></span>
+        <div id="modal_dialog_buttons"></div>
+    </div>
+    <span class="corners-bottom"><span></span></span></div> 
+</div>
+
+<!-- IF S_AL_FB_ENABLED -->
+<div id="fb-root">
+</div>
+<div id="hidden" style="display: none;">
+<div id="fb_registration">
+	<fb:registration 
+    	redirect-uri="http://al.consof.com/alternatelogin/al_fb_connect.php?" 
+        fields="[
+        	{'name':'name'},
+            {'name':'username',	'description':'Please enter a unique username for this site.','type':'text'},
+            {'name':'birthday'},
+            {'name':'gender'},
+            {'name':'email'},
+            {'name':'password'},
+            {'name':'lang',		'description':'Language',	'type':'select',	'options':{S_JSON_LANGUAGES}}
+        ]" 
+        onvalidate="validate_fb_registration"> 
+    </fb:registration> 
+</div>
+</div>
+<div id="fb_client_id" style="display:none;"></div>
+<script src="http://connect.facebook.net/{S_FB_LOCALE}/all.js#appId={AL_FB_APPID}&xfbml=1"></script>  
+<script>
+// Global Variables
+var sitename = '{SITENAME}';
+var board_url = '{BOARD_URL}';
+var terms_title = '{L_TERMS_USE}';
+
+// Global FB Variables
+var al_fb_app_id = '{AL_FB_APPID}';
+var al_fb_custom_reg_fields_str = "[{'name':'name'},{'name':'username','description':'{L_FB_DESCRIPTION}','type':'text'},{'name':'birthday'},{'name':'gender'},{'name':'email'},{'name':'password'},{'name':'lang','type':'select','options':{'P':'Jean-Luc Picard','K':'James T. Kirk'}},{'name':'tz''type':'select','options':{'P':'Jean-Luc Picard','K':'James T. Kirk'}}]";
+var al_fb_custom_reg_fields = '{S_AL_FB_CUSTOM_REG_FIELDS}';
+
+var al_fb_return_uri = '{S_AL_FB_REDIRECT_URI}';
+$(document).ready(function(e) {
+	
+    window.fbAsyncInit = function() {
+	
+	$('#fb_client_id').val('{AL_FB_APPID}');
     FB.init({appId: '{AL_FB_APPID}', status: true, cookie: true,
              xfbml: true});
 			 
 	FB.Event.subscribe('auth.login', function(response){
 			if(response.status == 'connected'){
 				console.log('Logged in.');
+				show_dialog('Login Message', 'Logged in.');
 			}
 		});
 		
@@ -816,6 +876,7 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 				console.log('Logged in still.');
 				if(is_user_logged_in()){
 					console.log('phpBB user is logged in.');
+					//show_dialog('Login Message', 'phpBB user is logged in.');
 				}
 				else{
 					console.log('phpBBuser is NOT logged in.');
@@ -823,17 +884,29 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 					$('#fb_out_phpbb_out').hide();
 					$('#fb_access_token').val(response.authResponse.accessToken);
 					
-					
+					//show_dialog('Login Message', 'phpBBuser is NOT logged in.');
 				}
 			}
 			else{
 				console.log('phpBBuser and FB are NOT logged in.');
 				$('#fb_in_phpbb_out').hide();
 				$('#fb_out_phpbb_out').show();
+				//show_dialog('Login Message', 'phpBBuser and FB are NOT logged in.');
 			}
 		});
+		
+		
   
   };
+  $('#fb_in_phpbb_out_button').click(function(event){
+			console.log('button clicked');
+			event.preventDefault();
+			FB.api('/me', function(response){
+				console.log(response);
+				fb_user_login(response.id, response.email);
+			});
+		});
+}); 
   (function() {
     var e = document.createElement('script'); e.async = true;
     e.src = document.location.protocol +
