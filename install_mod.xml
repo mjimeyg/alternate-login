@@ -805,6 +805,11 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 		</open> 
 		<open src="styles/prosilver/template/overall_header.html"> 
 		<edit> 
+				<find><![CDATA[<script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/forum_fn.js"></script>]]></find> 
+				<action type="after-add"><![CDATA[<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="{T_TEMPLATE_PATH}/alternatelogin.js"></script>]]></action>
+		</edit>
+		<edit> 
 				<find><![CDATA[<link href="{T_THEME_PATH}/large.css" rel="alternate stylesheet" type="text/css" title="A++" />]]></find> 
 				<action type="after-add"><![CDATA[<link href="{T_THEME_PATH}/alternatelogin.css" rel="stylesheet" type="text/css" />]]></action>
 		</edit>
