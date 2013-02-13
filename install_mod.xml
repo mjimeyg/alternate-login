@@ -367,8 +367,8 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 			<file from="root/language/en/email/coppa_welcome_inactive_alternatelogin.txt" to="language/en/email/coppa_welcome_inactive_alternatelogin.txt"/> 
 			<file from="root/language/en/email/user_welcome_alternatelogin.txt" to="language/en/email/user_welcome_alternatelogin.txt"/> 
 			<file from="root/language/en/email/user_welcome_inactive_alternatelogin.txt" to="language/en/email/user_welcome_inactive_alternatelogin.txt"/> 
-			<file from="root/styles/subsilver2/*.*" to="styles/subsilver2/template/*.*"/> 
-			<file from="root/styles/prosilver/template/*.*" to="styles/prosilver/template/*.*"/> 
+			<file from="root/styles/subsilver2/*.*" to="styles/subsilver2/*.*"/> 
+			<file from="root/styles/prosilver/template/*.*" to="styles/prosilver/*.*"/> 
 			<file from="root/*.*" to="*.*"/> 
 		</copy> 
 		 
