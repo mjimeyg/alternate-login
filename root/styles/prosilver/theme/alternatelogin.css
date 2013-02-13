@@ -1,0 +1,28 @@
+/* CSS Document */
+
+#mask {
+  position:absolute;
+  z-index:9000;
+  background-color:#000;
+  display:none;
+}
+
+#modal_dialog{
+  position:fixed;
+  min-height: 200px;
+  min-width: 400px;
+  max-height: 800px;
+  max-width: 800px;
+  display:none;
+  z-index:9999;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+}
+
+#modal_dialog_panel{
+	padding: auto 10px auto;
+	overflow: auto;
+}
+
