@@ -45,6 +45,8 @@ define('PCOOKIE', time() + (10 * 365 * 24 * 60 * 60));
 define('HTTP_GET', 0);
 define('HTTP_POST', 1);
 
+
+
 if(!function_exists('get_wl_tokens'))
 {
    function get_wl_tokens($cid, $authorization_code, $refresh_token)
@@ -140,126 +142,29 @@ if(!function_exists('get_wl_rest_request'))
    }
 }
 
-if(!function_exists('get_fb_access_token'))
+if(!function_exists('setup_facebook'))
 {
-   function get_fb_access_token($return_to_page)
+   function setup_facebook()
    {
-      global $config, $db, $user, $template;
-      $my_url = generate_board_url() . "/alternatelogin/al_fb_connect.php";
-      if($return_to_page != null && $return_to_page != '')
-      {
-         //$return_to_page = urlencode($return_to_page);
-         $my_url .= "?return_to_page=" . urlencode($return_to_page);
-      }
-      $code = request_var('code', '');
-   
-      if(empty($code)) {
-         $dialog_url = "http://www.facebook.com/dialog/oauth?client_id="
-            . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email";
-   
-         
-         page_header($user->lang['FB_REDIRECT']);
-         
-         $template->set_filenames(array(
-            'body'      => 'al_redirect.html',
-         ));
-         
-         $template->assign_vars(array(
-            'S_DIALOG_URL'  => $dialog_url,
-         ));
-         
-         page_footer();
-          
-      }
-      
-      $token_url = "https://graph.facebook.com/oauth/access_token?client_id="
-         . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&client_secret="
-         . $config['al_fb_secret'] . "&code=" . $code;
-   
-      $ch = curl_init();
-      
-      curl_setopt($ch, CURLOPT_URL, $token_url);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      
-      curl_setopt($ch, CURLOPT_HTTPGET, true);
-      
-      
-      $access_token = curl_exec($ch);
-      
-      if(curl_errno($ch))
-      {
-         add_log('critical', 'FB_GET_ACCESS_TOKEN_ERROR', $user->data['user_id'], 'FB_GET_ACCESS_TOKEN_ERROR', curl_error($ch));
-         return false;
-      }
-   
-      curl_close($ch);
-      
-      //$access_token = file_get_contents($token_url);
-   
-      return $access_token;
-   }
-}
-
-if(!function_exists('refresh_fb_access_token'))
-{
-   function refresh_fb_access_token($return_to_page)
-   {
-      global $config, $db, $user, $template;
-      
-      $my_url = $return_to_page;
-      
-      $code = request_var('code', '');
-   
-      if(empty($code)) {
-         $dialog_url = "http://www.facebook.com/dialog/oauth?client_id="
-            . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email";
-   
-         
-         page_header($user->lang['FB_REDIRECT']);
-         
-         $template->set_filenames(array(
-            'body'      => 'al_redirect.html',
-         ));
-         
-         $template->assign_vars(array(
-            'S_DIALOG_URL'  => $dialog_url,
-         ));
-         
-         page_footer();
-          
-      }
-      
-      $token_url = "https://graph.facebook.com/oauth/access_token?client_id="
-         . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&client_secret="
-         . $config['al_fb_secret'] . "&code=" . $code;
-   
-      $ch = curl_init();
-      
-      curl_setopt($ch, CURLOPT_URL, $token_url);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      
-      curl_setopt($ch, CURLOPT_HTTPGET, true);
-      
-      
-      $access_token = curl_exec($ch);
-      
-      if(curl_errno($ch))
-      {
-         add_log('critical', 'FB_GET_ACCESS_TOKEN_ERROR', $user->data['user_id'], 'FB_GET_ACCESS_TOKEN_ERROR', curl_error($ch));
-         return false;
-      }
-   
-      curl_close($ch);
-      
-      $sql_array = array(
-         'session_fb_access_token'   => $access_token,
-      );
-   
-      $sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
-      
-      $db->sql_query($sql);
-   
-      redirect($my_url);
+      global $config, $db, $user, $template, $phpbb_root_path, $phpEx;
+	  
+	  include_once($phpbb_root_path . 'alternatelogin/facebook/facebook.' . $phpEx);	// Custom Alternate Login functions.
+	  
+	  $fb_config = array(
+		'appId'			=> $config['al_fb_id'],
+		'secret'		=> $config['al_fb_secret'],
+		'fileUpload'	=> false,
+	  );
+	  $facebook = new Facebook($fb_config);
+	  
+	  if(!$facebook)
+	  {
+		  throw new Exception('Failed to initialise Facebook.', 0);
+	  }
+	  else
+	  {
+	  	return $facebook;
+	  }
    }
 }
 
@@ -287,17 +192,39 @@ if(!function_exists('get_fb_data'))
       
       if(isset($error_check->error))
       {
-         if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
-         {
-            
-            refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
-         }
+		  throw new Exception($error_check->error->message, $error_check->error->code);
       }
       
       curl_close($ch);
       
       return $data;
    }
+}
+if(!function_exists('get_json_languages'))
+{
+	function get_json_languages()
+	{
+		global $db;
+		
+		$sql = 'SELECT lang_iso, lang_local_name
+		FROM ' . LANG_TABLE . '
+		ORDER BY lang_english_name';
+		$result = $db->sql_query($sql);
+		$default = basename($user->lang_name);
+		$lang_options = array();
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$lang_options[$row['lang_iso']] = $row['lang_local_name'];
+			if($row['lang_iso'] == $default)
+			{
+				
+			}
+			
+		}
+		$db->sql_freeresult($result);
+		
+		return str_replace('"', "'", json_encode($lang_options));
+	}
 }
 
 if(!function_exists('php_self'))
