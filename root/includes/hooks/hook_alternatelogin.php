@@ -13,17 +13,26 @@ class CSAlternateLogin
 		$result = $hook->previous_hook_result('phpbb_user_session_handler');
 		
 		// Begin Alternate Login code
+		include_once($phpbb_root_path . 'alternatelogin/facebook/facebook.' . $phpEx);	// Custom Alternate Login functions.
         require_once($phpbb_root_path . 'includes/functions_alternatelogin.php'); // Include the functions for Alternate Login module
         $user->add_lang('mods/info_ucp_alternatelogin');
         if(isset($user->data['session_fb_access_token']))
         {
-            $graph_url = "https://graph.facebook.com/me?" . $user->data['session_fb_access_token'];
-
-
-            $fb_user = json_decode(get_fb_data($graph_url));
             
-            $fb_lang = $fb_user->locale;
+			$facebook = setup_facebook();
+            $fb_user = $facebook->api('/me', 'GET');
+            
+            $fb_lang = $fb_user['locale'];
         }
+		
+		$fb_custom_reg_fields = array(
+			array('name' => 'name'),
+			array('name' => 'username', 'description' => $user->lang['FB_DESCRIPTION'], 'type' => 'text'),
+			array('name' => 'birthday'),
+			array('name' => 'gender'),
+			array('name' => 'email'),
+			array('name' => 'password')
+		);
 		
 		$template->assign_vars(array(
 			'S_AL_FB_ENABLED'								=> isset($config['al_fb_login']) ? $config['al_fb_login'] : false,
@@ -54,8 +63,10 @@ class CSAlternateLogin
 			'U_AL_OI_LOGIN'                                 => "{$phpbb_root_path}alternatelogin/al_oi_auth.{$phpEx}",
 			'S_FB_LOCALE'                                   => isset($fb_lang) ? $fb_lang : 'en_GB',
 			'S_RETURN_TO_PAGE'                              => "?return_to_page=" . base64_encode(build_url()),
-			
+			'S_AL_FB_CUSTOM_REG_FIELDS'						=> str_ireplace('"', '"', json_encode($fb_custom_reg_fields)),
 			'U_PAGE_URL'                    				=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
+			'S_AL_FB_REDIRECT_URI'    						=> generate_board_url() . "/alternatelogin/al_fb_connect.$phpEx?",
+			'S_JSON_LANGUAGES'								=> get_json_languages(),
 		));
 		
 		
