@@ -327,6 +327,15 @@ try
 	$fb_user = get_fb_data($graph_url);
 	*/
 	$facebook = setup_facebook();
+	
+	if(!$facebook)
+	{
+		
+		add_log('critical', $user->data['user_id'], 'Could not initialise Facebook.');
+		// Inform the user that we couldn't get their Facebook Id.
+		trigger_error('Could not initialise Facebook.');
+	}
+	
 	//print_r($facebook->getAccessToken());
 	$fb_user_id = $facebook->getUser();
 	
@@ -336,10 +345,17 @@ try
 	// Check to see if we have a valid Facebook user.
 	if(!$fb_user_id)
 	{
-		echo '342';
-		add_log('critical', $user->data['user_id'], 'FB_ERROR_USER');
+		$params = array(
+			'scope'			=> 'user_birthday,user_location,user_status,user_website,user_work_history',
+			'redirect_uri'	=> generate_board_url() . '/alternatelogin/al_fb_connect.' . $phpEx . '?return_to_page=' . $return_to_page,
+		);
+		$login_url = $facebook->getLoginUrl($params);
+		
+		add_log('critical', $user->data['user_id'], 'Could not get user id.');
+		meta_refresh(5,$login_url, true);
+		//redirect($login_url, false, false);
 		// Inform the user that we couldn't get their Facebook Id.
-		trigger_error(sprintf($user->lang['FB_ERROR_USER'], $user->lang['FACEBOOK']));
+		trigger_error($login_url);
 	}
 	
 	$fb_user = $facebook->api('/me', 'GET');
