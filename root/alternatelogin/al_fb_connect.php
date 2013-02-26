@@ -487,6 +487,92 @@ try
 				trigger_error($user->lang['LOGIN_FAILED']);
 			}
 	}
+	else
+	{
+		$action = request_var('action', '');
+		$password = request_var('password_field', '');
+		
+		$sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
+			FROM ' . USERS_TABLE . "
+			WHERE user_email = '" . mysql_escape_string($fb_user['email']) . "'";
+			
+		// Execute the query.
+		$result = $db->sql_query($sql);
+		
+		// Retrieve the row data.
+		$row = $db->sql_fetchrow($result);
+		
+		// Free up the result handle from the query.
+		$db->sql_freeresult($result);
+		
+		if($action == 'link')
+		{
+			
+			if(phpbb_check_hash($password, $row['user_password']))
+			{
+				$data = array(
+					'al_fb_id'		=> $fb_user_id,
+				);
+				$sql = 'UPDATE ' . USERS_TABLE . '
+								SET ' . $db->sql_build_array('UPDATE', $data) . '
+								WHERE user_id = ' . $row['user_id'];
+				
+				$db->sql_query($sql);
+				
+				
+				
+				$old_session_id = $user->session_id;
+	
+				if ($admin)
+				{
+						global $SID, $_SID;
+		
+						$cookie_expire = time() - 31536000;
+						$user->set_cookie('u', '', $cookie_expire);
+						$user->set_cookie('sid', '', $cookie_expire);
+						unset($cookie_expire);
+		
+						$SID = '?sid=';
+						$user->session_id = $_SID = '';
+				}
+		
+				$admin = false;
+				$autologin = true;
+				$viewonline = true;
+				
+				$result = $user->session_create($row['user_id'], $admin, $autologin, $viewonline);
+				
+				if($result === true)
+				{
+					// If admin re-authentication we remove the old session entry because a new one has been created...
+					if ($admin)
+					{
+							// the login array is used because the user ids do not differ for re-authentication
+							$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
+									WHERE session_id = '" . $db->sql_escape($old_session_id) . "'
+									AND session_user_id = {$row['user_id']}";
+							$db->sql_query($sql);
+					}
+	
+					// Store the access token for use with this session.
+					$sql_array = array(
+						'session_fb_access_token'   => $facebook->getAccessToken(),
+					);
+	
+					$sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
+	
+					$db->sql_query($sql);
+					
+					meta_refresh(3, append_sid("$phpbb_root_path$return_to_page"));
+					trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_PAGE'], "<a href='" . append_sid($phpbb_root_path . $return_to_page) . "'>", "</a>")));
+				}
+			}
+			else
+			{
+				trigger_error('The passwords DON\'T match');
+			}
+		}
+	}
 }
 catch(FacebookApiException $ex)
 {
