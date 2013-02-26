@@ -817,12 +817,13 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 				<find><![CDATA[<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}">]]></find> 
 				<action type="after-add"><![CDATA[<div id="mask"></div>
 <div id="modal_dialog" class="forabg"> 
-		<div class="inner"><span class="corners-top"><span></span></span>
-    <div id="modal_dialog_title"></div>
-    <div id="modal_dialog_panel" class="panel">
-    	<span id="modal_dialog_message"></span>
-        <div id="modal_dialog_buttons"></div>
-    </div>
+	<div class="inner"><span class="corners-top"><span></span></span>
+        <div id="modal_dialog_title"></div>
+        <a href="#" id="modal_dialog_close" class="modal_dialog_close"></a>
+        <div id="modal_dialog_panel" class="panel">
+            <span id="modal_dialog_message"></span>
+            <div id="modal_dialog_buttons"></div>
+        </div>
     <span class="corners-bottom"><span></span></span></div> 
 </div>
 
@@ -853,6 +854,8 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 var sitename = '{SITENAME}';
 var board_url = '{BOARD_URL}';
 var terms_title = '{L_TERMS_USE}';
+
+var duplicate_emails = {S_JS_DUPLICATE_EMAILS};
 
 // Global FB Variables
 var al_fb_app_id = '{AL_FB_APPID}';
@@ -918,7 +921,8 @@ $(document).ready(function(e) {
       '//connect.facebook.net/en_US/all.js';
     document.getElementById('fb-root').appendChild(e);
   }());
-</script><!-- ENDIF -->]]></action> 
+</script><!-- ENDIF -->
+]]></action> 
 			</edit> 
 		</open> 
 		
