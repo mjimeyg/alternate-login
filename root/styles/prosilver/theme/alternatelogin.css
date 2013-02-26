@@ -26,3 +26,17 @@
 	overflow: auto;
 }
 
+a.modal_dialog_close{
+	position:absolute;
+	background-image: url("../imageset/icon_post_delete.gif");
+	background-repeat: no-repeat;
+	background-position: 0px -20px;
+	width: 20px;
+	height: 20px;
+	right: 0px;
+	top: 0px;
+}
+
+a.modal_dialog_close:hover{
+	background-position: 0px, 0px;
+}
