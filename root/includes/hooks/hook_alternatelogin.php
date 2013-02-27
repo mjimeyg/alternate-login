@@ -67,6 +67,7 @@ class CSAlternateLogin
 			'U_PAGE_URL'                    				=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
 			'S_AL_FB_REDIRECT_URI'    						=> generate_board_url() . "/alternatelogin/al_fb_connect.$phpEx?",
 			'S_JSON_LANGUAGES'								=> get_json_languages(),
+			'S_JS_DUPLICATE_EMAILS'							=> ($config['allow_emailreuse']) ? 'true' : 'false',
 		));
 		
 		
