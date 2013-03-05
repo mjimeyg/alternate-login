@@ -140,11 +140,21 @@ function validate_fb_registration(form, cb){
 		success: function(data){
 			console.log(data.status);
 			if(data.status == 0){
-				$.get('./alternatelogin/ajax/get_language_entry.php?key=' + data.message, function(data){
+				
+				var key = data.message;
+				if(data.message == 'INVALID_CHARS'){
+					key += '_USERNAME';
+				}
+				console.log(key);
+				$.get('./alternatelogin/ajax/get_language_entry.php?key=' + key, function(data){
 					console.log('Invalid username: ' + data);
-					show_dialog(data);
+					username = $.parseJSON(data).string;
 				});
 				error_occurred = true;
+			}
+			else
+			{
+				
 			}
 			
 		},
@@ -166,7 +176,7 @@ function validate_fb_registration(form, cb){
 				console.log('Invalid email: ' + data);
 				$.get('./alternatelogin/ajax/get_language_entry.php?key=' + data.message, function(data){
 					console.log('Invalid email: ' + data);
-					show_dialog(data);
+					email_message = $.parseJSON(data).string;
 				});
 				error_occurred = true;
 			}
@@ -349,14 +359,14 @@ function show_dialog(title, message, buttons, callback){
 	//dialog_panel.width(dialog.width() - 10);
 	
 	// Setup the dialog buttons
-	
+	if(typeof buttons !== "undefined"){
 	$.each(buttons, function(key, value){
 		$('<button type="button" id="' + value.name + '">')
 									.html(value.name)
 									.addClass('modal_dialog_user_buttons')
 									.appendTo(dialog_buttons);
 	});
-	
+	}
 	console.log(typeof callback);
 	if(typeof callback == "function"){
 		console.log('callback called');
