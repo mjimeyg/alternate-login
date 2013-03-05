@@ -33,8 +33,8 @@ $auth->acl($user->data);
 $user->setup('ucp');
 $user->add_lang('ucp');
 
-$key = $_POST['key'];//request_var('key', '');
-$args = $_POST['args'];//request_var('args', '');
+$key = request_var('key', '');
+$args = request_var('args', '');
 
 if($args != '' && !is_array($args))
 {
