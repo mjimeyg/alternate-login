@@ -307,11 +307,12 @@ if($signed_request != '')
 try
 {
 	
+	$access_token = json_decode($user->data['session_fb_access_token']);
 	
-	/*$access_token = get_fb_access_token($return_to_page);
-	
-	if(isset($access_token->error))
+	if(($access_token->expires < time()) || !isset($user->data['session_fb_access_token']))
 	{
+		
+		$access_token = get_fb_access_token(generate_board_url() . '/alternatelogin/al_fb_connect.' . $phpEx . '?return_to_page=' . $return_to_page);
 	}
 	
 	if(!$access_token)
@@ -321,44 +322,15 @@ try
 	}
 	
 	//echo 'token:' . print_r($token_url);
-	$graph_url = "https://graph.facebook.com/me?" . $access_token;
-	
+	$graph_url = "https://graph.facebook.com/me?access_token=" . $access_token->access_token;
 	
 	$fb_user = get_fb_data($graph_url);
-	*/
-	$facebook = setup_facebook();
-	
-	if(!$facebook)
-	{
-		
-		add_log('critical', $user->data['user_id'], 'Could not initialise Facebook.');
-		// Inform the user that we couldn't get their Facebook Id.
-		trigger_error('Could not initialise Facebook.');
-	}
-	
-	//print_r($facebook->getAccessToken());
-	$fb_user_id = $facebook->getUser();
 	
 	
-
-	//print_r($graph_url);
-	// Check to see if we have a valid Facebook user.
-	if(!$fb_user_id)
-	{
-		$params = array(
-			'scope'			=> 'user_birthday,user_location,user_status,user_website,user_work_history',
-			'redirect_uri'	=> generate_board_url() . '/alternatelogin/al_fb_connect.' . $phpEx . '?return_to_page=' . $return_to_page,
-		);
-		$login_url = $facebook->getLoginUrl($params);
-		
-		add_log('critical', $user->data['user_id'], 'Could not get user id.');
-		meta_refresh(5,$login_url, true);
-		//redirect($login_url, false, false);
-		// Inform the user that we couldn't get their Facebook Id.
-		trigger_error($login_url);
-	}
 	
-	$fb_user = $facebook->api('/me', 'GET');
+	
+	
+	print_r($fb_user);
 	
 	$user->lang_name = substr($fb_user['locale'], 0, 2);
 	// Select the user_id from the Alternate Login user data table which has the same Facebook Id.
@@ -507,7 +479,6 @@ try
 		
 		if($action == 'link')
 		{
-			
 			if(phpbb_check_hash($password, $row['user_password']))
 			{
 				$data = array(
@@ -576,7 +547,16 @@ try
 }
 catch(FacebookApiException $ex)
 {
-	trigger_error("Facebook: " . implode(' : ' , $ex->getResult()));
+	$error = $ex->getResult();
+	if($error['error']['type'] == 'OAuthException')
+	{
+		refresh_fb_access_token(generate_board_url() . '/alternatelogin/al_fb_connect.' . $phpEx . '?return_to_page=' . $return_to_page);
+	}
+	else
+	{
+		trigger_error("Facebook: " . $error['error']['message']);
+	}
+		
 }
 catch(Exception $ex)
 {
