@@ -874,7 +874,7 @@ $(document).ready(function(e) {
 	FB.Event.subscribe('auth.login', function(response){
 			if(response.status == 'connected'){
 				console.log('Logged in.');
-				show_dialog('Login Message', 'Logged in.');
+				
 			}
 		});
 		
@@ -884,7 +884,7 @@ $(document).ready(function(e) {
 				console.log('Logged in still.');
 				if(is_user_logged_in()){
 					console.log('phpBB user is logged in.');
-					//show_dialog('Login Message', 'phpBB user is logged in.');
+					
 				}
 				else{
 					console.log('phpBBuser is NOT logged in.');
@@ -892,14 +892,14 @@ $(document).ready(function(e) {
 					$('#fb_out_phpbb_out').hide();
 					$('#fb_access_token').val(response.authResponse.accessToken);
 					
-					//show_dialog('Login Message', 'phpBBuser is NOT logged in.');
+					
 				}
 			}
 			else{
 				console.log('phpBBuser and FB are NOT logged in.');
 				$('#fb_in_phpbb_out').hide();
 				$('#fb_out_phpbb_out').show();
-				//show_dialog('Login Message', 'phpBBuser and FB are NOT logged in.');
+				
 			}
 		});
 		
@@ -921,8 +921,7 @@ $(document).ready(function(e) {
       '//connect.facebook.net/en_US/all.js';
     document.getElementById('fb-root').appendChild(e);
   }());
-</script><!-- ENDIF -->
-]]></action> 
+</script><!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		
