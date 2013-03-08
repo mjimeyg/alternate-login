@@ -307,12 +307,15 @@ if($signed_request != '')
 try
 {
 	
-	$access_token = json_decode($user->data['session_fb_access_token']);
+	/*$access_token = json_decode($user->data['session_fb_access_token']);
 	
 	if(($access_token->expires < time()) || !isset($user->data['session_fb_access_token']))
 	{
+		$board_url = generate_board_url() . '/alternatelogin/al_fb_connect.' . $phpEx . '?return_to_page=' . $return_to_page;
 		
-		$access_token = get_fb_access_token(generate_board_url() . '/alternatelogin/al_fb_connect.' . $phpEx . '?return_to_page=' . $return_to_page);
+		$access_token = get_fb_access_token($board_url);
+		
+		print_r($access_token);
 	}
 	
 	if(!$access_token)
@@ -325,12 +328,14 @@ try
 	$graph_url = "https://graph.facebook.com/me?access_token=" . $access_token->access_token;
 	
 	$fb_user = get_fb_data($graph_url);
+	*/
+	
+	$facebook = setup_facebook();
+	
+	$fb_user = $facebook->api('/me', 'get');
 	
 	
 	
-	
-	
-	print_r($fb_user);
 	
 	$user->lang_name = substr($fb_user['locale'], 0, 2);
 	// Select the user_id from the Alternate Login user data table which has the same Facebook Id.
@@ -339,7 +344,7 @@ try
 	
 	$sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
 			FROM ' . USERS_TABLE . "
-			WHERE al_fb_id = " . $fb_user_id;
+			WHERE al_fb_id = " . $fb_user['id'];
 			
 	// Execute the query.
 	$result = $db->sql_query($sql);
@@ -550,7 +555,16 @@ catch(FacebookApiException $ex)
 	$error = $ex->getResult();
 	if($error['error']['type'] == 'OAuthException')
 	{
-		refresh_fb_access_token(generate_board_url() . '/alternatelogin/al_fb_connect.' . $phpEx . '?return_to_page=' . $return_to_page);
+		$board_url = generate_board_url() . '/alternatelogin/al_fb_connect.' . $phpEx . '?return_to_page=' . $return_to_page;
+		
+		$params = array(
+			'scope'			=> 'email',
+			'redirect_url'	=> $board_url,
+		);
+		
+		$login_url = $facebook->getLoginUrl($params);
+		
+		redirect($login_url,0,true);
 	}
 	else
 	{
