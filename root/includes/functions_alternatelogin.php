@@ -167,6 +167,86 @@ if(!function_exists('setup_facebook'))
 	  }
    }
 }
+if(!function_exists('get_fb_access_token'))
+{
+	function get_fb_access_token($return_to_page)
+	{
+		global $config, $db, $user, $template;
+		
+		$my_url = $return_to_page;
+		
+		$code = request_var('code', '');
+		
+		//$my_url = append_sid($my_url);
+		
+		if(empty($code)) 
+		{
+			$dialog_url = "http://www.facebook.com/dialog/oauth?client_id="
+				. $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&state=" . $user->data['session_id'];// . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email";
+				
+			
+			page_header($user->lang['FB_REDIRECT']);
+
+			$template->set_filenames(array(
+				'body'      => 'al_redirect.html',
+			));
+			
+			$template->assign_vars(array(
+				'S_DIALOG_URL'  => $dialog_url,
+			));
+			
+			page_footer();
+		}
+		
+		$state = request_var('state', '');
+		
+		if(!$user->data['session_id'] && ($user->data['session_id'] !== $state))
+		{
+			trigger_error('States did not match:<br />session_state = ' . $user->data['session_id'] . '<br />querry_string = ' . $state);
+		}
+		$token_url = "https://graph.facebook.com/oauth/access_token?client_id="
+			. $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&client_secret="
+			. $config['al_fb_secret'] . "&code=" . $code;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $token_url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HTTPGET, true);
+		
+		$access_token = curl_exec($ch);
+		
+		if(curl_errno($ch))
+		{
+			add_log('critical', 'FB_GET_ACCESS_TOKEN_ERROR', $user->data['user_id'], 'FB_GET_ACCESS_TOKEN_ERROR', curl_error($ch));
+
+			return false;
+		}
+		
+		curl_close($ch);
+		$error = json_decode($access_token);
+		
+		if(isset($error->error))
+		{
+			throw new Exception($error->error->message . ' - ' . $my_url, $error->error->code);
+		}
+		
+		$params = Array();
+		
+		parse_str($access_token, $params);
+		
+		$params['expires'] += $expires;
+		
+		$sql_array = array(
+			'session_fb_access_token'   => json_encode($params),
+		);
+		
+		$sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
+		echo $sql;
+		$db->sql_query($sql);
+		
+		return json_encode($params);
+	}
+}
 
 if(!function_exists('get_fb_data'))
 {
