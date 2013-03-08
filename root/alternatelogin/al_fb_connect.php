@@ -487,7 +487,7 @@ try
 			if(phpbb_check_hash($password, $row['user_password']))
 			{
 				$data = array(
-					'al_fb_id'		=> $fb_user_id,
+					'al_fb_id'		=> $fb_user['id'],
 				);
 				$sql = 'UPDATE ' . USERS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $data) . '
