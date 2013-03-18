@@ -199,10 +199,10 @@ if ($row)   // User is registered already, let's log him in!
                     $db->sql_query($sql);
                 }
                 
-                meta_refresh(3, "$phpbb_root_path$return_to_page");
-                trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_PAGE'], "<a href='{$phpbb_root_path}{$return_to_page}'>", "</a>")));
+                meta_refresh(3, append_sid("$phpbb_root_path$return_to_page"));
+                trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_PAGE'], "<a href='" . append_sid($phpbb_root_path . $return_to_page) . "'>", "</a>")));
                 
-                redirect("{$phpbb_root_path}index.$phpEx");
+                redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
         }
         else
         {
@@ -291,7 +291,7 @@ if($row)
 		}
                 else
 		{
-			trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='{$phpbb_root_path}index.php'>", "</a>")));
+			trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='" . append_sid($phpbb_root_path . "index.php") . ">", "</a>")));
 		}
         }
         else
@@ -520,7 +520,7 @@ else
                         trigger_error('NO_USER', E_USER_ERROR);
                     }
                     
-                    redirect("{$phpbb_root_path}/alternatelogin/al_fb_connect.{$phpEx}");
+                    redirect(append_sid("{$phpbb_root_path}/alternatelogin/al_fb_connect.{$phpEx}"));
                 }
                 else
                 {
