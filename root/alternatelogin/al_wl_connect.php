@@ -175,8 +175,8 @@ if ($row)   // User is registered already, let's log him in!
 
                     $db->sql_query($sql);
                 }
-                meta_refresh(5, "{$phpbb_root_path}index.{$phpEx}");
-                trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='{$phpbb_root_path}index.php'>", "</a>")));
+                meta_refresh(5, append_sid("{$phpbb_root_path}index.{$phpEx}"));
+                trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='" . append_sid($phpbb_root_path . "index." . $phpEx) . "'>", "</a>")));
 
         }
         else
@@ -265,7 +265,7 @@ if($row)
 		}
                 else
 		{
-			trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='{$phpbb_root_path}index.php'>", "</a>")));
+			trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='" . append_sid("{$phpbb_root_path}index.php") . "'>", "</a>")));
 		}
         }
         else
@@ -443,7 +443,7 @@ else
 					trigger_error('NO_USER', E_USER_ERROR);
 				}
 				
-				redirect("{$phpbb_root_path}/alternatelogin/al_wl_connect.{$phpEx}");
+				redirect(append_sid("{$phpbb_root_path}/alternatelogin/al_wl_connect.{$phpEx}"));
 			}
 			else
 			{
