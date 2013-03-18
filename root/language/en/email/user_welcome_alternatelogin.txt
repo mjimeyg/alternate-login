@@ -1,0 +1,17 @@
+Subject: Welcome to "{SITENAME}"
+
+{WELCOME_MSG}
+
+Please keep this e-mail for your records. Your account information is as follows:
+
+----------------------------
+Username: {USERNAME}
+
+Board URL: {U_BOARD}
+----------------------------
+
+When logging in please use the {AL_LOGIN_TYPE} button.
+
+Thank you for registering.
+
+{EMAIL_SIG}

@@ -1,0 +1,26 @@
+<!-- INCLUDE overall_header.html -->
+
+<script src="http://connect.facebook.net/{S_FB_INT}/all.js#appId={S_FB_APP_ID}&xfbml=1"></script>
+
+      </script>
+      <script>
+         FB.init({
+            appId:'{S_FB_APP_ID}',
+            cookie:true,
+            status:true,
+            xfbml:true
+         });
+      </script>
+<fb:registration
+  fields="[
+            {'name' : 'name'},
+            {'name' : 'username', 'description' : '{L_FB_DESCRIPTION}', 'type' : 'text'},
+            {'name' : 'birthday'},
+            {'name' : 'gender'},
+            {'name' : 'email'},
+            {'name' : 'password'},
+          ]"
+  redirect-uri="{S_REDIRECT_URI}"
+  width="530">
+</fb:registration>
+<!-- INCLUDE overall_footer.html -->

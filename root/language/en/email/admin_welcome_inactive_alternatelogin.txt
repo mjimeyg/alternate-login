@@ -1,0 +1,21 @@
+Subject: Welcome to "{SITENAME}"
+
+{WELCOME_MSG}
+
+Please keep this e-mail for your records. Your account information is as follows:
+
+----------------------------
+Username: {USERNAME}
+
+Board URL: {U_BOARD}
+----------------------------
+
+Your account is currently inactive, the administrator of the board will need to activate it before you can log in. You will receive another e-mail when this has occurred.
+
+Please remember to log in with the {AL_LOGIN_TYPE} button.
+
+If you lose you {AL_LOGIN_TYPE} account you can request a new password which will be activated in the same way as this account.
+
+Thank you for registering.
+
+{EMAIL_SIG}

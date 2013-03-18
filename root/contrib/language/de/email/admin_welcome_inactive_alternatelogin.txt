@@ -1,0 +1,21 @@
+Subject: Willkommen auf "{SITENAME}"
+
+{WELCOME_MSG}
+
+Bitte behalte diese Email. Deine Account Informationen:
+
+----------------------------
+Benutzername: {USERNAME}
+
+Forums Link: {U_BOARD}
+----------------------------
+
+Dein Account ist zurzeit deaktiviert, der Administrator dieses Forums muss deinen Account erst aktivieren. Du erhältst eine weitere Email, wenn der Account aktiviert ist.
+
+Bitte melde dich mit dem {AL_LOGIN_TYPE} Button an.
+
+Wenn du deinen {AL_LOGIN_TYPE} Account verlierst, kannst du ein neues Passowrt anfordern.
+
+Vielen Dank, dass du dich registriert hast.
+
+{EMAIL_SIG}

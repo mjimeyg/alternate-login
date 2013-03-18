@@ -1,0 +1,24 @@
+Subject: Welcome to "{SITENAME}"
+
+{WELCOME_MSG}
+
+Please keep this e-mail for your records. Your account information is as follows:
+
+----------------------------
+Username: {USERNAME}
+
+Board URL: {U_BOARD}
+----------------------------
+
+Your account is currently inactive. You cannot use it until you visit the following link:
+
+{U_ACTIVATE}
+
+
+In order to login in please use the {AL_LOGIN_TYPE} button.
+
+If you unlink your account or lose your {AL_LOGIN_TYPE} account then you can request a new password.
+
+Thank you for registering.
+
+{EMAIL_SIG}
