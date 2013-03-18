@@ -625,10 +625,10 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <td valign="top"> 
 <!-- ENDIF --> 
             <!-- INCLUDE forumlist_body.html --> 
-<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_FB_STREAM | AL_FB_LIKE_BOX --> 
+<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_FB_LIKE_BOX --> 
         </td> 
         
-        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_STREAM and not AL_FB_USER_HIDE_STREAM) or (AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX) --> 
+        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX) --> 
         <td width="200" valign="top"> 
         <!-- ENDIF --> 
         
@@ -654,17 +654,8 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
                         <span class="corners-bottom"><span></span></span></div> 
 	</div> 
         <!-- ENDIF --> 
-        <!-- IF AL_FB_STREAM and not AL_FB_USER_HIDE_STREAM --> 
-        <div class="forabg"> 
-		<div class="inner"><span class="corners-top"><span></span></span> 
- 
-                    <div class="panel"> 
-                        <fb:live-stream event_app_id="{AL_FB_APPID}" width="300" height="500" xid="" always_post_to_friends="false"></fb:live-stream> 
-                    </div> 
-                        <span class="corners-bottom"><span></span></span></div> 
-	</div> 
-        <!-- ENDIF --> 
-        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_STREAM and not AL_FB_USER_HIDE_STREAM) --> 
+        
+        <!-- IF AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY --> 
         </td> 
         <!-- ENDIF --> 
     </tr> 
@@ -915,10 +906,10 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
         <td valign="top"> 
 <!-- ENDIF --> 
             <!-- INCLUDE forumlist_body.html --> 
-<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_FB_STREAM | AL_FB_LIKE_BOX --> 
+<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_FB_LIKE_BOX --> 
         </td> 
         
-        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_STREAM and not AL_FB_USER_HIDE_STREAM) or (AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX) --> 
+        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX) --> 
         <td width="200" valign="top"> 
         <!-- ENDIF --> 
         <!-- IF AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX --> 
@@ -943,17 +934,8 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
                         <span class="corners-bottom"><span></span></span></div> 
 	</div> 
         <!-- ENDIF --> 
-        <!-- IF AL_FB_STREAM and not AL_FB_USER_HIDE_STREAM --> 
-        <div class="forabg"> 
-		<div class="inner"><span class="corners-top"><span></span></span> 
- 
-                    <div class="panel"> 
-                        <fb:live-stream event_app_id="{AL_FB_APPID}" width="300" height="500" xid="" always_post_to_friends="false"></fb:live-stream> 
-                    </div> 
-                        <span class="corners-bottom"><span></span></span></div> 
-	</div> 
-        <!-- ENDIF --> 
-        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_STREAM and not AL_FB_USER_HIDE_STREAM) --> 
+        
+        <!-- IF AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY --> 
         </td> 
         <!-- ENDIF --> 
     </tr> 
