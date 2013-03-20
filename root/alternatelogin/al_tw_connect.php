@@ -63,6 +63,7 @@ if($authentication)
     $code = $tmhOAuth->request('POST', $tmhOAuth->url('oauth/request_token', ''), $params);
 
     if ($code == 200) {
+		
         $access_token = $tmhOAuth->extract_params($tmhOAuth->response['response']);
         $access_token['authenticated'] = 1;
         $sql_array = array(
@@ -70,11 +71,11 @@ if($authentication)
         );
         
         $sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
-
+		
         $db->sql_query($sql);
         
         $authurl = $tmhOAuth->url("oauth/authenticate", '') .  "?oauth_token={$access_token['oauth_token']}";
-        
+        setcookie("tw_token", json_encode($access_token), time() + 3600);
         header("Location: " . $authurl);
     } 
     else 
@@ -84,7 +85,12 @@ if($authentication)
 }
 elseif($oauth_verifier !== '')
 {
-    $access_token = json_decode($user->data['session_tw_access_token']);
+	
+	if(!isset($_COOKIE['tw_token']))
+	{
+		trigger_error("Twitter Access Token not set in cookie.");
+	}
+    $access_token = json_decode($_COOKIE["tw_token"]);
     
     $tmhOAuth->config['user_token']  = $access_token->oauth_token;
     $tmhOAuth->config['user_secret'] = $access_token->oauth_token_secret;
@@ -104,7 +110,7 @@ elseif($oauth_verifier !== '')
         $sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
 
         $db->sql_query($sql);
-        
+        $here = append_sid($here);
         header("Location: {$here}");
     } 
     else 
@@ -254,8 +260,8 @@ if ($row)   // User is registered already, let's log him in!
 
                     $db->sql_query($sql);
                 }
-                meta_refresh(5, "{$phpbb_root_path}index.{$phpEx}");
-                trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='{$phpbb_root_path}index.php'>", "</a>")));
+                meta_refresh(5, append_sid("{$phpbb_root_path}index.{$phpEx}"));
+                trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='" . append_sid("{$phpbb_root_path}index.php") . "'>", "</a>")));
 
         }
 	else
