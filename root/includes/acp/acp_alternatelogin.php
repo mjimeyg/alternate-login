@@ -123,6 +123,10 @@ class acp_alternatelogin
 					$facebook_facepile = request_var('facebook_facepile', 0);
 
 					set_config('al_fb_facepile', $facebook_facepile);
+
+					$facebook_stream = request_var('facebook_stream', 0);
+
+					set_config('al_fb_stream', $facebook_stream);
 					
 					$facebook_like_box = request_var('facebook_like_box', 0);
 
@@ -167,24 +171,41 @@ class acp_alternatelogin
 					
 				break;
                             
-                                case 'twitter':
-                                    
-                                        $app_id = request_var('twitter_key', '');
+				case 'twitter':
+					
+					$app_id = request_var('twitter_key', '');
 					
 					$app_secret = request_var('twitter_secret', '');
                                         
-                                        $app_callback = request_var('twitter_callback', '');
-                                        
-                                        
-                                        set_config('al_tw_key', $app_id);
-                                        
-                                        set_config('al_tw_secret', $app_secret);
-                                        
-                                        set_config('al_tw_callback', $app_callback);
+					$app_callback = request_var('twitter_callback', '');
+					
+					$twitter_stream = request_var('twitter_stream', '');
+					
+					
+					set_config('al_tw_key', $app_id);
+					
+					set_config('al_tw_secret', $app_secret);
+					
+					set_config('al_tw_callback', $app_callback);
+					
+					$sql_array = array(
+						'name'	=> 'twitter_stream_html',
+						'value'	=> mysql_escape_string($twitter_stream),
+					);
+					
+					$sql = 'UPDATE ' . $table_prefix . 'al_data SET ' . $db->sql_build_array('UPDATE', $sql_array) .
+							' WHERE name="twitter_stream_html"';
+							
+					$result = $db->sql_query($sql);
+					
+					if(!$result)
+					{
+						trigger_error('Database Error');
+					}
                                         
 					trigger_error($user->lang['ACP_AL_SAVE_SUCCESS'] . adm_back_link($this->u_action));
                                         
-                                    break;
+                break;
 				
 				
 				default:
@@ -215,6 +236,8 @@ class acp_alternatelogin
 					'FACEBOOK_ACTIVITY_NO'                  => $config['al_fb_activity'] ? '' : 'checked="checked"',
 					'FACEBOOK_FACEPILE_YES'                 => $config['al_fb_facepile'] ? 'checked="checked"' : '',
 					'FACEBOOK_FACEPILE_NO'                  => $config['al_fb_facepile'] ? '' : 'checked="checked"',
+					'FACEBOOK_STREAM_YES'                   => $config['al_fb_stream'] ? 'checked="checked"' : '',
+					'FACEBOOK_STREAM_NO'                    => $config['al_fb_stream'] ? '' : 'checked="checked"',
 					'FACEBOOK_LIKE_BOX_YES'                 => $config['al_fb_like_box'] ? 'checked="checked"' : '',
 					'FACEBOOK_LIKE_BOX_NO'                  => $config['al_fb_like_box'] ? '' : 'checked="checked"',
 					'S_MODE_FACEBOOK'						=> true,
@@ -247,16 +270,27 @@ class acp_alternatelogin
 
 			break;
                     
-                        case 'twitter':
+            case 'twitter':
                             
-                                try
+                try
 				{
+					$sql_array = array(
+						'SELECT'	=> '*',
+						'FROM'		=> array($table_prefix . 'al_data' => 'd'),
+						'WHERE'		=> 'name="twitter_stream_html"'
+					);
 					
+					$sql = $db->sql_build_query('SELECT', $sql_array);
+					
+					$result = $db->sql_query($sql);
+					
+					$twitter_stream = (!$result) ? '' : $db->sql_fetchrow($result);
 					
 					$template->assign_vars(array(
 						'TWITTER_KEY'   			=> $config['al_tw_key'],
 						'TWITTER_SECRET'			=> $config['al_tw_secret'],
-                                                'TWITTER_CALLBACK'                      => $config['al_tw_callback'],
+                        'TWITTER_CALLBACK'          => $config['al_tw_callback'],
+						'TWITTER_STREAM'            => $twitter_stream['value'],
 						'S_MODE_TWITTER'			=> true,
 						'U_ACTION'				=> $this->u_action,
 					));
@@ -265,7 +299,7 @@ class acp_alternatelogin
 				{
 					trigger_error($ex->getMessage());
 				}
-                            break;
+            break;
 			
 			
 			case 'manage':

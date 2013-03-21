@@ -4,8 +4,11 @@ class CSAlternateLogin
 {
 	function page_header(&$hook)
 	{
-		global $template, $user, $phpbb_root_path, $phpEx, $config;
+		global $template, $user, $phpbb_root_path, $phpEx, $config, $al_data, $table_prefix;
 
+		include $phpbb_root_path . '/includes/functions_alternatelogin.' . $phpEx;
+		
+		build_al_data();
 		
 		$forum_id = request_var('f', 0);
 		$topic_id = request_var('t', 0);
@@ -25,6 +28,8 @@ class CSAlternateLogin
             $fb_lang = $fb_user->locale;
         }
 		
+		
+		
 		$template->assign_vars(array(
 			'S_AL_FB_ENABLED'								=> isset($config['al_fb_login']) ? $config['al_fb_login'] : false,
 			'S_AL_TW_ENABLED'								=> isset($config['al_tw_login']) ? $config['al_tw_login'] : false,
@@ -38,7 +43,8 @@ class CSAlternateLogin
 			'AL_FB_SITE_DOMAIN'                             => isset($config['al_site_domain']) ? $config['al_site_domain'] : false,
 			'AL_FB_ACTIVITY'                                => isset($config['al_fb_activity']) ? $config['al_fb_activity'] : false,
 			'AL_FB_FACEPILE'                                => isset($config['al_fb_facepile']) ? $config['al_fb_facepile'] : false,
-			'AL_FB_STREAM'                                  => isset($config['al_fb_stream']) ? $config['al_fb_stream'] : false,
+			'AL_TW_STREAM'                             		=> isset($config['al_tw_stream']) ? $config['al_tw_stream'] : false,
+			'AL_TW_STREAM_HTML'								=> isset($config['twitter_stream_html']) ? html_entity_decode(trim($config['twitter_stream_html'])) : false,
 			'AL_FB_LIKE_BOX'                                => isset($config['al_fb_like_box']) ? $config['al_fb_like_box'] : false,
 			'S_AL_WL_CLIENT_ID'								=> isset($config['al_wl_client_id']) ? $config['al_wl_client_id'] : false,
 			'S_AL_WL_WRAP_CHANNEL'                          => isset($config['al_wl_channel']) ? $config['al_wl_channel'] : false,

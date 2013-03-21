@@ -619,16 +619,16 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
 			</edit> 
 			<edit> 
 				<find><![CDATA[<!-- INCLUDE forumlist_body.html -->]]></find> 
-				<action type="replace-with"><![CDATA[<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_FB_STREAM | AL_FB_LIKE_BOX --> 
+				<action type="replace-with"><![CDATA[<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_TW_STREAM | AL_FB_LIKE_BOX --> 
 <table width="100%"> 
     <tr> 
         <td valign="top"> 
 <!-- ENDIF --> 
             <!-- INCLUDE forumlist_body.html --> 
-<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_FB_LIKE_BOX --> 
+<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_TW_STREAM | AL_FB_LIKE_BOX --> 
         </td> 
         
-        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX) --> 
+        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_STREAM and not AL_FB_USER_HIDE_STREAM) or (AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX) --> 
         <td width="200" valign="top"> 
         <!-- ENDIF --> 
         
@@ -654,8 +654,17 @@ ADD  `session_fb_access_token` LONGTEXT NULL]]></sql>
                         <span class="corners-bottom"><span></span></span></div> 
 	</div> 
         <!-- ENDIF --> 
-        
-        <!-- IF AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY --> 
+        <!-- IF AL_TW_STREAM and not AL_TW_USER_HIDE_STREAM --> 
+        <div class="forabg"> 
+		<div class="inner"><span class="corners-top"><span></span></span> 
+ 
+                    <div class="panel"> 
+                        {AL_TW_STREAM_HTML}
+                    </div> 
+                        <span class="corners-bottom"><span></span></span></div> 
+	</div> 
+        <!-- ENDIF --> 
+        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_TW_STREAM and not AL_TW_USER_HIDE_STREAM) --> 
         </td> 
         <!-- ENDIF --> 
     </tr> 
