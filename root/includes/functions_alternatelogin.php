@@ -355,6 +355,32 @@ if(!function_exists('get_fb_data'))
    }
 }
 
+if(!function_exists('build_al_data'))
+{
+	function build_al_data()
+	{
+		global $db, $config, $table_prefix;
+		
+		$sql_array = array(
+			'SELECT'	=> '*',
+			'FROM'		=> array($table_prefix . 'al_data' => 'd'),
+		);
+		
+		$sql = $db->sql_build_query('SELECT', $sql_array);
+		
+		$result = $db->sql_query($sql);
+		
+		$al_data = array();
+		while($row = $db->sql_fetchrow($result))
+		{
+			$al_data[$row['name']] = $row['value'];
+		}
+		
+		$config = array_merge($config, $al_data);
+		
+	}
+}
+
 if(!function_exists('php_self'))
 {
    function php_self($dropqs=true) {
