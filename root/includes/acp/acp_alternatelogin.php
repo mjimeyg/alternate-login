@@ -124,10 +124,6 @@ class acp_alternatelogin
 
 					set_config('al_fb_facepile', $facebook_facepile);
 
-					$facebook_stream = request_var('facebook_stream', 0);
-
-					set_config('al_fb_stream', $facebook_stream);
-					
 					$facebook_like_box = request_var('facebook_like_box', 0);
 
 					set_config('al_fb_like_box', $facebook_like_box);
@@ -181,12 +177,15 @@ class acp_alternatelogin
 					
 					$twitter_stream = request_var('twitter_stream', '');
 					
+					$al_tw_stream = ($twitter_stream == '') ? 0 : 1;
 					
 					set_config('al_tw_key', $app_id);
 					
 					set_config('al_tw_secret', $app_secret);
 					
 					set_config('al_tw_callback', $app_callback);
+					
+					set_config('al_tw_stream', $al_tw_stream);
 					
 					$sql_array = array(
 						'name'	=> 'twitter_stream_html',
@@ -236,8 +235,6 @@ class acp_alternatelogin
 					'FACEBOOK_ACTIVITY_NO'                  => $config['al_fb_activity'] ? '' : 'checked="checked"',
 					'FACEBOOK_FACEPILE_YES'                 => $config['al_fb_facepile'] ? 'checked="checked"' : '',
 					'FACEBOOK_FACEPILE_NO'                  => $config['al_fb_facepile'] ? '' : 'checked="checked"',
-					'FACEBOOK_STREAM_YES'                   => $config['al_fb_stream'] ? 'checked="checked"' : '',
-					'FACEBOOK_STREAM_NO'                    => $config['al_fb_stream'] ? '' : 'checked="checked"',
 					'FACEBOOK_LIKE_BOX_YES'                 => $config['al_fb_like_box'] ? 'checked="checked"' : '',
 					'FACEBOOK_LIKE_BOX_NO'                  => $config['al_fb_like_box'] ? '' : 'checked="checked"',
 					'S_MODE_FACEBOOK'						=> true,
