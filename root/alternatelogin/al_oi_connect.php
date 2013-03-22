@@ -106,7 +106,7 @@ if ($row)   // User is registered already, let's log him in!
                         $db->sql_query($sql);
                 }
                 meta_refresh(5, "{$phpbb_root_path}index.{$phpEx}");
-                trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='{$phpbb_root_path}index.php'>", "</a>")));
+                trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='" . append_sid("{$phpbb_root_path}index.php") . "'>", "</a>")));
                 
         }
 	else
