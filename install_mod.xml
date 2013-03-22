@@ -352,6 +352,18 @@
 		<sql><![CDATA[ALTER TABLE  `phpbb_sessions` ADD  `session_wl_access_token` LONGTEXT NULL ,
 ADD  `session_tw_access_token` LONGTEXT NULL ,
 ADD  `session_fb_access_token` LONGTEXT NULL]]></sql> 
+		<sql>CREATE TABLE  `consof_al`.`phpbb_al_data` (
+`name` VARCHAR( 255 ) NOT NULL ,
+`value` LONGTEXT NOT NULL ,
+PRIMARY KEY (  `name` )
+) ENGINE = MYISAM ;</sql>
+		<sql>INSERT INTO  `consof_al`.`phpbb_al_data` (
+`name` ,
+`value`
+)
+VALUES (
+'twitter_stream_html',  ''
+);</sql>
 		<copy> 
 			<file from="root/alternatelogin/*.*" to="alternatelogin/*.*"/> 
 			<file from="root/adm/style/acp_alternatelogin.html" to="adm/style/acp_alternatelogin.html"/> 
