@@ -46,13 +46,29 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2012.12.20.01</mod-version> 
+		<mod-version>2013.03.22.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.11</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2013.03.22</date>
+					<rev-version>2013.03.22.01</rev-version>
+					<changelog lang="en">
+						<change>install_mod.xml: Converted index_body.html for Facebook Stream to Twitter Feed.</change>
+						<change>install_mod.xml: Added SQL code to create *al_data table.</change>
+						<change>acp_alternatelogin.php: Removed code for Facebook Stream and replaced with Twitter Feed code.</change>
+						<change>acp_alternatelogin.html: Removed code for Facebook Stream and replaced with Twitter Feed code.</change>
+						<change>functions_alternatelogin.php: Added function build_al_data() to create an array from the *al_data table and merge it with the $config value.</change>
+						<change>al_fb_connect.php: Added append_sid to all redirects to fix user login loss.</change>
+						<change>al_tw_connect.php: Added append_sid to all redirects to fix user login loss.</change>
+						<change>al_wl_connect.php: Added append_sid to all redirects to fix user login loss.</change>
+						<change>al_oi_connect.php: Added append_sid to all redirects to fix user login loss.</change>
+						<change>al_tw_connect.php: Converted to store data in cookies between redirect due to session loss.</change>
+					</changelog>
+				</entry>
 				<entry>
                         <date>2012.12.17</date>
                         <rev-version>2012.12.17.01</rev-version>
@@ -352,12 +368,12 @@
 		<sql><![CDATA[ALTER TABLE  `phpbb_sessions` ADD  `session_wl_access_token` LONGTEXT NULL ,
 ADD  `session_tw_access_token` LONGTEXT NULL ,
 ADD  `session_fb_access_token` LONGTEXT NULL]]></sql> 
-		<sql>CREATE TABLE  `consof_al`.`phpbb_al_data` (
+		<sql>CREATE TABLE  `phpbb_al_data` (
 `name` VARCHAR( 255 ) NOT NULL ,
 `value` LONGTEXT NOT NULL ,
 PRIMARY KEY (  `name` )
 ) ENGINE = MYISAM ;</sql>
-		<sql>INSERT INTO  `consof_al`.`phpbb_al_data` (
+		<sql>INSERT INTO  `phpbb_al_data` (
 `name` ,
 `value`
 )

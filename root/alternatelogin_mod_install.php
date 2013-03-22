@@ -32,7 +32,7 @@ $mod_name = 'ConSof Alternate Login System';
 * The name of the config variable which will hold the currently installed version
 * UMIL will handle checking, setting, and updating the version itself.
 */
-$version_config_name = '2012.11.27.01';
+$version_config_name = '2013.03.22.01';
 
 /*
 * The language file which will be included when installing
@@ -88,7 +88,7 @@ $versions = array(
                         array(USERS_TABLE, 'al_wl_status_sync', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_wl_avatar_sync', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_hide_activity', array('BOOL', '0')),
-                        array(USERS_TABLE, 'al_fb_hide_stream', array('BOOL', '0')),
+                        array(USERS_TABLE, 'al_tw_hide_stream', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_hide_facepile', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_hide_like_box', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_tw_profile_sync', array('BOOL', '0')),
@@ -110,7 +110,7 @@ $versions = array(
                     array('al_site_domain', 0, 1),
                     array('al_fb_facepile', 0, 1),
                     array('al_fb_activity', 0, 1),
-                    array('al_fb_stream', 0, 1),
+                    array('al_tw_stream', 0, 1),
                     array('al_fb_quick_accounts', 0, 1),
 					array('al_wl_quick_accounts', 0, 1),
                 ),
