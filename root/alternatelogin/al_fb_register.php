@@ -83,19 +83,14 @@ $data = array(
     'tz'			=> request_var('tz', (float) $timezone),
 );
 
-$validate_username = validate_username($data['username']);
 
-if($validate_username)
-{
-    trigger_error($user->lang[$validate_username . '_USERNAME'] . ' <br /><br /><a href="' . $phpbb_root_path . '/alternatelogin/al_fb_registration.' . $phpEx . '?mode=register">' . $user->lang['BACK_TO_PREV'] . "</a>");            
-}
 
 $new_password = $fb_reg_data['registration']['password'];
 
 
 $data['new_password'] = $new_password;
 $data['password_confirm'] = $new_password;
-add_log('critical', $user->data['user_id'], 'FB Password', $new_password);
+
 $error = validate_data($data, array(
     'username'			=> array(
                                         array('string', false, $config['min_name_chars'], $config['max_name_chars']),
@@ -334,20 +329,20 @@ if (!sizeof($error))
     }
 
     
-    if(sizeof($error))
-    {
-        $message = '';
+    
+    
+
+    $message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
+    trigger_error($message);
+}
+else
+{
+	$message = '';
         foreach($error as $e)
         {
             $message .= $user->lang[$e] . '<br />';
         }
-        
+        $message = $message . '<br /><br />' . sprintf($user->lang['PREV_PAGE'], '<a href="' . append_sid("{$phpbb_root_path}alternatelogin/al_fb_registration.$phpEx") . '">', '</a>');
         trigger_error($message);
-    }
-    
-    $message = $message . '<br /><br />' . sprintf($user->lang['PREV_PAGE'], '<a href="' . append_sid("{$phpbb_root_path}alternatelogin/al_fb_registration.$phpEx") . '">', '</a>');
-
-    $message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
-    trigger_error($message);
 }
 ?>
