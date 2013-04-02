@@ -46,13 +46,20 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2013.03.22.01</mod-version> 
+		<mod-version>2013.04.02.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.11</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2013.04.02</date>
+					<rev-version>2013.04.02.01</rev-version>
+					<changelog lang="en">
+						<change>al_fb_register.php: Moved the code for reporting errors outside the success reporting.</change>
+					</changelog>
+				</entry>
 				<entry>
 					<date>2013.03.22</date>
 					<rev-version>2013.03.22.01</rev-version>
@@ -368,18 +375,18 @@
 		<sql><![CDATA[ALTER TABLE  `phpbb_sessions` ADD  `session_wl_access_token` LONGTEXT NULL ,
 ADD  `session_tw_access_token` LONGTEXT NULL ,
 ADD  `session_fb_access_token` LONGTEXT NULL]]></sql> 
-		<sql>CREATE TABLE  `phpbb_al_data` (
+		<sql><![CDATA[CREATE TABLE  `phpbb_al_data` (
 `name` VARCHAR( 255 ) NOT NULL ,
 `value` LONGTEXT NOT NULL ,
 PRIMARY KEY (  `name` )
-) ENGINE = MYISAM ;</sql>
-		<sql>INSERT INTO  `phpbb_al_data` (
+) ENGINE = MYISAM ;]]></sql>
+		<sql><![CDATA[INSERT INTO  `phpbb_al_data` (
 `name` ,
 `value`
 )
 VALUES (
 'twitter_stream_html',  ''
-);</sql>
+);]]></sql>
 		<copy> 
 			<file from="root/alternatelogin/*.*" to="alternatelogin/*.*"/> 
 			<file from="root/adm/style/acp_alternatelogin.html" to="adm/style/acp_alternatelogin.html"/> 
