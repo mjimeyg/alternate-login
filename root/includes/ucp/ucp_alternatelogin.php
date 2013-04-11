@@ -300,11 +300,7 @@ class ucp_alternatelogin
 			
 			'S_WL_PROFILE_SYNC'				=> $user->data['al_wl_profile_sync'],
 			
-            'S_MODE_TWITTER'				=> ($mode == 'twitter') ? true : false,
-			'S_TWITTER_LOGIN_ENABLED'		=> $user->data['al_tw_id'] ? true : false,
-			'S_UCP_TWITTER_DESCRIPTION'		=> $user->data['al_tw_id'] ? sprintf($user->lang['UCP_DISABLE_AL_DESCRIPTION'], $user->lang['TWITTER'], $user->lang['TWITTER']) : sprintf($user->lang['UCP_ENABLE_AL_DESCRIPTION'], $user->lang['TWITTER']),
-			
-			'S_HIDDEN_FIELDS'				=> (isset($s_hidden_fields)) ? $s_hidden_fields : '',
+            'S_HIDDEN_FIELDS'				=> (isset($s_hidden_fields)) ? $s_hidden_fields : '',
 			'S_UCP_ACTION'					=> $this->u_action,
 		));
 

@@ -41,14 +41,6 @@ if(!defined('AL_GOOGLE_PROFILE'))
 {
 	define('AL_GOOGLE_PROFILE', 5);
 }
-if(!defined('AL_TWITTER_LOGIN'))
-{
-	define('AL_TWITTER_LOGIN', 6);
-}
-if(!defined('AL_TWITTER_PROFILE'))
-{
-	define('AL_TWITTER_PROFILE', 7);
-}
 if(!defined('AL_WINDOWSLIVE_LOGIN'))
 {
 	define('AL_WINDOWSLIVE_LOGIN', 8);

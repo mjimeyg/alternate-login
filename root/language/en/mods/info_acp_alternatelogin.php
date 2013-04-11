@@ -44,14 +44,13 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
         'ACP_CONSOF'                                            => 'ConSof',
-	'ACP_ALTERNATELOGIN'					=> 'Alternate Login',
-	'ACP_AL_MAIN_MANAGE'					=> 'Alternate Login manager',
-	'ACP_AL_FACEBOOK_MANAGE'				=> 'Facebook Manager',
-	'ACP_AL_WINDOWSLIVE_MANAGE'				=> 'Windows Live Manager',
-	'ACP_AL_OPENID_MANAGE'					=> 'OpenID Manager',
-	'ACP_AL_MYSPACE_MANAGE'					=> 'MySpace Manager',
-        'ACP_AL_TWITTER_MANAGE'                                 => 'Twitter Manager',
-    
+		'ACP_ALTERNATELOGIN'					=> 'Alternate Login',
+		'ACP_AL_MAIN_MANAGE'					=> 'Alternate Login manager',
+		'ACP_AL_FACEBOOK_MANAGE'				=> 'Facebook Manager',
+		'ACP_AL_WINDOWSLIVE_MANAGE'				=> 'Windows Live Manager',
+		'ACP_AL_OPENID_MANAGE'					=> 'OpenID Manager',
+		'ACP_AL_MYSPACE_MANAGE'					=> 'MySpace Manager',
+        
         'ACP_AL_SAVE_ERROR'                                     => 'Settings failed to save.',
         'ACP_AL_SAVE_SUCCESS'                                   => 'Settings successfully saved.',
 
@@ -62,7 +61,6 @@ $lang = array_merge($lang, array(
         'ENABLE_LOGIN'                                          => 'Enable Login',
 
         'FACEBOOK'                                              => 'Facebook',
-        'TWITTER'                                               => 'Twitter',
         'WINDOWSLIVE'                                           => 'Windows Live',
         'OPENID'                                                => 'OpenID',
 
@@ -79,11 +77,6 @@ $lang = array_merge($lang, array(
         'FACEBOOK_STREAM'                                       => 'Facebook Stream',
         'FACEBOOK_LIKE_BOX'                                     => 'Facebook Like Box',
     
-        'TWITTER_KEY'                                           => 'Twitter Key',
-        'TWITTER_SECRET'                                        => 'Twitter Secret',
-        'TWITTER_CALLBACK'                                      => 'Twitter Callback',
-		'TWITTER_STREAM'                                      	=> 'Twitter Stream HTML<br />(You can get this from the widget section of your Twitter Application.)',
-
         'WINDOWSLIVE_CLIENT_ID'                                 => 'Windows Live App ID',
         'WINDOWSLIVE_SECRET'                                    => 'Windows Live Secret',
         'WINDOWSLIVE_CALLBACK'                                  => 'Path to callback file',

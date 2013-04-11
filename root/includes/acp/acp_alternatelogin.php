@@ -70,18 +70,15 @@ class acp_alternatelogin
 
 					$windowslive_login = request_var('windowslive_login', '');
                                         
-                                        $twitter_login = request_var('twitter_login', '');
                                         
-                                        $openid_login = request_var('openid_login', '');
+					$openid_login = request_var('openid_login', '');
+
+
+					set_config('al_fb_login', $facebook_login);
+
+					set_config('al_wl_login', $windowslive_login);
 					
-					
-                                        set_config('al_fb_login', $facebook_login);
-					
-                                        set_config('al_wl_login', $windowslive_login);
-                                        
-                                        set_config('al_tw_login', $twitter_login);
-                                        
-                                        set_config('al_oi_login', $openid_login);
+					set_config('al_oi_login', $openid_login);
 					
 
 					// Let the user know its been done.
@@ -167,44 +164,7 @@ class acp_alternatelogin
 					
 				break;
                             
-				case 'twitter':
-					
-					$app_id = request_var('twitter_key', '');
-					
-					$app_secret = request_var('twitter_secret', '');
-                                        
-					$app_callback = request_var('twitter_callback', '');
-					
-					$twitter_stream = request_var('twitter_stream', '');
-					
-					$al_tw_stream = ($twitter_stream == '') ? 0 : 1;
-					
-					set_config('al_tw_key', $app_id);
-					
-					set_config('al_tw_secret', $app_secret);
-					
-					set_config('al_tw_callback', $app_callback);
-					
-					set_config('al_tw_stream', $al_tw_stream);
-					
-					$sql_array = array(
-						'name'	=> 'twitter_stream_html',
-						'value'	=> mysql_escape_string($twitter_stream),
-					);
-					
-					$sql = 'UPDATE ' . $table_prefix . 'al_data SET ' . $db->sql_build_array('UPDATE', $sql_array) .
-							' WHERE name="twitter_stream_html"';
-							
-					$result = $db->sql_query($sql);
-					
-					if(!$result)
-					{
-						trigger_error('Database Error');
-					}
-                                        
-					trigger_error($user->lang['ACP_AL_SAVE_SUCCESS'] . adm_back_link($this->u_action));
-                                        
-                break;
+			
 				
 				
 				default:
@@ -267,38 +227,6 @@ class acp_alternatelogin
 
 			break;
                     
-            case 'twitter':
-                            
-                try
-				{
-					$sql_array = array(
-						'SELECT'	=> '*',
-						'FROM'		=> array($table_prefix . 'al_data' => 'd'),
-						'WHERE'		=> 'name="twitter_stream_html"'
-					);
-					
-					$sql = $db->sql_build_query('SELECT', $sql_array);
-					
-					$result = $db->sql_query($sql);
-					
-					$twitter_stream = (!$result) ? '' : $db->sql_fetchrow($result);
-					
-					$template->assign_vars(array(
-						'TWITTER_KEY'   			=> $config['al_tw_key'],
-						'TWITTER_SECRET'			=> $config['al_tw_secret'],
-                        'TWITTER_CALLBACK'          => $config['al_tw_callback'],
-						'TWITTER_STREAM'            => $twitter_stream['value'],
-						'S_MODE_TWITTER'			=> true,
-						'U_ACTION'				=> $this->u_action,
-					));
-				}
-				catch(Exception $ex)
-				{
-					trigger_error($ex->getMessage());
-				}
-            break;
-			
-			
 			case 'manage':
 			default:
 				
@@ -329,18 +257,9 @@ class acp_alternatelogin
 						$windowslive_login_yes = '';
 					}
                                         
-                                        if($config['al_tw_login'] == 1)
-					{
-						$twitter_login_yes = 'checked="checked"';
-						$twitter_login_no = '';
-					}
-					else
-					{
-						$twitter_login_no = 'checked="checked"';
-						$twitter_login_yes = '';
-					}
+                      
                                         
-                                        if($config['al_oi_login'] == 1)
+                    if($config['al_oi_login'] == 1)
 					{
 						$openid_login_yes = 'checked="checked"';
 						$openid_login_no = '';
@@ -359,9 +278,7 @@ class acp_alternatelogin
 					'FACEBOOK_LOGIN_NO'             => $facebook_login_no,
 					'WINDOWSLIVE_LOGIN_YES'		=> $windowslive_login_yes,
 					'WINDOWSLIVE_LOGIN_NO'		=> $windowslive_login_no,
-                                        'TWITTER_LOGIN_YES'		=> $twitter_login_yes,
-					'TWITTER_LOGIN_NO'		=> $twitter_login_no,
-                                        'OPENID_LOGIN_YES'		=> $openid_login_yes,
+                    'OPENID_LOGIN_YES'		=> $openid_login_yes,
 					'OPENID_LOGIN_NO'		=> $openid_login_no,
 					'S_MODE_MAIN'			=> true,
 					'U_ACTION'			=> $this->u_action,

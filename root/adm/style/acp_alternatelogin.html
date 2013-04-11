@@ -32,11 +32,6 @@
 
 </tr>
 
-<tr class="row1">
-	<td>{L_TWITTER}</td>
-        <td><input type="radio" name="twitter_login" value="1" {TWITTER_LOGIN_YES}/><label for="twitter_login">{L_YES}</label><input type="radio" name="twitter_login" value="0" {TWITTER_LOGIN_NO}/><label for="twitter_login">{L_NO}</label></td>
-
-</tr>
 
 <tr class="row1">
 	<td>{L_OPENID}</td>
@@ -151,41 +146,6 @@
 
 </form>
 
-<!-- ELSEIF S_MODE_TWITTER -->
 
-<form method="post" action="{U_ACTION}">
-
-<fieldset>
-
-<legend>{L_TITLE_ENABLE_LOGIN}</legend>
-
-<dl>
-<dt>{L_TWITTER_KEY}</dt>
-<dd><input type="text" id="twitter_key" name="twitter_key" value="{TWITTER_KEY}"></dd>
-</dl>
-<dl>
-<dt>{L_TWITTER_SECRET}</dt>
-<dd><input type="text" id="twitter_secret" name="twitter_secret" value="{TWITTER_SECRET}"></dd>
-</dl>
-<dl>
-<dt>{L_TWITTER_CALLBACK}</dt>
-<dd><input type="text" id="twitter_callback" name="twitter_callback" value="{TWITTER_CALLBACK}"></dd>
-</dl>
-<dl>
-<dt>{L_TWITTER_STREAM}</dt>
-<dd><textarea type="text" id="twitter_stream" name="twitter_stream">{TWITTER_STREAM}</textarea></dd>
-</dl>
-
-<p class="submit-buttons">
-	<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
-	<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
-</p>
-{S_FORM_TOKEN}
-
-</fieldset>
-
-</form>
-
-<!-- ENDIF -->
 
 <!-- INCLUDE overall_footer.html -->

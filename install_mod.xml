@@ -46,13 +46,30 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2013.04.02.01</mod-version> 
+		<mod-version>2013.04.11.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.11</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2013.04.11</date>
+					<rev-version>2013.04.11.01</rev-version>
+					<changelog lang="en">
+						<change>acp_alternatelogin.php: Removed Twitter.</change>
+						<change>alternatelogin_mod_install.php: Removed Twitter.</change>
+						<change>acp_alternatelogin.html: Removed Twitter.</change>
+						<change>acp_alternatelogin.php: Removed Twitter.</change>
+						<change>functions.alternatelogin.php: Removed Twitter.</change>
+						<change>hooks_alternatelogin.php: Removed Twitter.</change>
+						<change>ucp_alternatelogin.php: Removed Twitter.</change>
+						<change>info_acp_alternatelogin.php: Removed Twitter.</change>
+						<change>info_ucp_alternatelogin.php: Removed Twitter.</change>
+						<change>al_tw_connect.php: File deleted.</change>
+						<change>alternatelogin/twitter: Directory deleted.</change>
+					</changelog>
+				</entry>
 				<entry>
 					<date>2013.04.02</date>
 					<rev-version>2013.04.02.01</rev-version>
@@ -372,21 +389,8 @@
                 </history>
 	</header> 
 	<action-group> 
-		<sql><![CDATA[ALTER TABLE  `phpbb_sessions` ADD  `session_wl_access_token` LONGTEXT NULL ,
-ADD  `session_tw_access_token` LONGTEXT NULL ,
-ADD  `session_fb_access_token` LONGTEXT NULL]]></sql> 
-		<sql><![CDATA[CREATE TABLE  `phpbb_al_data` (
-`name` VARCHAR( 255 ) NOT NULL ,
-`value` LONGTEXT NOT NULL ,
-PRIMARY KEY (  `name` )
-) ENGINE = MYISAM ;]]></sql>
-		<sql><![CDATA[INSERT INTO  `phpbb_al_data` (
-`name` ,
-`value`
-)
-VALUES (
-'twitter_stream_html',  ''
-);]]></sql>
+		<sql><![CDATA[ALTER TABLE  `phpbb_sessions` ADD  `session_wl_access_token` LONGTEXT NULL , ADD  `session_fb_access_token` LONGTEXT NULL]]></sql> 
+		
 		<copy> 
 			<file from="root/alternatelogin/*.*" to="alternatelogin/*.*"/> 
 			<file from="root/adm/style/acp_alternatelogin.html" to="adm/style/acp_alternatelogin.html"/> 
@@ -420,7 +424,7 @@ VALUES (
 				<action type="after-add"><![CDATA[		$al_login		= request_var('al_login', -1);
 		$al_login_type	= request_var('al_login_type', -1);
 		$sql_array = array(
-                    'SELECT'    => 'session_wl_access_token, session_tw_access_token',
+                    'SELECT'    => 'session_wl_access_token',
                     'FROM'      =>array(SESSIONS_TABLE => 's'),
                     'WHERE'     => "session_id='" . $user->data['session_id'] . "'",
                 );
@@ -437,38 +441,6 @@ VALUES (
                 {   
                     $al_login = 1;
                     $al_login_type = AL_WINDOWSLIVE_LOGIN;
-                }
-                if(isset($user->data['session_tw_access_token']))
-				{
-                	$tw_access_token = json_decode($user->data['session_tw_access_token']);
-				}
-				
-                if(isset($tw_access_token->oauth_token))
-                {   
-                    include($phpbb_root_path . 'alternatelogin/twitter/tmhOAuth.' . $phpEx);
-                    
-                    $al_login = 1;
-                    $al_login_type = AL_TWITTER_LOGIN;
-                    
-                    $tmhOAuth = new tmhOAuth(array(
-                        'consumer_key'      => $config['al_tw_key'],
-                        'consumer_secret'   => $config['al_tw_secret'],
-                    ));
- 
-                    $tmhOAuth->config['user_token'] = $tw_access_token->oauth_token;
-                    $tmhOAuth->config['user_secret'] = $tw_access_token->oauth_token_secret;
-                    
-                    $code = $tmhOAuth->request('GET', $tmhOAuth->url('1/account/verify_credentials'));
-                    
-                    if($code == 200)
-                    {
-                        $tw_user = json_decode($tmhOAuth->response['response']);
-                    }
-                    else
-                    {
-                        trigger_error($tmhOAuth->response['response']);
-                    }
-                    
                 }
                 
                 $openid_identifier = request_var('openid_identifier', '');
@@ -516,14 +488,6 @@ VALUES (
                             
                         break;
                         
-                        case AL_TWITTER_LOGIN:
-                            $wl_user = get_wl_rest_request($wl_access_token, 'me', HTTP_GET);
-                            
-                            $data['username']           = ($data['username'] == '') ? utf8_normalize_nfc($tw_user->screen_name) : $data['username'];
-                            //$data['email']              = strtolower($wl_user->emails->preferred);
-                            $data['email_confirm']              = $data['email'];
-                            
-                        break;
                         
                         case AL_OPENID_LOGIN:
                             
@@ -557,15 +521,6 @@ VALUES (
  
                                             break;
  
-                                        case AL_TWITTER_LOGIN:
-                                            $user_row['al_tw_id'] = $tw_user->id;
- 
-                                            $al_email_lang = $user->lang['TWITTER'];
-                                            
-                                            
-                                            
-                                            break;
-                                            
                                         case AL_OPENID_LOGIN:
                                             
                                             $user_row['al_oi_id'] = $openid_identifier;
@@ -643,7 +598,6 @@ VALUES (
 			<edit> 
 				<find><![CDATA['L_PASSWORD_EXPLAIN'		=> sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),]]></find> 
 				<action type="after-add"><![CDATA[                        'S_AL_LOGIN'		=> $al_login,
-                        'S_AL_TWITTER'          => ($al_login_type == AL_TWITTER_LOGIN) ? true : false,
                         'S_AL_OPENID'           => ($al_login_type == AL_OPENID_LOGIN) ? true : false,]]></action> 
 			</edit> 
 		</open> 
@@ -660,10 +614,10 @@ VALUES (
         <td valign="top"> 
 <!-- ENDIF --> 
             <!-- INCLUDE forumlist_body.html --> 
-<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY | AL_TW_STREAM | AL_FB_LIKE_BOX --> 
+<!-- IF AL_FB_FACEPILE | AL_FB_ACTIVITY AL_FB_LIKE_BOX --> 
         </td> 
         
-        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_STREAM and not AL_FB_USER_HIDE_STREAM) or (AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX) --> 
+        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_FB_LIKE_BOX and not AL_FB_USER_HIDE_LIKE_BOX) --> 
         <td width="200" valign="top"> 
         <!-- ENDIF --> 
         
@@ -689,17 +643,8 @@ VALUES (
                         <span class="corners-bottom"><span></span></span></div> 
 	</div> 
         <!-- ENDIF --> 
-        <!-- IF AL_TW_STREAM and not AL_TW_USER_HIDE_STREAM --> 
-        <div class="forabg"> 
-		<div class="inner"><span class="corners-top"><span></span></span> 
- 
-                    <div class="panel"> 
-                        {AL_TW_STREAM_HTML}
-                    </div> 
-                        <span class="corners-bottom"><span></span></span></div> 
-	</div> 
-        <!-- ENDIF --> 
-        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) or (AL_TW_STREAM and not AL_TW_USER_HIDE_STREAM) --> 
+         
+        <!-- IF (AL_FB_ACTIVITY and not AL_FB_USER_HIDE_ACTIVITY) --> 
         </td> 
         <!-- ENDIF --> 
     </tr> 
@@ -727,7 +672,7 @@ VALUES (
 				<find><![CDATA[<!-- ENDIF -->
 
 <!-- IF S_DISPLAY_ONLINE_LIST -->]]></find> 
-				<action type="before-add"><![CDATA[<!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED or S_AL_OI_ENABLED) and not S_ADMIN_AUTH -->
+				<action type="before-add"><![CDATA[<!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_OI_ENABLED) and not S_ADMIN_AUTH -->
  <div class="panel bg3">
    <div class="inner"><span class="corners-top"><span></span></span>
       
@@ -740,10 +685,7 @@ VALUES (
         <!-- IF S_AL_FB_ENABLED --> 
             <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
-      <!-- IF S_AL_TW_ENABLED --> 
-        <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Twitter" /></a> 
-        <!-- ENDIF --> 
-        
+      
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
 	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/jquery-1.2.6.min.js"></script>
@@ -781,7 +723,7 @@ VALUES (
 		<open src="styles/prosilver/template/login_body.html"> 
 			<edit> 
 				<find><![CDATA[</form>]]></find> 
-				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED) and not S_ADMIN_AUTH -->
+				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED) and not S_ADMIN_AUTH -->
  <div class="panel bg3">
    <div class="inner"><span class="corners-top"><span></span></span>
       
@@ -794,9 +736,7 @@ VALUES (
         <!-- IF S_AL_FB_ENABLED --> 
             <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
-      <!-- IF S_AL_TW_ENABLED --> 
-        <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Windows Live Connect" /></a> 
-        <!-- ENDIF --> 
+      
       
       <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
@@ -882,7 +822,7 @@ VALUES (
 		<open src="styles/prosilver/template/ucp_register.html"> 
 			<edit> 
 				<find><![CDATA[<form method="post" action="{S_UCP_ACTION}" id="register">]]></find> 
-				<action type="before-add"><![CDATA[<!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED or S_AL_OI_ENABLED) and not S_ADMIN_AUTH -->
+				<action type="before-add"><![CDATA[<!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_OI_ENABLED) and not S_ADMIN_AUTH -->
  <div class="panel bg3">
    <div class="inner"><span class="corners-top"><span></span></span>
       
@@ -895,9 +835,7 @@ VALUES (
         <!-- IF S_AL_FB_ENABLED --> 
             <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
-      <!-- IF S_AL_TW_ENABLED --> 
-        <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Twitter" /></a> 
-        <!-- ENDIF --> 
+      
         
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
@@ -1022,9 +960,6 @@ VALUES (
                             <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
                             <!-- ENDIF --> 
  
-                            <!-- IF S_AL_TW_ENABLED --> 
-                            <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Windows Live Connect" /></a> 
-                            <!-- ENDIF --> 
                             
                             <!-- IF S_AL_OI_ENABLED --> 
 <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
@@ -1063,7 +998,7 @@ VALUES (
 			<edit> 
 				<find><![CDATA[    <td class="cat" <!-- IF not S_ADMIN_AUTH or S_CONFIRM_CODE -->colspan="2"<!-- ENDIF --> align="center">{S_HIDDEN_FIELDS}<input type="submit" name="login" class="btnmain" value="{L_LOGIN}" tabindex="5" /></td> 
 </tr>]]></find> 
-				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED) and not S_ADMIN_AUTH --> 
+				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED) and not S_ADMIN_AUTH --> 
 		
         <div style="padding: 0px 10px 10px 10px; border-style: solid; border-color: grey; border-width: 1px; width: 500px;"> 
             <center> 
@@ -1076,10 +1011,7 @@ VALUES (
         <!-- IF S_AL_FB_ENABLED --> 
             <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
         <!-- ENDIF --> 
-        
-        <!-- IF S_AL_TW_ENABLED --> 
-        <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Windows Live Connect" /></a> 
-        <!-- ENDIF --> 
+         
         
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
@@ -1135,7 +1067,7 @@ VALUES (
 		<open src="styles/subsilver2/template/ucp_register.html"> 
 			<edit> 
 				<find><![CDATA[<form name="register" method="post" action="{S_UCP_ACTION}">]]></find> 
-				<action type="before-add"><![CDATA[<!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED or S_AL_OI_ENABLED) and not S_ADMIN_AUTH -->
+				<action type="before-add"><![CDATA[<!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_OI_ENABLED) and not S_ADMIN_AUTH -->
  <div class="panel bg3">
    <div class="inner"><span class="corners-top"><span></span></span>
       
@@ -1147,9 +1079,6 @@ VALUES (
  
         <!-- IF S_AL_FB_ENABLED --> 
             <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
-        <!-- ENDIF --> 
-        <!-- IF S_AL_TW_ENABLED --> 
-        <a href="{U_AL_TW_REQUEST}"><img src="alternatelogin/images/sign-in-with-twitter-l.png" alt="Twitter" /></a> 
         <!-- ENDIF --> 
         
         <!-- IF S_AL_OI_ENABLED --> 
@@ -1243,21 +1172,6 @@ Finally, click Submit.
 
 Once this is complete you can enable the Windows Live login on the main Alternate Login Manager page.
 
-
--- Twitter --
-
-Go to the Twitter Developers Site and sign up or sign in and follow the instructions for creating an Application.
-
-You will require 3 pieces of information from the Twitter Application:
-
-*Consumer Key
-*Consumer Secret
-*Callback URL - Must point to you al_tw_connect.php file.
-
-Enter the data in the Twitter Manager page and fill in the fields.
-
-Finally, click Submit.
-
-Once this is complete you can enable the Windows Live login on the main Alternate Login Manager page.]]></diy-instructions> 
+]]></diy-instructions> 
 	</action-group> 
 </mod> 

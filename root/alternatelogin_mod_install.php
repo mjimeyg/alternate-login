@@ -79,7 +79,6 @@ $versions = array(
 
 			array(USERS_TABLE, 'al_fb_id', array('VCHAR', '0')),
                         array(USERS_TABLE, 'al_wl_id', array('VCHAR', '0')),
-                        array(USERS_TABLE, 'al_tw_id', array('VCHAR', '0')),
                         array(USERS_TABLE, 'al_oi_id', array('VCHAR', '0')),
                         array(USERS_TABLE, 'al_fb_profile_sync', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_status_sync', array('BOOL', '0')),
@@ -88,12 +87,8 @@ $versions = array(
                         array(USERS_TABLE, 'al_wl_status_sync', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_wl_avatar_sync', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_hide_activity', array('BOOL', '0')),
-                        array(USERS_TABLE, 'al_tw_hide_stream', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_hide_facepile', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_hide_like_box', array('BOOL', '0')),
-                        array(USERS_TABLE, 'al_tw_profile_sync', array('BOOL', '0')),
-                        array(USERS_TABLE, 'al_tw_status_sync', array('BOOL', '0')),
-                        array(USERS_TABLE, 'al_tw_avatar_sync', array('BOOL', '0')),
                         
 		),
 
@@ -101,7 +96,6 @@ $versions = array(
                 'config_add' => array(
                     array('al_fb_login', 0, 1),
                     array('al_wl_login', 0, 1),
-                    array('al_tw_login', 0, 1),
                     array('al_oi_login', 0, 1),
                     array('al_wl_client_id', 0, 1),
                     array('al_wl_secret', 0, 1),
@@ -110,7 +104,6 @@ $versions = array(
                     array('al_site_domain', 0, 1),
                     array('al_fb_facepile', 0, 1),
                     array('al_fb_activity', 0, 1),
-                    array('al_tw_stream', 0, 1),
                     array('al_fb_quick_accounts', 0, 1),
 					array('al_wl_quick_accounts', 0, 1),
                 ),
@@ -127,7 +120,7 @@ $versions = array(
 			// Now we will add the settings and features modes from the acp_board module to the ACP_CAT_TEST_MOD category using the "automatic" method.
 			array('acp', 'ACP_ALTERNATELOGIN', array(
 					'module_basename'		=> 'alternatelogin',
-					'modes'					=> array('manage', 'facebook', 'windowslive', 'twitter'),
+					'modes'					=> array('manage', 'facebook', 'windowslive'),
 				),
 			),
                         array('ucp', 0, 'SOCIAL_LOGIN_OPTIONS'),
