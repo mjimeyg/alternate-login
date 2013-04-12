@@ -8,8 +8,6 @@ class CSAlternateLogin
 
 		include $phpbb_root_path . '/includes/functions_alternatelogin.' . $phpEx;
 		
-		build_al_data();
-		
 		$forum_id = request_var('f', 0);
 		$topic_id = request_var('t', 0);
 		
