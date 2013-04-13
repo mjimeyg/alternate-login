@@ -43,10 +43,10 @@ class acp_alternatelogin
 		$this->page_title = 'ACP_ALTERNATELOGIN';
 		
 		// Include the Alternate Login functions file.
-                if(!function_exists('get_fb_access_token'))
-                {
-                    include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
-                }
+		if(!function_exists('get_fb_access_token'))
+		{
+			include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
+		}
                 
 		// Retrieve the action and submit values.
 		$action		= request_var('action', '');
@@ -70,9 +70,7 @@ class acp_alternatelogin
 
 					$windowslive_login = request_var('windowslive_login', '');
                                         
-                                        
 					$openid_login = request_var('openid_login', '');
-
 
 					set_config('al_fb_login', $facebook_login);
 
@@ -80,7 +78,6 @@ class acp_alternatelogin
 					
 					set_config('al_oi_login', $openid_login);
 					
-
 					// Let the user know its been done.
 					trigger_error($user->lang['ACP_ALTERNATELOGIN_SETTINGS_UPDATED'] . adm_back_link($this->u_action));
 					
@@ -163,18 +160,10 @@ class acp_alternatelogin
 					
 					
 				break;
-                            
-			
-				
-				
-				default:
-				break;
+                    
 			}
 		}
-		else
-		{
-			
-		}
+		
 		
 		// This section deals with preparing variables and values for the
 		// template.
@@ -244,8 +233,6 @@ class acp_alternatelogin
 						$facebook_login_yes = '';
 					}
 					
-					
-					
 					if($config['al_wl_login'] == 1)
 					{
 						$windowslive_login_yes = 'checked="checked"';
@@ -257,8 +244,6 @@ class acp_alternatelogin
 						$windowslive_login_yes = '';
 					}
                                         
-                      
-                                        
                     if($config['al_oi_login'] == 1)
 					{
 						$openid_login_yes = 'checked="checked"';
@@ -269,19 +254,16 @@ class acp_alternatelogin
 						$openid_login_no = 'checked="checked"';
 						$openid_login_yes = '';
 					}
-                                        
-					
-					
-				
+                      
 				$template->assign_vars(array(
 					'FACEBOOK_LOGIN_YES'		=> $facebook_login_yes,
-					'FACEBOOK_LOGIN_NO'             => $facebook_login_no,
+					'FACEBOOK_LOGIN_NO'         => $facebook_login_no,
 					'WINDOWSLIVE_LOGIN_YES'		=> $windowslive_login_yes,
 					'WINDOWSLIVE_LOGIN_NO'		=> $windowslive_login_no,
-                    'OPENID_LOGIN_YES'		=> $openid_login_yes,
-					'OPENID_LOGIN_NO'		=> $openid_login_no,
-					'S_MODE_MAIN'			=> true,
-					'U_ACTION'			=> $this->u_action,
+                    'OPENID_LOGIN_YES'			=> $openid_login_yes,
+					'OPENID_LOGIN_NO'			=> $openid_login_no,
+					'S_MODE_MAIN'				=> true,
+					'U_ACTION'					=> $this->u_action,
 				));
 					
 			break;

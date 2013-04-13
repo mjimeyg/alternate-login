@@ -28,7 +28,7 @@ class acp_alternatelogin_info
 			'modes'		=> array(
 				'manage'		=> array('title' => 'ACP_AL_MAIN_MANAGE', 'auth' => 'acl_a_user', 'cat' => array('ACP_CAT_USERS')),
 				'facebook'		=> array('title' => 'ACP_AL_FACEBOOK_MANAGE', 'auth' => 'acl_a_user', 'cat' => array('ACP_CAT_USERS')),
-				'windowslive'           => array('title' => 'ACP_AL_WINDOWSLIVE_MANAGE', 'auth' => 'acl_a_user', 'cat' => array('ACP_CAT_USERS')),
+				'windowslive'   => array('title' => 'ACP_AL_WINDOWSLIVE_MANAGE', 'auth' => 'acl_a_user', 'cat' => array('ACP_CAT_USERS')),
 				
 			),
 		);
