@@ -63,7 +63,7 @@
 						<change>acp_alternatelogin.php: Removed Twitter.</change>
 						<change>functions.alternatelogin.php: Removed Twitter.</change>
 						<change>hooks_alternatelogin.php: Removed Twitter.</change>
-						<change>ucp_alternatelogin.php: Removed Twitter.</change>
+						<change>ucp_alternatelogin.php: Removed Twitter and OpenID.</change>
 						<change>info_acp_alternatelogin.php: Removed Twitter.</change>
 						<change>info_ucp_alternatelogin.php: Removed Twitter.</change>
 						<change>al_tw_connect.php: File deleted.</change>
