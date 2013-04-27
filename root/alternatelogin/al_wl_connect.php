@@ -463,7 +463,6 @@ else
 		$sql_array = array(
 			'al_fb_id'      => 0,
 			'al_wl_id'      => $wl_user->id,
-			'al_tw_id'      => 0,
 			'al_oi_id'      => 0,
 		);
 
