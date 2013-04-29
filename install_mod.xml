@@ -46,13 +46,27 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2013.04.11.01</mod-version> 
+		<mod-version>2013.04.29.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.11</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2013.04.29</date>
+					<rev-version>2013.04.29.01</rev-version>
+					<changelog lang="en">
+						<change>prosilver/template/index_body.html: Modified Facebook login button to use alternate custom rendered button.</change>
+						<change>prosilver/template/login_body.html: Modified Facebook login button to use alternate custom rendered button.</change>
+						<change>subsilver2/template/index_body.html: Modified Facebook login button to use alternate custom rendered button.</change>
+						<change>subsilver2/template/login_body.html: Modified Facebook login button to use alternate custom rendered button.</change>
+						<change>create_fb_button.php: Added file to render custom Facebook button.</change>
+						<change>tahomabd.ttf: Added font file to render custom Facebook button.</change>
+						<change>acp_alternatelogin.php: Added code to Facebook section to allow text for custom Facebook button to be set.</change>
+						<change>acp_alternatelogin.html: Added code to Facebook section to allow text for custom Facebook button to be set.</change>
+					</changelog>
+				</entry>
 				<entry>
 					<date>2013.04.11</date>
 					<rev-version>2013.04.11.01</rev-version>
@@ -683,7 +697,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a> 
         <!-- ENDIF --> 
       
         <!-- IF S_AL_OI_ENABLED --> 
@@ -734,7 +748,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a> 
         <!-- ENDIF --> 
       
       
@@ -779,34 +793,7 @@
     FB.init({appId: '{AL_FB_APPID}', status: true, cookie: true,
              xfbml: true});
 			 
-	FB.Event.subscribe('auth.login', function(response){
-			if(response.status == 'connected'){
-				console.log('Logged in.');
-			}
-		});
-		
-		FB.getLoginStatus(function(response){
-			
-			if(response.status == 'connected'){
-				console.log('Logged in still.');
-				if(is_user_logged_in()){
-					console.log('phpBB user is logged in.');
-				}
-				else{
-					console.log('phpBBuser is NOT logged in.');
-					$('#fb_in_phpbb_out').show();
-					$('#fb_out_phpbb_out').hide();
-					$('#fb_access_token').val(response.authResponse.accessToken);
-					
-					
-				}
-			}
-			else{
-				console.log('phpBBuser and FB are NOT logged in.');
-				$('#fb_in_phpbb_out').hide();
-				$('#fb_out_phpbb_out').show();
-			}
-		});
+	
   
   };
   (function() {
@@ -833,7 +820,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a> 
         <!-- ENDIF --> 
       
         
@@ -957,7 +944,7 @@
                             <!-- ENDIF --> 
  
                             <!-- IF S_AL_FB_ENABLED --> 
-                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a>  
                             <!-- ENDIF --> 
  
                             
@@ -1009,7 +996,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php{S_RETURN_TO_PAGE}';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a> 
         <!-- ENDIF --> 
          
         
@@ -1078,7 +1065,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#" class="fb_button fb_button_medium"><span class="fb_button_text">{L_SIGN_IN}</span></a> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a>  
         <!-- ENDIF --> 
         
         <!-- IF S_AL_OI_ENABLED --> 

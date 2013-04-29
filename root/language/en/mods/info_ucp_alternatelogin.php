@@ -61,6 +61,7 @@ $lang = array_merge($lang, array(
         'FB_AVATAR'                             => 'Facebook Profile Picture',
         'FB_AVATAR_EXPLAIN'                     => 'Sync your Facebook Profile Picture with your Avatar.',
 		'FB_REDIRECT'							=> 'Facebook is redirecting...',
+		'LOGIN_BUTTON_TEXT'						=> 'Login button text',
     
         'WL_SYNC'                               => 'Sync profile with Windows Live profile',
         'WL_STATUS'                             => 'Sync signature with Windows Live status',
@@ -72,7 +73,7 @@ $lang = array_merge($lang, array(
 		'NO_ACCESS_TOKEN'						=> 'No access token was found.',
 		'FACEBOOK'								=> 'Facebook',
 		'WINDOWSLIVE'							=> 'Windows Live',
-        'OPENID'                                                        => 'OpenID',
+        'OPENID'                                => 'OpenID',
 		'ENABLE_LOGIN'							=> 'Enable Login',
 		'ENABLE_PROFILE_SYNC'					=> 'Enable Profile Sync',
 		'FACEBOOK_ID'							=> 'Facebook Application Id',

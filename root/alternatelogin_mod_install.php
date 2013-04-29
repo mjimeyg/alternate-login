@@ -102,6 +102,7 @@ $versions = array(
                     array('al_fb_id', 0, 1),
                     array('al_fb_secret', 0, 1),
                     array('al_site_domain', 0, 1),
+					array('al_fb_login_text', 'Login with Facebook', 1),
                     array('al_fb_facepile', 0, 1),
                     array('al_fb_activity', 0, 1),
                     array('al_fb_quick_accounts', 0, 1),

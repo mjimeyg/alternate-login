@@ -106,6 +106,10 @@ class acp_alternatelogin
 
 					set_config('al_site_domain', $site_domain);
 					
+					$facebook_login_button_text = request_var('facebook_login_button_text', '');
+					
+					set_config('al_fb_login_text', $facebook_login_button_text);
+					
 					$facebook_quick_accounts = request_var('facebook_quick_accounts', 0);
 
 					set_config('al_fb_quick_accounts', $facebook_quick_accounts);
@@ -177,6 +181,7 @@ class acp_alternatelogin
 					'FACEBOOK_KEY'  						=> $config['al_fb_key'],
 					'FACEBOOK_PAGE_URL'                     => $config['al_fb_page_url'],
 					'SITE_DOMAIN'                           => $config['al_site_domain'],
+					'FACEBOOK_LOGIN_BUTTON_TEXT'			=> $config['al_fb_login_text'],
 					'FACEBOOK_DEFAULT_LANG'                 => (!isset($config['al_fb_default_lang'])) ? $this->fb_language_select('en_US') : $this->fb_language_select($config['al_fb_default_lang']),
 					'FACEBOOK_QUICK_ACCOUNTS_YES'           => $config['al_fb_quick_accounts'] ? 'checked="checked"' : '',
 					'FACEBOOK_QUICK_ACCOUNTS_NO'            => $config['al_fb_quick_accounts'] ? '' : 'checked="checked"',
