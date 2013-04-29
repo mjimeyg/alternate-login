@@ -697,8 +697,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a> 
-        <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
       
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
@@ -748,8 +747,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a> 
-        <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
       
       
       <!-- IF S_AL_OI_ENABLED --> 
@@ -820,8 +818,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a> 
-        <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
       
         
         <!-- IF S_AL_OI_ENABLED --> 
@@ -944,8 +941,7 @@
                             <!-- ENDIF --> 
  
                             <!-- IF S_AL_FB_ENABLED --> 
-                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a>  
-                            <!-- ENDIF --> 
+                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
  
                             
                             <!-- IF S_AL_OI_ENABLED --> 
@@ -996,8 +992,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a> 
-        <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
          
         
         <!-- IF S_AL_OI_ENABLED --> 
@@ -1065,8 +1060,7 @@
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label=(AL_FB_LOGIN_BUTTON_TEXT}"></a>  
-        <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
         
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
