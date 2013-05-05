@@ -46,13 +46,20 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2013.04.29.01</mod-version> 
+		<mod-version>2013.05.05.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.11</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2013.05.05</date>
+					<rev-version>2013.05.05.01</rev-version>
+					<changelog lang="en">
+						<change>al_wl_connect.php: Removed redirect to self for automatic login due to unknown error.  Now delivers message stating the user is registered.</change>
+					</changelog>
+				</entry>
 				<entry>
 					<date>2013.04.29</date>
 					<rev-version>2013.04.29.01</rev-version>

@@ -48,30 +48,32 @@ $coppa = request_var('coppa', 0);
 $is_dst = $config['board_dst'];
 
 
-    $code = request_var('code', '');
-    
-    
-    if($code == '')
-    {
-        trigger_error($user->lang['AUTHORIZE_FAILURE']);
-    }
-    else
-    {
-        
-        $token = get_wl_tokens($config['al_wl_client_id'], $code, null);
-        
-        $sql_array = array(
-            'session_wl_access_token'   => $token->access_token,
-        );
-        
-        $sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
+$code = request_var('code', '');
+$redirect_login = request_var('login', 0);
 
-        $db->sql_query($sql);
-        
-    }
+
+if($code == '')
+{
+	trigger_error($user->lang['AUTHORIZE_FAILURE']);
+}
+else
+{
+	
+	$token = get_wl_tokens($config['al_wl_client_id'], $code, null);
+	
+	$sql_array = array(
+		'session_wl_access_token'   => $token->access_token,
+	);
+	
+	$sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
+
+	$db->sql_query($sql);
+	
+}
 
 if(($wl_user = get_wl_rest_request($token->access_token, 'me', HTTP_GET)) == NULL)
 {
+	
     trigger_error($user->lang['ERROR_REST_CALL_FAILURE']);
 }
 // Select the user_id from the Alternate Login user data table which has the same Facebook Id.
@@ -175,6 +177,7 @@ if ($row)   // User is registered already, let's log him in!
 
                     $db->sql_query($sql);
                 }
+				
                 meta_refresh(5, append_sid("{$phpbb_root_path}index.{$phpEx}"));
                 trigger_error(sprintf($user->lang['LOGIN_SUCCESS'] . "<br /><br />" . sprintf($user->lang['RETURN_INDEX'], "<a href='" . append_sid($phpbb_root_path . "index." . $phpEx) . "'>", "</a>")));
 
@@ -246,7 +249,6 @@ if($row)
                 $sql_array = array(
                     'al_fb_id'      => 0,
                     'al_wl_id'      => $wl_user->id,
-                    'al_tw_id'      => 0,
                     'al_oi_id'      => 0,
                 );
 
@@ -442,8 +444,9 @@ else
 				{
 					trigger_error('NO_USER', E_USER_ERROR);
 				}
-				
-				redirect(append_sid("{$phpbb_root_path}/alternatelogin/al_wl_connect.{$phpEx}"));
+				$message = $user->lang['ACCOUNT_ADDED'];
+				$message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
+				trigger_error($message);
 			}
 			else
 			{
