@@ -986,8 +986,10 @@
 		</open> 
 		<open src="styles/subsilver2/template/login_body.html"> 
 			<edit> 
-				<find><![CDATA[    <td class="cat" <!-- IF not S_ADMIN_AUTH or S_CONFIRM_CODE -->colspan="2"<!-- ENDIF --> align="center">{S_HIDDEN_FIELDS}<input type="submit" name="login" class="btnmain" value="{L_LOGIN}" tabindex="5" /></td> 
-</tr>]]></find> 
+				<find><![CDATA[{S_LOGIN_REDIRECT}
+	{S_FORM_TOKEN}
+	</form>
+<!-- ENDIF -->]]></find> 
 				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED) and not S_ADMIN_AUTH --> 
 		
         <div style="padding: 0px 10px 10px 10px; border-style: solid; border-color: grey; border-width: 1px; width: 500px;"> 
