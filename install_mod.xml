@@ -46,13 +46,20 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2013.05.05.01</mod-version> 
+		<mod-version>2013.08.03.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.11</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2013.08.03</date>
+					<rev-version>2013.08.03.01</rev-version>
+					<changelog lang="en">
+						<change>subsilver2/templates/index_body.html: Moved social login options out of standard login form element that was preventing button actions.</change>
+					</changelog>
+				</entry>
 				<entry>
 					<date>2013.05.05</date>
 					<rev-version>2013.05.05.01</rev-version>
@@ -933,26 +940,22 @@
 <!-- ENDIF -->]]></action> 
 			</edit> 
 			<edit> 
-				<find><![CDATA[{S_LOGIN_REDIRECT}]]></find> 
-				<action type="before-add"><![CDATA[    
-                <!-- IF S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_TW_ENABLED or S_AL_OI_ENABLED --> 
+				<find><![CDATA[</form>]]></find> 
+				<action type="after-add"><![CDATA[<!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED or S_AL_OI_ENABLED) and not S_ADMIN_AUTH -->
+ <div class="panel bg3">
+   <div class="inner"><span class="corners-top"><span></span></span>
+      
+ <h3>{L_SOCIAL_LOGIN_OPTIONS}</h3> 
                 <br /> 
-                
-                <center> 
-                    <div style="padding: 0px 10px 10px 10px; border-style: solid; border-color: grey; border-width: 1px; width: 500px;"> 
-                        <center> 
-                            <h3>{L_SOCIAL_LOGIN_OPTIONS}</h3> 
-                            <br /> 
-                            <!-- IF S_AL_WL_ENABLED --> 
-                            <a href="{U_AL_WL_AUTHORIZE}"><img src="alternatelogin/images/windows_live_connect.png" alt="Windows Live Connect" /></a> 
-                            <!-- ENDIF --> 
+            <!-- IF S_AL_WL_ENABLED --> 
+            <a href="{U_AL_WL_AUTHORIZE}"><img src="alternatelogin/images/windows_live_connect.png" alt="Windows Live" /></a> 
+        <!-- ENDIF --> 
  
-                            <!-- IF S_AL_FB_ENABLED --> 
-                            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
- 
-                            
-                            <!-- IF S_AL_OI_ENABLED --> 
-<link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
+        <!-- IF S_AL_FB_ENABLED --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
+      
+        <!-- IF S_AL_OI_ENABLED --> 
+        <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
 	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/jquery-1.2.6.min.js"></script>
 	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/openid-jquery.js"></script>
 	<script type="text/javascript" src="{T_TEMPLATE_PATH}/js/openid-en.js"></script>
@@ -962,10 +965,12 @@
 			
 		});
 	</script>
-        <form action="alternatelogin/al_oi_connect.php" method="get" id="openid_form">
+        <form action="{U_AL_OI_LOGIN}" method="get" id="openid_form">
 		<input type="hidden" name="action" value="verify" />
 		<fieldset>
+			
 			<div id="openid_choice">
+				
 				<div id="openid_btns"></div>
 			</div>
 			<div id="openid_input_area">
@@ -976,20 +981,16 @@
 		</fieldset>
 	</form>
         <!-- ENDIF --> 
-                        </center> 
-                    </div> 
-                </center> 
-                
-                <br /> 
-                <!-- ENDIF -->]]></action> 
+      
+
+   <span class="corners-bottom"><span></span></span></div>
+</div>
+ <!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		<open src="styles/subsilver2/template/login_body.html"> 
 			<edit> 
-				<find><![CDATA[{S_LOGIN_REDIRECT}
-	{S_FORM_TOKEN}
-	</form>
-<!-- ENDIF -->]]></find> 
+				<find><![CDATA[</form>]]></find> 
 				<action type="after-add"><![CDATA[        <!-- IF (S_AL_WL_ENABLED or S_AL_FB_ENABLED) and not S_ADMIN_AUTH --> 
 		
         <div style="padding: 0px 10px 10px 10px; border-style: solid; border-color: grey; border-width: 1px; width: 500px;"> 
