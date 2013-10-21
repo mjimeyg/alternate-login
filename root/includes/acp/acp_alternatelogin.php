@@ -101,6 +101,10 @@ class acp_alternatelogin
                     $facebook_page_url = request_var('facebook_page_url', '');
 
 					set_config('al_fb_page_url', $facebook_page_url, true);
+					
+					$facebook_page_id = request_var('facebook_page_id', '');
+
+					set_config('al_fb_page_id', $facebook_page_id, true);
                                         
 					$site_domain = request_var('site_domain', '');
 
@@ -180,6 +184,7 @@ class acp_alternatelogin
 					'FACEBOOK_SECRET'						=> $config['al_fb_secret'],
 					'FACEBOOK_KEY'  						=> $config['al_fb_key'],
 					'FACEBOOK_PAGE_URL'                     => $config['al_fb_page_url'],
+					'FACEBOOK_PAGE_ID'                     	=> $config['al_fb_page_id'],
 					'SITE_DOMAIN'                           => $config['al_site_domain'],
 					'FACEBOOK_LOGIN_BUTTON_TEXT'			=> $config['al_fb_login_text'],
 					'FACEBOOK_DEFAULT_LANG'                 => (!isset($config['al_fb_default_lang'])) ? $this->fb_language_select('en_US') : $this->fb_language_select($config['al_fb_default_lang']),
