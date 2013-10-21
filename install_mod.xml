@@ -446,7 +446,26 @@
 			<file from="root/*.*" to="*.*"/> 
 		</copy> 
 		 
-		
+		<open src="includes/functions_posting.php"> 
+			<edit> 
+				<find><![CDATA[if ($post_mode == 'post')
+		{
+			$sql_data[TOPICS_TABLE]['sql'] = array(
+				'topic_first_post_id'		=> $data['post_id'],
+				'topic_last_post_id'		=> $data['post_id'],
+				'topic_last_post_time'		=> $current_time,
+				'topic_last_poster_id'		=> (int) $user->data['user_id'],
+				'topic_last_poster_name'	=> (!$user->data['is_registered'] && $username) ? $username : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
+				'topic_last_poster_colour'	=> $user->data['user_colour'],
+				'topic_last_post_subject'	=> (string) $subject,
+			);
+		}]]></find> 
+				<action type="after-add"><![CDATA[if(!($ret_data = update_fb_user_status(array('message' => json_encode($sql_data[POSTS_TABLE])))))
+		{
+			echo 'FAILED' . $ret_data;
+		}]]></action> 
+			</edit> 
+		</open> 
 		
 		
 		<open src="includes/ucp/ucp_register.php"> 
