@@ -1087,6 +1087,12 @@
 			</edit> 
 		</open> 
 		<open src="styles/subsilver2/template/overall_header.html"> 
+		<edit> 
+				<find><![CDATA[<meta name="description" content="" />]]></find> 
+				<action type="after-add"><![CDATA[<meta property="og:url" content="{U_PAGE_URL}" />]]></action> 
+			</edit> 
+			<edit> 
+			
 			<edit> 
 				<find><![CDATA[<body class="{S_CONTENT_DIRECTION}">]]></find> 
 				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED --><div id="fb-root"></div><script src="http://connect.facebook.net/{S_FB_LOCALE}/all.js#appId={AL_FB_APPID}&xfbml=1"></script>  
@@ -1094,6 +1100,15 @@
   window.fbAsyncInit = function() {
     FB.init({appId: '{AL_FB_APPID}', status: true, cookie: true,
              xfbml: true});
+			 
+			 $('#al_fb_friends_list_button').unbind('click').bind('click', function(e){
+				console.log('called');
+				FB.ui({
+				  method: 'send',
+				  link: "{U_PAGE_URL}"
+				  //caption: "{SITENAME} &bul; {PAGE_TITLE}",
+				});
+			});
   };
   (function() {
     var e = document.createElement('script'); e.async = true;
@@ -1102,6 +1117,10 @@
     document.getElementById('fb-root').appendChild(e);
   }());
 </script><!-- ENDIF -->]]></action> 
+			</edit> 
+			<edit> 
+				<find><![CDATA[<!-- IF S_DISPLAY_MEMBERLIST -->&nbsp; &nbsp;<a href="{U_MEMBERLIST}"><img src="{T_THEME_PATH}/images/icon_mini_members.gif" width="12" height="13" alt="*" /> {L_MEMBERLIST}</a><!-- ENDIF -->]]></find> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED and S_AL_FB_USER and AL_FB_FRIENDS_LIST --><li class="icon-members"><a href="#" id="al_fb_friends_list_button" ><img src="../../../alternatelogin/create_fb_button.php?label={AL_FB_FRIENDS_LIST_LABEL}" /></a></li><!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		
