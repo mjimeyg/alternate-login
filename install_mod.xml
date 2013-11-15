@@ -822,7 +822,13 @@
  <!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
-		<open src="styles/prosilver/template/overall_header.html"> 
+		<open src="styles/prosilver/template/overall_header.html">
+		<edit> 
+				<find><![CDATA[<meta name="description" content="" />]]></find> 
+				<action type="after-add"><![CDATA[<meta property="og:url" content="{U_PAGE_URL}" />]]></action> 
+			</edit> 
+			<edit> 
+			
 			<edit> 
 				<find><![CDATA[<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}">]]></find> 
 				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED --><div id="fb-root"></div><script src="http://connect.facebook.net/{S_FB_LOCALE}/all.js#appId={AL_FB_APPID}&xfbml=1"></script>  
@@ -831,7 +837,14 @@
     FB.init({appId: '{AL_FB_APPID}', status: true, cookie: true,
              xfbml: true});
 			 
-	
+			$('#al_fb_friends_list_button').unbind('click').bind('click', function(e){
+				console.log('called');
+				FB.ui({
+				  method: 'send',
+				  link: "{U_PAGE_URL}"
+				  //caption: "{SITENAME} &bul; {PAGE_TITLE}",
+				});
+			});
   
   };
   (function() {
@@ -841,6 +854,10 @@
     document.getElementById('fb-root').appendChild(e);
   }());
 </script><!-- ENDIF -->]]></action> 
+			</edit> 
+			<edit> 
+				<find><![CDATA[<!-- IF S_DISPLAY_MEMBERLIST --><li class="icon-members"><a href="{U_MEMBERLIST}" title="{L_MEMBERLIST_EXPLAIN}">{L_MEMBERLIST}</a></li><!-- ENDIF -->]]></find> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED and S_AL_FB_USER and AL_FB_FRIENDS_LIST --><li class="icon-members"><a href="#" id="al_fb_friends_list_button" ><img src="../../../alternatelogin/create_fb_button.php?label={AL_FB_FRIENDS_LIST_LABEL}" /></a></li><!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		<open src="styles/prosilver/template/posting_editor.html"> 
