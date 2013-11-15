@@ -62,6 +62,12 @@ $lang = array_merge($lang, array(
         'FB_AVATAR_EXPLAIN'                     => 'Sync your Facebook Profile Picture with your Avatar.',
 		'FB_REDIRECT'							=> 'Facebook is redirecting...',
 		'LOGIN_BUTTON_TEXT'						=> 'Login button text',
+		'FB_FRIENDS_LIST_LABEL'					=> 'Invite Friends',
+		'FB_INVITE_DEFAULT_MESSAGE'				=> 'Come and check out this discussion!',
+		
+		'FB_ERROR_NO_FRIENDS_SELECTED'			=> 'No friends were selected.',
+		'FB_ERROR_INVALID_URL'					=> 'An invalid url was passed.',
+		
     
         'WL_SYNC'                               => 'Sync profile with Windows Live profile',
         'WL_STATUS'                             => 'Sync signature with Windows Live status',
@@ -130,6 +136,8 @@ $lang = array_merge($lang, array(
         'FB_GENDER'                             => 'Gender',
         'FB_LOCATION'                           => 'Location',
         'FB_EMAIL'                              => 'Email',
+		
+		'FB_TEMPLATE_POST_PUBLISHED'			=> '%s has replied to the topic: %s',
 ));
 
 ?>
