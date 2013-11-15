@@ -24,6 +24,8 @@ class CSAlternateLogin
             $fb_user = json_decode(get_fb_data($graph_url));
             
             $fb_lang = $fb_user->locale;
+			
+			
         }
 		
 		
@@ -40,6 +42,9 @@ class CSAlternateLogin
 			'AL_FB_ACTIVITY'                                => isset($config['al_fb_activity']) ? $config['al_fb_activity'] : false,
 			'AL_FB_FACEPILE'                                => isset($config['al_fb_facepile']) ? $config['al_fb_facepile'] : false,
 			'AL_FB_LIKE_BOX'                                => isset($config['al_fb_like_box']) ? $config['al_fb_like_box'] : false,
+			'AL_FB_FRIENDS_LIST'                            => isset($config['al_fb_friends_list']) ? $config['al_fb_friends_list'] : false,
+			'AL_FB_FRIENDS_LIST_MESSAGE'                    => isset($config['al_fb_friends_list_messgae']) ? $config['al_fb_friends_list_messgae'] : '',
+			'AL_FB_FRIENDS_LIST_LABEL'                    	=> isset($user->lang['AL_FB_FRIENDS_LIST_LABEL']) ? urlencode($user->lang['AL_FB_FRIENDS_LIST_LABEL']) : urlencode('Invite Friends'),
 			'AL_FB_LOGIN_BUTTON_TEXT'						=> isset($config['al_fb_login_text']) ? $config['al_fb_login_text'] : 'Facebook',
 			'S_AL_WL_CLIENT_ID'								=> isset($config['al_wl_client_id']) ? $config['al_wl_client_id'] : false,
 			'S_AL_WL_WRAP_CHANNEL'                          => isset($config['al_wl_channel']) ? $config['al_wl_channel'] : false,
@@ -49,12 +54,14 @@ class CSAlternateLogin
 			'AL_FB_USER_HIDE_ACTIVITY'                      => isset($user->data['al_fb_hide_activity']) ? $user->data['al_fb_hide_activity'] : false,
 			'AL_FB_USER_HIDE_FACEPILE'                      => isset($user->data['al_fb_hide_facepile']) ? $user->data['al_fb_hide_facepile'] : false,
 			'AL_FB_USER_HIDE_LIKE_BOX'                      => isset($user->data['al_fb_hide_like_box']) ? $user->data['al_fb_hide_like_box'] : false,
+			'AL_FB_USER_FRIENDS_LIST_HIDE'                  => isset($user->data['al_fb_hide_friends_list']) ? $user->data['al_fb_hide_friends_list'] : false,
 			'U_AL_WL_AUTHORIZE'                             => (isset($config['al_wl_client_id']) && isset($config['al_wl_callback'])) ? "https://oauth.live.com/authorize?client_id={$config['al_wl_client_id']}&scope=wl.signin%20wl.basic%20wl.birthday%20wl.emails%20wl.work_profile%20wl.postal_addresses&response_type=code&redirect_uri=" . urlencode($config['al_wl_callback']) : '',
 			'U_AL_OI_LOGIN'                                 => append_sid("{$phpbb_root_path}alternatelogin/al_oi_auth.{$phpEx}"),
+			
 			'S_FB_LOCALE'                                   => isset($fb_lang) ? $fb_lang : 'en_GB',
 			'S_RETURN_TO_PAGE'                              => "?return_to_page=" . base64_encode(build_url()),
 			
-			'U_PAGE_URL'                    				=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
+			'U_PAGE_URL'                    				=> generate_board_url() . substr(build_url(), 1),//generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
 		));
 		
 		
