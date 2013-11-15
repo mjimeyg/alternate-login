@@ -202,7 +202,7 @@ if(!function_exists('get_fb_access_token'))
    
       if(empty($code)) {
          $dialog_url = "http://www.facebook.com/dialog/oauth?client_id="
-            . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email";
+            . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email,publish_actions,manage_pages,publish_stream";
    
          
          page_header($user->lang['FB_REDIRECT']);
@@ -230,8 +230,10 @@ if(!function_exists('get_fb_access_token'))
       
       curl_setopt($ch, CURLOPT_HTTPGET, true);
       
-      
+     // $access_token = array();
+	  
       $access_token = curl_exec($ch);
+      
       
       if(curl_errno($ch))
       {
@@ -247,6 +249,73 @@ if(!function_exists('get_fb_access_token'))
    }
 }
 
+if(!function_exists('get_fb_page_token'))
+{
+	function get_fb_page_token($access_token)
+	{
+		global $user, $config;
+		
+		parse_str($access_token, $access_token);
+		$url = "https://graph.facebook.com/" . $user->data['al_fb_id'] . "/accounts?access_token=" . $access_token['access_token'];
+		
+		
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_HTTPGET, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		  
+		 // $access_token = array();
+		  
+		$accounts = json_decode(curl_exec($ch), true);
+		
+		foreach($accounts['data'] as $a)
+		{
+			if($a['id'] == $config['al_fb_page_id'])
+			{
+				set_config('al_fb_page_token', $a['access_token']);
+			}
+		}
+		
+		
+		  
+		curl_close($ch);
+		
+	}
+}
+
+if(!function_exists('get_fb_app_token'))
+{
+	function get_fb_app_token()
+	{
+		global $user, $config;
+		
+		$url = "https://graph.facebook.com/oauth/access_token?client_id=" . $config['al_fb_id'] . "&client_secret=" . $config['al_fb_secret'] . "&grant_type=client_credentials";
+		
+		
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_HTTPGET, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		  
+		$access_token = array();
+		
+		parse_str(curl_exec($ch), $access_token);
+		
+		set_config('al_fb_app_token', $access_token['access_token']);
+			
+		
+		  
+		curl_close($ch);
+		
+	}
+}
+
 if(!function_exists('refresh_fb_access_token'))
 {
    function refresh_fb_access_token($return_to_page)
@@ -259,7 +328,7 @@ if(!function_exists('refresh_fb_access_token'))
    
       if(empty($code)) {
          $dialog_url = "http://www.facebook.com/dialog/oauth?client_id="
-            . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email";
+            . $config['al_fb_id'] . "&redirect_uri=" . urlencode($my_url) . "&scope=user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email,publish_actions";
    
          
          page_header($user->lang['FB_REDIRECT']);
@@ -332,14 +401,6 @@ if(!function_exists('get_fb_data'))
       
       $error_check = json_decode($data);
       
-      if(isset($error_check->error))
-      {
-         if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
-         {
-            
-            refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
-         }
-      }
       
       curl_close($ch);
       
@@ -347,6 +408,230 @@ if(!function_exists('get_fb_data'))
    }
 }
 
+if(!function_exists('post_to_fb_user_wall'))
+{
+   function post_to_fb_user_wall($data, $users = null)
+   { 
+		global $user;
+		
+		$access_token = array();
+		
+		parse_str($user->data['session_fb_access_token'], $access_token);
+		
+		if(!isset($data['access_token']))
+		{
+			$data['access_token']		= $access_token['access_token'];
+		}
+		$data_string = "";
+		foreach($data as $key=>$value) 
+		{ 
+			$data_string .= $key.'='.$value.'&'; 
+		}
+		rtrim($fields_string, '&');
+		
+		if($users == null)
+		{
+			$url = "https://graph.facebook.com/" . $user->data['al_fb_id'] . "/feed";
+			
+			$ch = curl_init();
+			
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			
+			$data = curl_exec($ch);
+			
+			if(curl_errno($ch))
+			{
+			   add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
+			   return false;
+			}
+			
+			$error_check = json_decode($data);
+			
+			if(isset($error_check->error))
+			{
+			   if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
+			   {
+				  
+				  refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
+			   }
+			}
+		}
+		else
+		{
+			foreach($users as $u)
+			{
+				$url = "https://graph.facebook.com/" . $u . "/feed";
+			
+				$ch = curl_init();
+				
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				
+				$data = curl_exec($ch);
+				
+				if(curl_errno($ch))
+				{
+				   add_log('critical', 'FB_GET_USER_ERROR', $u, 'FB_GET_USER_ERROR', curl_error($ch));
+				   return false;
+				}
+				
+				$error_check = json_decode($data);
+				
+				if(isset($error_check->error))
+				{
+				   if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
+				   {
+					  
+					  refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
+				   }
+				}
+			}
+		}
+		curl_close($ch);
+		
+		return $data;
+   }
+}
+
+if(!function_exists('update_fb_user_status'))
+{
+   function update_fb_user_status($data)
+   { 
+		global $user;
+		
+		$access_token = array();
+		
+		parse_str($user->data['session_fb_access_token'], $access_token);
+		
+		$data['access_token']		= $access_token['access_token'];
+		$data['name']				= "phpbb_test";
+		$data_string = "";
+		foreach($data as $key=>$value) 
+		{ 
+			$data_string .= $key.'='.$value.'&'; 
+		}
+		rtrim($fields_string, '&');
+		
+		$url = "https://graph.facebook.com/" . $user->data['al_fb_id'] . "/feed";
+		
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		$data = curl_exec($ch);
+		
+		if(curl_errno($ch))
+		{
+		   add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
+		   return false;
+		}
+		
+		$error_check = json_decode($data);
+		
+		if(isset($error_check->error))
+		{
+		   if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
+		   {
+			  
+			  refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
+		   }
+		}
+		
+		curl_close($ch);
+		print_r($data);
+		return $data;
+   }
+}
+
+if(!function_exists('post_to_fb_page'))
+{
+   function post_to_fb_page($data)
+   { 
+		global $config, $user;
+		
+		
+		$data['access_token']		= $config['al_fb_page_token'];
+		
+		$data_string = "";
+		foreach($data as $key=>$value) 
+		{ 
+			$data_string .= $key.'='.$value.'&'; 
+		}
+		rtrim($fields_string, '&');
+		
+		$url = "https://graph.facebook.com/" . $config['al_fb_page_id'] . "/feed";
+		
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		$data = curl_exec($ch);
+		
+		if(curl_errno($ch))
+		{
+		   add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
+		   return false;
+		}
+		
+		$error_check = json_decode($data);
+		
+		if(isset($error_check->error))
+		{
+		   return false;
+		}
+		
+		curl_close($ch);
+		//print_r($data);
+		return $data;
+   }
+}
+
+if(!function_exists('publish_post_to_fb_page'))
+{
+	function publish_post_to_fb_page($data)
+	{
+		global $user;
+		print_r($data);
+		$post_data = array(
+			'message'		=> sprintf($user->lang['FB_TEMPLATE_POST_PUBLISHED'], $user->data['username'], $data['topic_title']),
+			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
+		);
+		
+		return post_to_fb_page($post_data);
+	}
+}
+
+/*if(!function_exists('post_curl'))
+{
+	function post_url($url, $params) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params, null, '&'));
+		$ret = curl_exec($ch);
+		curl_close($ch);
+		return $ret;
+  	}
+}*/
 
 if(!function_exists('php_self'))
 {
