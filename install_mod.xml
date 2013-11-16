@@ -825,7 +825,11 @@
 		<open src="styles/prosilver/template/overall_header.html">
 		<edit> 
 				<find><![CDATA[<meta name="description" content="" />]]></find> 
-				<action type="after-add"><![CDATA[<meta property="og:url" content="{U_PAGE_URL}" />]]></action> 
+				<action type="after-add"><![CDATA[<meta property="og:url" content="{U_PAGE_URL}" />
+<meta property="og:title" content="{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}" />
+<meta property="og:image" content="{SITE_LOGO_SRC}" />
+<meta property="og:type" content="website" />
+<meta property="fb:app_id" content="{AL_FB_APP_ID}" />]]></action> 
 			</edit> 
 			<edit> 
 			
@@ -1089,7 +1093,11 @@
 		<open src="styles/subsilver2/template/overall_header.html"> 
 		<edit> 
 				<find><![CDATA[<meta name="description" content="" />]]></find> 
-				<action type="after-add"><![CDATA[<meta property="og:url" content="{U_PAGE_URL}" />]]></action> 
+				<action type="after-add"><![CDATA[<meta property="og:url" content="{U_PAGE_URL}" />
+<meta property="og:title" content="{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}" />
+<meta property="og:image" content="{SITE_LOGO_SRC}" />
+<meta property="og:type" content="website" />
+<meta property="fb:app_id" content="{AL_FB_APP_ID}" />]]></action> 
 			</edit> 
 			<edit> 
 			
