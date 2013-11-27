@@ -655,6 +655,18 @@
                         'S_AL_OPENID'           => ($al_login_type == AL_OPENID_LOGIN) ? true : false,]]></action> 
 			</edit> 
 		</open> 
+		
+		<open src="includes/posting.php"> 
+			<edit> 
+				<find><![CDATA[$submit		= (isset($_POST['post'])) ? true : false;]]></find> 
+				<action type="replace-with"><![CDATA[$submit		= (isset($_POST['post']) || isset($_POST['submit_and_fb_post'])) ? true : false;
+$submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></action> 
+			</edit> 
+			<edit> 
+				<find><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_author_name, $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);]]></find> 
+				<action type="replace-with"><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_author_name, $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false, $submit_and_fb_post);]]></action> 
+			</edit> 
+		</open>
 		<open src="styles/prosilver/template/index_body.html"> 
 			<edit> 
 				<find><![CDATA[<!-- IF S_DISPLAY_SEARCH or (S_USER_LOGGED_IN and not S_IS_BOT) -->]]></find> 
