@@ -134,7 +134,13 @@ class acp_alternatelogin
 
 					set_config('al_fb_default_lang', $facebook_default_lang);
 					
+					$facebook_friends_list = request_var('facebook_friends_list', 0);
+
+					set_config('al_fb_friends_list', $facebook_friends_list);
 					
+					$facebook_topic_post_page = request_var('facebook_topic_post_page', 'en_GB');
+
+					set_config('al_facebook_topic_post_page', $facebook_topic_post_page);
 					
 					if($facebook_quick_accounts)
 					{
@@ -196,6 +202,10 @@ class acp_alternatelogin
 					'FACEBOOK_FACEPILE_NO'                  => $config['al_fb_facepile'] ? '' : 'checked="checked"',
 					'FACEBOOK_LIKE_BOX_YES'                 => $config['al_fb_like_box'] ? 'checked="checked"' : '',
 					'FACEBOOK_LIKE_BOX_NO'                  => $config['al_fb_like_box'] ? '' : 'checked="checked"',
+					'FACEBOOK_FRIENDS_LIST_YES'             => $config['al_fb_friends_list'] ? 'checked="checked"' : '',
+					'FACEBOOK_FRIENDS_LIST_NO'              => $config['al_fb_friends_list'] ? '' : 'checked="checked"',
+					'FACEBOOK_TOPIC_POST_TO_PAGE_YES'       => $config['al_facebook_topic_post_page'] ? 'checked="checked"' : '',
+					'FACEBOOK_TOPIC_POST_TO_PAGE_NO'        => $config['al_facebook_topic_post_page'] ? '' : 'checked="checked"',
 					'S_MODE_FACEBOOK'						=> true,
 					'U_ACTION'                              => $this->u_action,
 				));

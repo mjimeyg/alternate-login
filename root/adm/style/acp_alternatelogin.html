@@ -86,6 +86,7 @@
 <dt>{L_LOGIN_BUTTON_TEXT}</dt>
 <dd><input type="text" id="facebook_login_button_text" name="facebook_login_button_text" value="{FACEBOOK_LOGIN_BUTTON_TEXT}"></dd>
 </dl>
+
 <p /></p>
 <table>
 <col class="col1" /><col class="col2" /><col class="col2" />
@@ -104,11 +105,22 @@
 	<td><input type="radio" name="facebook_facepile" value="1" {FACEBOOK_FACEPILE_YES} /><label for="facebook_facepile">{L_YES}</label><input type="radio" name="facebook_facepile" value="0" {FACEBOOK_FACEPILE_NO} /><label for="facebook_facepile">{L_NO}</label></td>
 
 </tr>
-<tr class="row2">
+<tr class="row1">
 	<td>{L_FACEBOOK_LIKE_BOX}</td>
 	<td><input type="radio" name="facebook_like_box" value="1" {FACEBOOK_LIKE_BOX_YES} /><label for="facebook_page">{L_YES}</label><input type="radio" name="facebook_like_box" value="0" {FACEBOOK_LIKE_BOX_NO} /><label for="facebook_like_box">{L_NO}</label></td>
 
 </tr>
+<tr class="row2">
+	<td>{L_FACEBOOK_FRIENDS_INVITE}</td>
+	<td><input type="radio" name="facebook_friends_list" value="1" {FACEBOOK_FRIENDS_LIST_YES} /><label for="facebook_friends_list">{L_YES}</label><input type="radio" name="facebook_friends_list" value="0" {FACEBOOK_FRIENDS_LIST_NO} /><label for="facebook_friends_list">{L_NO}</label></td>
+
+</tr>
+<tr class="row1">
+	<td>{L_FACEBOOK_TOPIC_POST_TO_PAGE}</td>
+	<td><input type="radio" name="facebook_topic_post_page" value="1" {FACEBOOK_TOPIC_POST_TO_PAGE_YES} /><label for="facebook_topic_post_page">{L_YES}</label><input type="radio" name="facebook_topic_post_page" value="0" {FACEBOOK_TOPIC_POST_TO_PAGE_NO} /><label for="facebook_topic_post_page">{L_NO}</label></td>
+
+</tr>
+
 </table>
 <p class="submit-buttons">
 	<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
