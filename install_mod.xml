@@ -867,7 +867,7 @@
 		<open src="styles/prosilver/template/posting_editor.html"> 
 			<edit> 
 				<find><![CDATA[<input type="submit" accesskey="s" tabindex="6" name="post" value="{L_SUBMIT}" class="button1 default-submit-action" />&nbsp;]]></find> 
-				<action type="after-add"><![CDATA[<input type="image" value="submit_and_fb_post" src="../../../alternatelogin/create_fb_button.php?label=Submit%20and%20Post%20to%20Facebook" />&nbsp;]]></action> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><img src="../../../alternatelogin/create_fb_button.php?label=" /><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		
@@ -1187,6 +1187,12 @@
 			<edit> 
 				<find><![CDATA[<h2><a class="titles" href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>]]></find> 
 				<action type="after-add"><![CDATA[&nbsp;&nbsp;<fb:like href="{U_PAGE_URL}" show_faces="false" width="450" font="arial"></fb:like>]]></action> 
+			</edit> 
+		</open> 
+		<open src="styles/subsilver2/template/posting_body.html"> 
+			<edit> 
+				<find><![CDATA[&nbsp; <input class="btnlite" type="submit" accesskey="c" tabindex="9" name="cancel" value="{L_CANCEL}" />]]></find> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><img src="../../../alternatelogin/create_fb_button.php?label=" /><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		<php-installer><![CDATA[alternatelogin_mod_install.php]]></php-installer> 
