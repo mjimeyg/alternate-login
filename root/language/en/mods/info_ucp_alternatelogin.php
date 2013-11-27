@@ -64,9 +64,12 @@ $lang = array_merge($lang, array(
 		'LOGIN_BUTTON_TEXT'						=> 'Login button text',
 		'FB_FRIENDS_LIST_LABEL'					=> 'Invite Friends',
 		'FB_INVITE_DEFAULT_MESSAGE'				=> 'Come and check out this discussion!',
+		'FB_TOPIC_PAGE_TITLE'					=> '%1$s posted a new topic: %2$s',
+		'FB_USER_POST_TO_FEED_TITLE'			=> '%1$s replied to the topic \'%2$s\'',
 		
 		'FB_ERROR_NO_FRIENDS_SELECTED'			=> 'No friends were selected.',
 		'FB_ERROR_INVALID_URL'					=> 'An invalid url was passed.',
+		'FB_FAILED_TO_PUBLISH_TO_PAGE'			=> 'Failed to publish post to Facebook Page with error: %s',
 		
     
         'WL_SYNC'                               => 'Sync profile with Windows Live profile',
