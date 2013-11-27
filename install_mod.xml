@@ -667,6 +667,36 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 				<action type="replace-with"><![CDATA[$redirect_url = submit_post($mode, $post_data['post_subject'], $post_author_name, $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false, $submit_and_fb_post);]]></action> 
 			</edit> 
 		</open>
+		
+		<open src="includes/functions_posting.php"> 
+			<edit> 
+				<find><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true)]]></find> 
+				<action type="replace-with"><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true, $submit_and_fb_post = false)]]></action> 
+			</edit> 
+			<edit> 
+				<find><![CDATA[unset($sql_data[TOPICS_TABLE]['sql']);]]></find> 
+				<action type="before-add"><![CDATA[// Alternate Login Code for posting new topics to Facebook page.
+		if($config['al_facebook_topic_post_page'] && $config['al_fb_page_id'])
+		{
+			if(!($ret_data = publish_topic_to_fb_page($data)))
+			{
+				add_log('critical', $user->lang['FB_FAILED_TO_PUBLISH_TO_PAGE'], $ret_data);
+			}
+		}]]></action> 
+			</edit> 
+			<edit> 
+				<find><![CDATA[unset($sql_data[POSTS_TABLE]['sql']);]]></find> 
+				<action type="before-add"><![CDATA[if($submit_and_fb_post && $post_mode == 'reply')
+		{
+			
+			if(!($ret_data = publish_post_to_fb_user($data)))
+			{
+				echo 'FAILED' . $ret_data;
+			}
+		}]]></action> 
+			</edit> 
+		</open>
+		
 		<open src="styles/prosilver/template/index_body.html"> 
 			<edit> 
 				<find><![CDATA[<!-- IF S_DISPLAY_SEARCH or (S_USER_LOGGED_IN and not S_IS_BOT) -->]]></find> 
