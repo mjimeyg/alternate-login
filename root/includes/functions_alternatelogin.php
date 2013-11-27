@@ -620,6 +620,36 @@ if(!function_exists('publish_post_to_fb_page'))
 	}
 }
 
+if(!function_exists('publish_topic_to_fb_page'))
+{
+	function publish_topic_to_fb_page($data)
+	{
+		global $user;
+		$post_data = array(
+			'message'		=> vsprintf($user->lang['FB_TOPIC_PAGE_TITLE'], array($user->data['username'], $data['topic_title'])),
+			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
+		);
+		
+		return post_to_fb_page($post_data);
+	}
+}
+
+if(!function_exists('publish_post_to_fb_user'))
+{
+	function publish_post_to_fb_user($data)
+	{
+		global $user;
+		
+		$fb_user = get_fb_data('https://graph.facebook.com/me?access_token=' . $user->data['session_fb_access_token']);
+		$post_data = array(
+			'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($fb_user->name, $data['topic_title'])),
+			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
+		);
+		
+		return update_fb_user_status($post_data);
+	}
+}
+
 /*if(!function_exists('post_curl'))
 {
 	function post_url($url, $params) {
