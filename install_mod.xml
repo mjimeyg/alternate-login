@@ -874,8 +874,6 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 <meta property="fb:app_id" content="{AL_FB_APP_ID}" />]]></action> 
 			</edit> 
 			<edit> 
-			
-			<edit> 
 				<find><![CDATA[<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}">]]></find> 
 				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED --><div id="fb-root"></div><script src="http://connect.facebook.net/{S_FB_LOCALE}/all.js#appId={AL_FB_APPID}&xfbml=1"></script>  
 <script> 
