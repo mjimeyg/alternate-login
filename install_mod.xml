@@ -50,7 +50,7 @@
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
-			<target-version>3.0.11</target-version> 
+			<target-version>3.0.12</target-version> 
 		</installation> 
                 <history>
 				<entry>
@@ -656,7 +656,7 @@
 			</edit> 
 		</open> 
 		
-		<open src="includes/posting.php"> 
+		<open src="posting.php"> 
 			<edit> 
 				<find><![CDATA[$submit		= (isset($_POST['post'])) ? true : false;]]></find> 
 				<action type="replace-with"><![CDATA[$submit		= (isset($_POST['post']) || isset($_POST['submit_and_fb_post'])) ? true : false;
