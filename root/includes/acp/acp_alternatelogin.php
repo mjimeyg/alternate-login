@@ -105,6 +105,10 @@ class acp_alternatelogin
 					$facebook_page_id = request_var('facebook_page_id', '');
 
 					set_config('al_fb_page_id', $facebook_page_id, true);
+					
+					$facebook_page_token = request_var('facebook_page_token', '');
+
+					set_config('al_fb_page_token', $facebook_page_token, true);
                                         
 					$site_domain = request_var('site_domain', '');
 
@@ -146,6 +150,7 @@ class acp_alternatelogin
 					{
 						set_config('max_name_chars', 30);
 					}
+					
 
 					trigger_error($user->lang['ACP_ALTERNATELOGIN_SETTINGS_UPDATED'] . adm_back_link($this->u_action));
 				
@@ -191,6 +196,7 @@ class acp_alternatelogin
 					'FACEBOOK_KEY'  						=> $config['al_fb_key'],
 					'FACEBOOK_PAGE_URL'                     => $config['al_fb_page_url'],
 					'FACEBOOK_PAGE_ID'                     	=> $config['al_fb_page_id'],
+					'FACEBOOK_PAGE_TOKEN'					=> $config['al_fb_page_token'],
 					'SITE_DOMAIN'                           => $config['al_site_domain'],
 					'FACEBOOK_LOGIN_BUTTON_TEXT'			=> $config['al_fb_login_text'],
 					'FACEBOOK_DEFAULT_LANG'                 => (!isset($config['al_fb_default_lang'])) ? $this->fb_language_select('en_US') : $this->fb_language_select($config['al_fb_default_lang']),
