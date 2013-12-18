@@ -7,24 +7,30 @@
              xfbml: true});
 			 var page_id = "{AL_FB_PAGE_ID}";
 			$('#fb_get_page_token').unbind('click').bind('click', function(e){
-				console.log('here');
-				FB.getLoginStatus(function(response){
-					if(response.status !== 'connected'){
-						FB.login(function(response0){
-							
-						});
-					}
-					FB.api('/me/accounts', function(accounts){
-						console.log(accounts.data);
-						$.each(accounts.data, function(index, value){
-							console.log(value.id);
-							if(page_id == value.id){
-								console.log(value.access_token);
-								$('#facebook_page_token').val(value.access_token);
-							}
-						});
+				//console.log('here');
+				
+				FB.login(function(response0){
+					var access_token = FB.getAuthResponse()['accessToken'];
+					//console.log(access_token);
+					$.ajax('{BOARD_URL}/alternatelogin/generate_extended_token.php?access_token=' + access_token, {
+						dataType: 'json',
+						success: function(data){
+							console.log(data);
+							$.each(data.page_tokens.data, function(index, value){
+								//console.log(value);
+								if(page_id == value.id){
+									console.log(value.access_token);
+									
+									$('#facebook_page_token').val(value.access_token);
+								}
+							});
+						}
 					});
+					
+						
 				});
+					
+					
 			});
   
   };
