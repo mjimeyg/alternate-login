@@ -50,6 +50,7 @@ class CSAlternateLogin
 			'S_AL_WL_WRAP_CHANNEL'                          => isset($config['al_wl_channel']) ? $config['al_wl_channel'] : false,
 			'AL_FB_APP_ID'                                  => isset($config['al_fb_id']) ? $config['al_fb_id'] : false,
 			'AL_FB_PAGE_URL'                                => isset($config['al_fb_page_url']) ? $config['al_fb_page_url'] : false,
+			'AL_FB_PAGE_ID'									=> isset($config['al_fb_page_id']) ? $config['al_fb_page_id'] : false,
 			'FB_APP_ID'                                     => isset($config['al_fb_id']) ? $config['al_fb_id'] : false,
 			'AL_FB_USER_HIDE_ACTIVITY'                      => isset($user->data['al_fb_hide_activity']) ? $user->data['al_fb_hide_activity'] : false,
 			'AL_FB_USER_HIDE_FACEPILE'                      => isset($user->data['al_fb_hide_facepile']) ? $user->data['al_fb_hide_facepile'] : false,
