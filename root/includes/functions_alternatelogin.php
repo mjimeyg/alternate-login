@@ -92,6 +92,8 @@ if(!defined('HTTP_POST'))
 	define('HTTP_POST', 1);
 }
 
+
+
 if(!function_exists('get_wl_tokens'))
 {
    function get_wl_tokens($cid, $authorization_code, $refresh_token)
@@ -253,35 +255,49 @@ if(!function_exists('get_fb_page_token'))
 {
 	function get_fb_page_token($access_token)
 	{
-		global $user, $config;
-		
-		parse_str($access_token, $access_token);
-		$url = "https://graph.facebook.com/" . $user->data['al_fb_id'] . "/accounts?access_token=" . $access_token['access_token'];
-		
-		
-		$ch = curl_init();
-		
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_HTTPGET, true);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		  
-		 // $access_token = array();
-		  
-		$accounts = json_decode(curl_exec($ch), true);
-		
-		foreach($accounts['data'] as $a)
+		try
 		{
-			if($a['id'] == $config['al_fb_page_id'])
+			global $user, $config;
+			
+			parse_str($access_token, $access_token);
+			$url = "https://graph.facebook.com/" . $user->data['al_fb_id'] . "/accounts?access_token=" . $access_token['access_token'];
+			
+			
+			$ch = curl_init();
+			
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+			curl_setopt($ch, CURLOPT_HTTPGET, true);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			  
+			 // $access_token = array();
+			  
+			$accounts = json_decode(curl_exec($ch), true);
+			
+			if(isset($accounts['error']))
 			{
-				set_config('al_fb_page_token', $a['access_token']);
+				add_log('critical', $accounts['error']['message']);
+				return false;
 			}
+			
+			foreach($accounts['data'] as $a)
+			{
+				if($a['id'] == $config['al_fb_page_id'])
+				{
+					set_config('al_fb_page_token', $a['access_token']);
+				}
+			}
+			
+			
+			  
+			curl_close($ch);
 		}
-		
-		
-		  
-		curl_close($ch);
+		catch(Exception $ex)
+		{
+			add_log('critical', $ex->getMessage());
+			return false;
+		}
 		
 	}
 }
@@ -585,7 +601,7 @@ if(!function_exists('post_to_fb_page'))
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		
 		$data = curl_exec($ch);
-		
+		echo $data;
 		if(curl_errno($ch))
 		{
 		   add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
@@ -600,7 +616,7 @@ if(!function_exists('post_to_fb_page'))
 		}
 		
 		curl_close($ch);
-		//print_r($data);
+		
 		return $data;
    }
 }
