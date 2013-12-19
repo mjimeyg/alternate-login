@@ -867,7 +867,8 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 		<open src="styles/prosilver/template/overall_header.html">
 		<edit> 
 				<find><![CDATA[<meta name="description" content="" />]]></find> 
-				<action type="after-add"><![CDATA[<meta property="og:url" content="{U_PAGE_URL}" />
+				<action type="after-add"><![CDATA[<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<meta property="og:url" content="{U_PAGE_URL}" />
 <meta property="og:title" content="{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}" />
 <meta property="og:image" content="{SITE_LOGO_SRC}" />
 <meta property="og:type" content="website" />
@@ -1133,7 +1134,8 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 		<open src="styles/subsilver2/template/overall_header.html"> 
 		<edit> 
 				<find><![CDATA[<meta name="description" content="" />]]></find> 
-				<action type="after-add"><![CDATA[<meta property="og:url" content="{U_PAGE_URL}" />
+				<action type="after-add"><![CDATA[<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<meta property="og:url" content="{U_PAGE_URL}" />
 <meta property="og:title" content="{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}" />
 <meta property="og:image" content="{SITE_LOGO_SRC}" />
 <meta property="og:type" content="website" />
