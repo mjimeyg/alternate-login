@@ -251,6 +251,51 @@ if(!function_exists('get_fb_access_token'))
    }
 }
 
+if(!function_exists('get_fb_extended_tokens'))
+{
+	function get_fb_extended_tokens($short_token)
+	{
+		global $config;
+		$user_token = array();
+		
+		$url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id={$config['al_fb_id']}&client_secret={$config['al_fb_secret']}&fb_exchange_token={$short_token}";
+		
+		$ch = curl_init();
+			  
+			  
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		
+		parse_str(curl_exec($ch), $user_token);
+		
+		if(curl_errno($ch))
+		{
+		   add_log('critical', curl_error($ch));
+		}
+		
+		$url = "https://graph.facebook.com/me/accounts?access_token=" . $user_token['access_token'];
+		
+		curl_setopt($ch, CURLOPT_URL, $url);
+		
+		$page_tokens = json_decode(curl_exec($ch), true);
+		
+		if(curl_errno($ch))
+		{
+		   add_log('critical', curl_error($ch));
+		}
+		
+		curl_close($ch);
+		
+		$data = array(
+			'user_token'	=> $user_token,
+			'page_tokens'	=> $page_tokens,
+		);
+		
+		echo json_encode($data);
+	}
+}
+
 if(!function_exists('get_fb_page_token'))
 {
 	function get_fb_page_token($access_token)
