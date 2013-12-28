@@ -43,7 +43,7 @@ if(!isset($_REQUEST['access_token']))
 
 $short_token = request_var('access_token', '');
 
-$data = get_fb_extended_token($short_token);
+$data = get_fb_extended_tokens($short_token);
 
 echo json_encode($data);
 
