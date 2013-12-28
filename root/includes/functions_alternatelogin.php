@@ -292,7 +292,7 @@ if(!function_exists('get_fb_extended_tokens'))
 			'page_tokens'	=> $page_tokens,
 		);
 		
-		echo $data;
+		return $data;
 	}
 }
 
