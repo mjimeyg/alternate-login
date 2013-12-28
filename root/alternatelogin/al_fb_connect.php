@@ -48,6 +48,13 @@ $admin = request_var('admin', 0);
 
 $access_token = get_fb_access_token($return_to_page);
 
+$short_token = array();
+parse_str($access_token, $short_token);
+
+$tokens = get_fb_extended_tokens($short_token['access_token']);
+
+$access_token = "access_token=" . $tokens['user_token']['access_token'];
+
 if(!$access_token)
 {
     add_log('critical', $user->data['user_id'], 'FB_ERROR_ACCESS_TOKEN');
