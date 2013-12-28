@@ -15,11 +15,11 @@
 					$.ajax('{BOARD_URL}/alternatelogin/generate_extended_token.php?access_token=' + access_token, {
 						dataType: 'json',
 						success: function(data){
-							console.log(data);
+							//console.log(data);
 							$.each(data.page_tokens.data, function(index, value){
 								//console.log(value);
 								if(page_id == value.id){
-									console.log(value.access_token);
+									//console.log(value.access_token);
 									
 									$('#facebook_page_token').val(value.access_token);
 								}
