@@ -62,7 +62,10 @@ class CSAlternateLogin
 			'S_FB_LOCALE'                                   => isset($fb_lang) ? $fb_lang : 'en_GB',
 			'S_RETURN_TO_PAGE'                              => "?return_to_page=" . base64_encode(build_url()),
 			
+			'AL_PATH'										=> generate_board_url() . '/alternatelogin/',
+			
 			'U_PAGE_URL'                    				=> generate_board_url() . substr(build_url(), 1),//generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
+			'SITE_LOGO_SRC'									=> generate_board_url() . substr($user->img('site_logo', '', false, '', 'src'), 1)
 		));
 		
 		
