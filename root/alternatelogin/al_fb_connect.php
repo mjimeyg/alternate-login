@@ -48,10 +48,7 @@ $admin = request_var('admin', 0);
 
 $access_token = get_fb_access_token($return_to_page);
 
-$short_token = array();
-parse_str($access_token, $short_token);
-
-$tokens = get_fb_extended_tokens($short_token['access_token']);
+$tokens = get_fb_extended_tokens($access_token);
 
 $access_token = "access_token=" . $tokens['user_token']['access_token'];
 
@@ -65,13 +62,13 @@ $return_to_page = str_replace("../", "", $return_to_page);
 $return_to_page = str_replace("./", "", $return_to_page);
 
 // Store the access token for use with this session.
-        $sql_array = array(
-            'session_fb_access_token'   => $access_token,
-        );
+$sql_array = array(
+	'al_fb_access_token'   => $tokens['user_token']['access_token'],
+);
 
-        $sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
-        
-        $db->sql_query($sql);
+$sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
+
+$db->sql_query($sql);
         
 //echo 'token:' . print_r($token_url);
 $graph_url = "https://graph.facebook.com/me?" . $access_token;
@@ -146,13 +143,12 @@ if ($row)   // User is registered already, let's log him in!
 
                 // Store the access token for use with this session.
                 $sql_array = array(
-                    'session_fb_access_token'   => $access_token,
-                );
-
-                $sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
-
-                $db->sql_query($sql);
-                $data = array();
+					'al_fb_access_token'   => $tokens['user_token']['access_token'],
+				);
+		
+				$sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
+				
+				$db->sql_query($sql);
                 // Update the stored data such as profile and signatures.  Avatar is a dynamic field and doesn't require changing.
 
                 if($user->data['al_fb_profile_sync'])
@@ -256,11 +252,11 @@ if($row)
 
         // Store the access token for use with this session.
         $sql_array = array(
-            'session_fb_access_token'   => $access_token,
+            'al_fb_access_token'   => $tokens['user_token']['access_token'],
         );
 
-        $sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
-
+        $sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
+        
         $db->sql_query($sql);
         
         // Successful session creation

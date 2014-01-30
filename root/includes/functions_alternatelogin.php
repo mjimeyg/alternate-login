@@ -232,9 +232,9 @@ if(!function_exists('get_fb_access_token'))
       
       curl_setopt($ch, CURLOPT_HTTPGET, true);
       
-     // $access_token = array();
+      $access_token = array();
 	  
-      $access_token = curl_exec($ch);
+      parse_str(curl_exec($ch), $access_token);
       
       
       if(curl_errno($ch))
@@ -247,7 +247,7 @@ if(!function_exists('get_fb_access_token'))
       
       //$access_token = file_get_contents($token_url);
    
-      return $access_token;
+      return $access_token['access_token'];
    }
 }
 
@@ -477,11 +477,10 @@ if(!function_exists('post_to_fb_user_wall'))
 		
 		$access_token = array();
 		
-		parse_str($user->data['session_fb_access_token'], $access_token);
 		
-		if(!isset($data['access_token']))
+		if(!isset($user->data['al_fb_access_token']))
 		{
-			$data['access_token']		= $access_token['access_token'];
+			$data['access_token']		= $user->data['al_fb_access_token'];
 		}
 		$data_string = "";
 		foreach($data as $key=>$value) 
@@ -571,9 +570,7 @@ if(!function_exists('update_fb_user_status'))
 		
 		$access_token = array();
 		
-		parse_str($user->data['session_fb_access_token'], $access_token);
-		
-		$data['access_token']		= $access_token['access_token'];
+		$data['access_token']		= $user->data['al_fb_access_token'];
 		$data['name']				= "phpbb_test";
 		$data_string = "";
 		foreach($data as $key=>$value) 
@@ -613,7 +610,6 @@ if(!function_exists('update_fb_user_status'))
 		}
 		
 		curl_close($ch);
-		print_r($data);
 		return $data;
    }
 }
@@ -646,7 +642,6 @@ if(!function_exists('post_to_fb_page'))
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		
 		$data = curl_exec($ch);
-		echo $data;
 		if(curl_errno($ch))
 		{
 		   add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
@@ -671,7 +666,6 @@ if(!function_exists('publish_post_to_fb_page'))
 	function publish_post_to_fb_page($data)
 	{
 		global $user;
-		print_r($data);
 		$post_data = array(
 			'message'		=> sprintf($user->lang['FB_TEMPLATE_POST_PUBLISHED'], $user->data['username'], $data['topic_title']),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
@@ -711,18 +705,6 @@ if(!function_exists('publish_post_to_fb_user'))
 	}
 }
 
-/*if(!function_exists('post_curl'))
-{
-	function post_url($url, $params) {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params, null, '&'));
-		$ret = curl_exec($ch);
-		curl_close($ch);
-		return $ret;
-  	}
-}*/
 
 if(!function_exists('php_self'))
 {
