@@ -53,7 +53,7 @@ class ucp_alternatelogin
 		if($user->data['al_fb_id'])
 		{
 			
-			$graph_url = "https://graph.facebook.com/me?fields,address,website,work,birthday&" . $user->data['session_fb_access_token'];
+			$graph_url = "https://graph.facebook.com/me?fields,address,website,work,birthday&access_token=" . $user->data['al_fb_access_token'];
 						
             $fb_user = json_decode(get_fb_data($graph_url));
 			$fb_website = isset($fb_user->website) ? $fb_user->website : false;
@@ -69,13 +69,13 @@ class ucp_alternatelogin
 				$birth_date = explode('/', $fb_user->birthday);
 				$fb_birthday = $birth_date[1] . '-' . $birth_date[0] . '-' . $birth_date[2];
 			}
-			$graph_url = "https://graph.facebook.com/me?fields=picture&" . $user->data['session_fb_access_token'];
+			$graph_url = "https://graph.facebook.com/me?fields=picture&access_token=" . $user->data['al_fb_access_token'];
 
             $fb_user = json_decode(get_fb_data($graph_url));
 			
 			$fb_avatar = (!$fb_user->picture) ? false : $fb_user->picture->data->url;
 			
-			$graph_url = "https://graph.facebook.com/me?fields=statuses&" . $user->data['session_fb_access_token'];
+			$graph_url = "https://graph.facebook.com/me?fields=statuses&access_token=" . $user->data['al_fb_access_token'];
  
             $fb_user = json_decode(get_fb_data($graph_url));
 			
