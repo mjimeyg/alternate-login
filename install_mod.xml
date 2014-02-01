@@ -872,6 +872,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 <meta property="og:title" content="{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}" />
 <meta property="og:image" content="{SITE_LOGO_SRC}" />
 <meta property="og:type" content="website" />
+<meta property="og:description" content="{AL_FB_SITE_DESCRIPTION}" />
 <meta property="fb:app_id" content="{AL_FB_APP_ID}" />]]></action> 
 			</edit> 
 			<edit> 
@@ -1139,6 +1140,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 <meta property="og:title" content="{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}" />
 <meta property="og:image" content="{SITE_LOGO_SRC}" />
 <meta property="og:type" content="website" />
+<meta property="og:description" content="{AL_FB_SITE_DESCRIPTION}" />
 <meta property="fb:app_id" content="{AL_FB_APP_ID}" />]]></action> 
 			</edit> 
 			<edit> 
