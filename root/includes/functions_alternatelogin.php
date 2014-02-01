@@ -705,6 +705,53 @@ if(!function_exists('publish_post_to_fb_user'))
 	}
 }
 
+/**
+* Get user avatar filename - Adapted from functions_display:get_user_avatar()
+*
+* @param string $avatar Users assigned avatar name
+* @param int $avatar_type Type of avatar
+* @param string $avatar_width Width of users avatar
+* @param string $avatar_height Height of users avatar
+* @param string $alt Optional language string for alt tag within image, can be a language key or text
+* @param bool $ignore_config Ignores the config-setting, to be still able to view the avatar in the UCP
+*
+* @return string Avatar image
+*/
+if(!function_exists(get_user_avatar_filename))
+{
+	function get_user_avatar_filename($avatar, $avatar_type)
+	{
+		global $user, $config, $phpbb_root_path, $phpEx;
+	
+		if (empty($avatar) || !$avatar_type || !$config['allow_avatar'])
+		{
+			return '';
+		}
+		
+		$avatar_img = '';
+	
+		switch ($avatar_type)
+		{
+			case AVATAR_UPLOAD:
+				
+				$avatar_img = generate_board_url() . substr($phpbb_root_path . "download/file.$phpEx?avatar=", 1);
+			break;
+	
+			case AVATAR_GALLERY:
+				
+				$avatar_img = generate_board_url() . substr($phpbb_root_path . $config['avatar_gallery_path'] . '/', 1);
+			break;
+	
+			case AVATAR_REMOTE:
+				
+			break;
+		}
+	
+		$avatar_img .= $avatar;
+		return str_replace(' ', '%20', $avatar_img);
+	}
+}
+
 
 if(!function_exists('php_self'))
 {
