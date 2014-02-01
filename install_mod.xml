@@ -676,11 +676,39 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 			<edit> 
 				<find><![CDATA[unset($sql_data[TOPICS_TABLE]['sql']);]]></find> 
 				<action type="before-add"><![CDATA[// Alternate Login Code for posting new topics to Facebook page.
-		if($config['al_facebook_topic_post_page'] && $config['al_fb_page_id'])
+		if($config['al_facebook_topic_post_page'] && $config['al_fb_page_id'] && $post_approval)
 		{
-			if(!($ret_data = publish_topic_to_fb_page($data)))
+			if(!($ret_data = publish_topic_to_fb_page(array_merge($data, array('username' => $user->data['username'])))))
 			{
 				add_log('critical', $user->lang['FB_FAILED_TO_PUBLISH_TO_PAGE'], $ret_data);
+			}
+		}
+		if($submit_and_fb_post && $post_mode == 'post')
+		{
+			
+			if($post_approval)
+			{
+				
+				
+				if(!($ret_data = publish_post_to_fb_user($data)))
+				{
+					echo 'FAILED' . $ret_data;
+				}
+			}
+			else
+			{
+				$access_token = array();
+				parse_str($user->data['session_fb_access_token'], $access_token);
+				$fb_user = array(
+					'access_token'	=> $access_token['access_token'],
+					'fb_id'			=> $user->data['al_fb_id'],
+					'username'		=> $user->data['username']
+				);
+				
+				$sql = 'UPDATE ' . POSTS_TABLE . '
+					SET post_fb="' . $db->sql_escape(json_encode($fb_user)) . '"
+					WHERE post_id = ' . $data['post_id'];
+				$db->sql_query($sql);
 			}
 		}]]></action> 
 			</edit> 
