@@ -675,7 +675,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 			</edit> 
 			<edit> 
 				<find><![CDATA[unset($sql_data[TOPICS_TABLE]['sql']);]]></find> 
-				<action type="before-add"><![CDATA[// Alternate Login Code for posting new topics to Facebook page.
+				<action type="before-add"><![CDATA[		// Alternate Login Code for posting new topics to Facebook page.
 		if($config['al_facebook_topic_post_page'] && $config['al_fb_page_id'] && $post_approval)
 		{
 			if(!($ret_data = publish_topic_to_fb_page(array_merge($data, array('username' => $user->data['username'])))))
@@ -697,10 +697,8 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 			}
 			else
 			{
-				$access_token = array();
-				parse_str($user->data['session_fb_access_token'], $access_token);
 				$fb_user = array(
-					'access_token'	=> $access_token['access_token'],
+					'access_token'	=> $user->data['al_fb_access_token'],
 					'fb_id'			=> $user->data['al_fb_id'],
 					'username'		=> $user->data['username']
 				);
@@ -723,6 +721,49 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 			}
 		}]]></action> 
 			</edit> 
+		</open>
+		<open src="includes/mcp/mcp_queue.php"> 
+			<edit> 
+				<find><![CDATA[else
+			{
+				$approve_log[] = array(
+					'type'			=> 'post',
+					'post_subject'	=> $post_data['post_subject'],
+					'forum_id'		=> $post_data['forum_id'],
+					'topic_id'		=> $post_data['topic_id'],
+				);
+			}]]></find> 
+				<action type="after-add"><![CDATA[if($config['al_facebook_topic_post_page'] && ($post_data['topic_first_post_id'] == $post_id))
+			{
+				$fb_result = publish_topic_to_fb_page($post_data);
+				$fb_result = json_decode($fb_result);
+				if(isset($fb_result->error))
+				{
+					add_log('critical', $fb_result->error->message);
+				}
+			}
+			
+			if($post_data['post_fb'] != '')
+			{
+				
+				if($post_data['topic_first_post_id'] == $post_id)
+				{
+					
+					$fb_result = publish_post_to_fb_user($post_data);
+					
+				}
+				else
+				{
+					$fb_result = publish_post_to_fb_user($post_data);
+				}
+				$fb_result = json_decode($fb_result);
+				if(isset($fb_result->error))
+				{
+					add_log('critical', $fb_result->error->message);
+				}
+			}]]></action> 
+			</edit> 
+			
 		</open>
 		
 		<open src="styles/prosilver/template/index_body.html"> 
@@ -807,7 +848,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="{AL_PATH}create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
       
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
@@ -857,7 +898,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="{AL_PATH}create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
       
       
       <!-- IF S_AL_OI_ENABLED --> 
@@ -931,13 +972,13 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 			</edit> 
 			<edit> 
 				<find><![CDATA[<!-- IF S_DISPLAY_MEMBERLIST --><li class="icon-members"><a href="{U_MEMBERLIST}" title="{L_MEMBERLIST_EXPLAIN}">{L_MEMBERLIST}</a></li><!-- ENDIF -->]]></find> 
-				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED and S_AL_FB_USER and AL_FB_FRIENDS_LIST --><li class="icon-members"><a href="#" id="al_fb_friends_list_button" ><img src="../../../alternatelogin/create_fb_button.php?label={AL_FB_FRIENDS_LIST_LABEL}" /></a></li><!-- ENDIF -->]]></action> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED and S_AL_FB_USER and AL_FB_FRIENDS_LIST --><li class="icon-members"><a href="#" id="al_fb_friends_list_button" ><img src="{AL_PATH}create_fb_button.php?label={AL_FB_FRIENDS_LIST_LABEL}" /></a></li><!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		<open src="styles/prosilver/template/posting_editor.html"> 
 			<edit> 
 				<find><![CDATA[<input type="submit" accesskey="s" tabindex="6" name="post" value="{L_SUBMIT}" class="button1 default-submit-action" />&nbsp;]]></find> 
-				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><img src="../../../alternatelogin/create_fb_button.php?label=" /><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><img src="{AL_PATH}create_fb_button.php?label=" /><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		
@@ -1075,7 +1116,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="{AL_PATH}create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
       
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
@@ -1125,7 +1166,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="{AL_PATH}create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
          
         
         <!-- IF S_AL_OI_ENABLED --> 
@@ -1198,7 +1239,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 			</edit> 
 			<edit> 
 				<find><![CDATA[<!-- IF S_DISPLAY_MEMBERLIST -->&nbsp; &nbsp;<a href="{U_MEMBERLIST}"><img src="{T_THEME_PATH}/images/icon_mini_members.gif" width="12" height="13" alt="*" /> {L_MEMBERLIST}</a><!-- ENDIF -->]]></find> 
-				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED and S_AL_FB_USER and AL_FB_FRIENDS_LIST --><li class="icon-members"><a href="#" id="al_fb_friends_list_button" ><img src="../../../alternatelogin/create_fb_button.php?label={AL_FB_FRIENDS_LIST_LABEL}" /></a></li><!-- ENDIF -->]]></action> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_ENABLED and S_AL_FB_USER and AL_FB_FRIENDS_LIST --><li class="icon-members"><a href="#" id="al_fb_friends_list_button" ><img src="{AL_PATH}create_fb_button.php?label={AL_FB_FRIENDS_LIST_LABEL}" /></a></li><!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		
@@ -1212,11 +1253,11 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
  <h3>{L_SOCIAL_LOGIN_OPTIONS}</h3> 
                 <br /> 
             <!-- IF S_AL_WL_ENABLED --> 
-            <a href="{U_AL_WL_AUTHORIZE}"><img src="alternatelogin/images/windows_live_connect.png" alt="Windows Live" /></a> 
+            <a href="{U_AL_WL_AUTHORIZE}"><img src="{AL_PATH}images/windows_live_connect.png" alt="Windows Live" /></a> 
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="./alternatelogin/create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
+            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="{AL_PATH}create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
         
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
@@ -1262,7 +1303,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 		<open src="styles/subsilver2/template/posting_body.html"> 
 			<edit> 
 				<find><![CDATA[&nbsp; <input class="btnlite" type="submit" accesskey="c" tabindex="9" name="cancel" value="{L_CANCEL}" />]]></find> 
-				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><img src="../../../alternatelogin/create_fb_button.php?label=" /><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><img src="{AL_PATH}create_fb_button.php?label=" /><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		<php-installer><![CDATA[alternatelogin_mod_install.php]]></php-installer> 
