@@ -102,7 +102,7 @@ class CSAlternateLogin
 			'AL_PATH'										=> generate_board_url() . '/alternatelogin/',
 			
 			'U_PAGE_URL'                    				=> generate_board_url() . substr(build_url(), 1),//generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
-			'SITE_LOGO_SRC'									=> isset($site_image) ? $site_image : generate_board_url() . substr($user->img('site_logo', '', false, '', 'src'), 1)
+			'SITE_LOGO_SRC'									=> $site_image !== '' ? $site_image : generate_board_url() . substr($user->img('site_logo', '', false, '', 'src'), 1)
 		));
 		
 		
