@@ -429,10 +429,10 @@ if(!function_exists('refresh_fb_access_token'))
       curl_close($ch);
       
       $sql_array = array(
-         'session_fb_access_token'   => $access_token,
+         'al_fb_access_token'   => $access_token,
       );
    
-      $sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
+      $sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['user_id'] . "'";
       
       $db->sql_query($sql);
    
@@ -564,14 +564,10 @@ if(!function_exists('post_to_fb_user_wall'))
 
 if(!function_exists('update_fb_user_status'))
 {
-   function update_fb_user_status($data)
+   function update_fb_user_status($data, $fb_id)
    { 
 		global $user;
 		
-		$access_token = array();
-		
-		$data['access_token']		= $user->data['al_fb_access_token'];
-		$data['name']				= "phpbb_test";
 		$data_string = "";
 		foreach($data as $key=>$value) 
 		{ 
@@ -579,7 +575,7 @@ if(!function_exists('update_fb_user_status'))
 		}
 		rtrim($fields_string, '&');
 		
-		$url = "https://graph.facebook.com/" . $user->data['al_fb_id'] . "/feed";
+		$url = "https://graph.facebook.com/" . $fb_id . "/feed";
 		
 		$ch = curl_init();
 		
@@ -694,14 +690,41 @@ if(!function_exists('publish_post_to_fb_user'))
 	function publish_post_to_fb_user($data)
 	{
 		global $user;
+		$access_token = $fb_id = $name = null;
 		
-		$fb_user = get_fb_data('https://graph.facebook.com/me?access_token=' . $user->data['session_fb_access_token']);
+		if($data['post_fb'])
+		{
+			
+			$post_fb = json_decode($data['post_fb']);
+			$fb_id = $post_fb->fb_id;
+			$access_token = $post_fb->access_token;
+			$name = $post_fb->name;
+		}
+		else
+		{
+			
+			$access_token = $user->data['al_fb_access_token'];
+			$name = $user->data['username'];
+			$fb_id = $user->data['al_fb_id'];
+		}
+		$fb_user = get_fb_data('https://graph.facebook.com/me?access_token=' . $access_token);
+		
+		$fb_user = json_encode($fb_user);
+		
+		if(isset($fb_user->error))
+		{
+			add_log('critical', $fb_user->error->message);
+			return $fb_user;
+		}
+		
 		$post_data = array(
 			'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($fb_user->name, $data['topic_title'])),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
+			'access_token'	=> $access_token,
+			'name'			=> $name,
 		);
 		
-		return update_fb_user_status($post_data);
+		return update_fb_user_status($post_data, $fb_id);
 	}
 }
 
