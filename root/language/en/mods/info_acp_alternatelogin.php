@@ -80,6 +80,8 @@ $lang = array_merge($lang, array(
         'FACEBOOK_FACEPILE'                                     => 'Facebook Facepile',
         'FACEBOOK_STREAM'                                       => 'Facebook Stream',
         'FACEBOOK_LIKE_BOX'                                     => 'Facebook Like Box',
+		'FACEBOOK_FRIENDS_INVITE'								=> 'Facebook Invites',
+		'FACEBOOK_TOPIC_POST_TO_PAGE'							=> 'Post new topics to Facebook Page (Requires Facebook Page Url and Page ID.)',
     
         'WINDOWSLIVE_CLIENT_ID'                                 => 'Windows Live App ID',
         'WINDOWSLIVE_SECRET'                                    => 'Windows Live Secret',
