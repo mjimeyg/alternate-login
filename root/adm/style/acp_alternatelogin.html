@@ -12,7 +12,7 @@
 				FB.login(function(response0){
 					var access_token = FB.getAuthResponse()['accessToken'];
 					//console.log(access_token);
-					$.ajax('{BOARD_URL}/alternatelogin/generate_extended_token.php?access_token=' + access_token, {
+					$.ajax('{AL_PATH}/generate_extended_token.php?access_token=' + access_token, {
 						dataType: 'json',
 						success: function(data){
 							//console.log(data);
