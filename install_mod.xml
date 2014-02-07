@@ -46,13 +46,31 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2013.08.03.01</mod-version> 
+		<mod-version>2014.02.08.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.12</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2014.02.08</date>
+					<rev-version>2014.02.08.01</rev-version>
+					<changelog lang="en">
+						<change>subsilver2/templates/posting_editor.html: Removed Facebook image from submit button on posting form.</change>
+						<change>prosilver/templates/posting_editor.html: Removed Facebook image from submit button on posting form.</change>
+						<change>alternatelogin_mod_install.php: Added fields for USERS.al_fb_access_token and POSTS.post_fb.</change>
+						<change>acp_alternatelogin.html: Changed Ajax call to use custom AL_PATH.</change>
+						<change>al_fb_connect.php: Altered code to obtain extended user token and store it in USERS database.</change>
+						<change>functions_alternatelogin.php: Added function to obtain extended access tokens, page access tokens as well as functions to handle posting to Page and User wall.</change>
+						<change>generate_extended_token.php: Added file to handle ajax calls to get extended access token.</change>
+						<change>acp_alternatelogin.php: Added code to enable setting of Facebook Page Access Token.</change>
+						<change>hook_alternatelogin.php: Altered code to use $user->data['al_fb_access_token']</change>
+						<change>ucp_alternatelogin.php: Altered fb api calls to use al_fb_access_token instead of session_fb_access_token.</change>
+						<change>info_acp_alternatelogin.php: Added new keys for Facebook Invites and Posting topic to page.</change>
+						<change>info_ucp_alternatelogin.php: Added keys for posting to FB.</change>
+					</changelog>
+				</entry>
 				<entry>
 					<date>2013.10.21</date>
 					<rev-version>2013.10.21.01</rev-version>
