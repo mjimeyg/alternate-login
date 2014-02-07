@@ -16,9 +16,9 @@ class CSAlternateLogin
 		// Begin Alternate Login code
         require_once($phpbb_root_path . 'includes/functions_alternatelogin.php'); // Include the functions for Alternate Login module
         $user->add_lang('mods/info_ucp_alternatelogin');
-        if(isset($user->data['session_fb_access_token']))
+        if(isset($user->data['al_fb_access_token']))
         {
-            $graph_url = "https://graph.facebook.com/me?" . $user->data['session_fb_access_token'];
+            $graph_url = "https://graph.facebook.com/me?" . $user->data['al_fb_access_token'];
 
 
             $fb_user = json_decode(get_fb_data($graph_url));
