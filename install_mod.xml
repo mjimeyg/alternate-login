@@ -978,7 +978,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 		<open src="styles/prosilver/template/posting_editor.html"> 
 			<edit> 
 				<find><![CDATA[<input type="submit" accesskey="s" tabindex="6" name="post" value="{L_SUBMIT}" class="button1 default-submit-action" />&nbsp;]]></find> 
-				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><img src="{AL_PATH}create_fb_button.php?label=" /><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		
@@ -1303,7 +1303,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 		<open src="styles/subsilver2/template/posting_body.html"> 
 			<edit> 
 				<find><![CDATA[&nbsp; <input class="btnlite" type="submit" accesskey="c" tabindex="9" name="cancel" value="{L_CANCEL}" />]]></find> 
-				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><img src="{AL_PATH}create_fb_button.php?label=" /><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
+				<action type="after-add"><![CDATA[<!-- IF S_AL_FB_USER --><input type="submit" name="submit_and_fb_post" value="Submit and Post to Facebook" />&nbsp;<!-- ENDIF -->]]></action> 
 			</edit> 
 		</open> 
 		<php-installer><![CDATA[alternatelogin_mod_install.php]]></php-installer> 
