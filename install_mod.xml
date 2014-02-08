@@ -770,10 +770,9 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 					$fb_result = publish_post_to_fb_user($post_data);
 					
 				}
-				else
-				{
-					$fb_result = publish_post_to_fb_user($post_data);
-				}
+				
+				$fb_result = publish_post_to_fb_user($post_data);
+				
 				$fb_result = json_decode($fb_result);
 				if(isset($fb_result->error))
 				{
