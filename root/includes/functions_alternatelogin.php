@@ -676,8 +676,23 @@ if(!function_exists('publish_topic_to_fb_page'))
 	function publish_topic_to_fb_page($data)
 	{
 		global $user;
+		if($data['post_fb'])
+		{
+			
+			$post_fb = json_decode($data['post_fb']);
+			$fb_id = $post_fb->fb_id;
+			$access_token = $post_fb->access_token;
+			$name = $post_fb->name;
+		}
+		else
+		{
+			
+			$access_token = $user->data['al_fb_access_token'];
+			$name = $user->data['username'];
+			$fb_id = $user->data['al_fb_id'];
+		}
 		$post_data = array(
-			'message'		=> vsprintf($user->lang['FB_TOPIC_PAGE_TITLE'], array($user->data['username'], $data['topic_title'])),
+			'message'		=> vsprintf($user->lang['FB_TOPIC_PAGE_TITLE'], array($name, $data['topic_title'])),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
 		);
 		
