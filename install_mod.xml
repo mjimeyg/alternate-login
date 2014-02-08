@@ -691,10 +691,11 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 				<find><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true)]]></find> 
 				<action type="replace-with"><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true, $submit_and_fb_post = false)]]></action> 
 			</edit> 
+			
 			<edit> 
-				<find><![CDATA[unset($sql_data[TOPICS_TABLE]['sql']);]]></find> 
+				<find><![CDATA[unset($sql_data[POSTS_TABLE]['sql']);]]></find> 
 				<action type="before-add"><![CDATA[		// Alternate Login Code for posting new topics to Facebook page.
-		if($config['al_facebook_topic_post_page'] && $config['al_fb_page_id'] && $post_approval)
+		if($config['al_facebook_topic_post_page'] && $config['al_fb_page_id'] && $post_approval && $post_mode == 'post')
 		{
 			if(!($ret_data = publish_topic_to_fb_page(array_merge($data, array('username' => $user->data['username'])))))
 			{
@@ -710,7 +711,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 				
 				if(!($ret_data = publish_post_to_fb_user($data)))
 				{
-					echo 'FAILED' . $ret_data;
+					add_log('critical', 'Failed to post to Facebook: functions_posting.php:2008');
 				}
 			}
 			else
@@ -724,18 +725,35 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 				$sql = 'UPDATE ' . POSTS_TABLE . '
 					SET post_fb="' . $db->sql_escape(json_encode($fb_user)) . '"
 					WHERE post_id = ' . $data['post_id'];
+				
 				$db->sql_query($sql);
 			}
-		}]]></action> 
-			</edit> 
-			<edit> 
-				<find><![CDATA[unset($sql_data[POSTS_TABLE]['sql']);]]></find> 
-				<action type="before-add"><![CDATA[if($submit_and_fb_post && $post_mode == 'reply')
+		}
+if($submit_and_fb_post && $post_mode == 'reply')
 		{
 			
-			if(!($ret_data = publish_post_to_fb_user($data)))
+			if($post_approval)
 			{
-				echo 'FAILED' . $ret_data;
+				
+				
+				if(!($ret_data = publish_post_to_fb_user($data)))
+				{
+					add_log('critical', 'Failed to post to Facebook: functions_posting.php:2067');
+				}
+			}
+			else
+			{
+				$fb_user = array(
+					'access_token'	=> $user->data['al_fb_access_token'],
+					'fb_id'			=> $user->data['al_fb_id'],
+					'username'		=> $user->data['username']
+				);
+				
+				$sql = 'UPDATE ' . POSTS_TABLE . '
+					SET post_fb="' . $db->sql_escape(json_encode($fb_user)) . '"
+					WHERE post_id = ' . $data['post_id'];
+				
+				$db->sql_query($sql);
 			}
 		}]]></action> 
 			</edit> 
@@ -757,7 +775,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 				$fb_result = json_decode($fb_result);
 				if(isset($fb_result->error))
 				{
-					add_log('critical', $fb_result->error->message);
+					add_log('critical', $fb_result->error->message . 'mcp_queue.php:552');
 				}
 			}
 			
@@ -772,12 +790,13 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 				}
 				else
 				{
+				
 					$fb_result = publish_post_to_fb_user($post_data);
 				}
 				$fb_result = json_decode($fb_result);
 				if(isset($fb_result->error))
 				{
-					add_log('critical', $fb_result->error->message);
+					add_log('critical', $fb_result->error->message . 'mcp_queue.php:571');
 				}
 			}]]></action> 
 			</edit> 
