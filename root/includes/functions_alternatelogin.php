@@ -544,7 +544,7 @@ if(!function_exists('post_to_fb_user_wall'))
 				
 				if(isset($error_check->error))
 				{
-				   add_log('critical', $error_check->error->message . 'functions_alternate_login.php:551');
+				   add_log('critical', $error_check->error->message . 'functions_alternate_login.php:547');
 				}
 			}
 		}
@@ -590,7 +590,7 @@ if(!function_exists('update_fb_user_status'))
 		
 		if(isset($error_check->error))
 		{
-		    add_log('critical', $error_check->error->message . 'functions_alternate_login.php:601');
+		    add_log('critical', $error_check->error->message . 'functions_alternate_login.php:593');
 		}
 		
 		curl_close($ch);
@@ -636,7 +636,7 @@ if(!function_exists('post_to_fb_page'))
 		
 		if(isset($error_check->error))
 		{
-			add_log('critical', $error_check->error->message . 'functions_alternate_login.php:647');
+			add_log('critical', $error_check->error->message . 'functions_alternate_login.php:639');
 		   return false;
 		}
 		
@@ -671,7 +671,7 @@ if(!function_exists('publish_topic_to_fb_page'))
 			$post_fb = json_decode($data['post_fb']);
 			$fb_id = $post_fb->fb_id;
 			$access_token = $post_fb->access_token;
-			$name = $post_fb->name;
+			$name = $post_fb->username;
 		}
 		else
 		{
@@ -702,7 +702,7 @@ if(!function_exists('publish_post_to_fb_user'))
 			$post_fb = json_decode($data['post_fb']);
 			$fb_id = $post_fb->fb_id;
 			$access_token = $post_fb->access_token;
-			$name = $post_fb->name;
+			$name = $post_fb->username;
 		}
 		else
 		{
@@ -711,18 +711,18 @@ if(!function_exists('publish_post_to_fb_user'))
 			$name = $user->data['username'];
 			$fb_id = $user->data['al_fb_id'];
 		}
-		$fb_user = get_fb_data('https://graph.facebook.com/me?access_token=' . $access_token);
+		$fb_user = get_fb_data('https://graph.facebook.com/' . $fb_id . '?access_token=' . $access_token);
 		
 		$fb_user = json_encode($fb_user);
 		
 		if(isset($fb_user->error))
 		{
-			add_log('critical', $fb_user->error->message . 'functions_alternate_login.php:727');
+			add_log('critical', $fb_user->error->message . 'functions_alternate_login.php:720');
 			return $fb_user;
 		}
 		
 		$post_data = array(
-			'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($fb_user->name, $data['topic_title'])),
+			'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($name, $data['topic_title'])),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
 			'access_token'	=> $access_token,
 			'name'			=> $name,
