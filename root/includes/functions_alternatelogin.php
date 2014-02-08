@@ -514,11 +514,7 @@ if(!function_exists('post_to_fb_user_wall'))
 			
 			if(isset($error_check->error))
 			{
-			   if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
-			   {
-				  
-				  refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
-			   }
+			   add_log('critical', $error_check->error->message . 'functions_alternate_login.php:517');
 			}
 		}
 		else
@@ -548,11 +544,7 @@ if(!function_exists('post_to_fb_user_wall'))
 				
 				if(isset($error_check->error))
 				{
-				   if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
-				   {
-					  
-					  refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
-				   }
+				   add_log('critical', $error_check->error->message . 'functions_alternate_login.php:551');
 				}
 			}
 		}
@@ -598,11 +590,7 @@ if(!function_exists('update_fb_user_status'))
 		
 		if(isset($error_check->error))
 		{
-		   if(($error_check->error->code == 2500) || ($error_check->error->error_subcode == 463))
-		   {
-			  
-			  refresh_fb_access_token(generate_board_url() . '/' . $user->data['session_page']);
-		   }
+		    add_log('critical', $error_check->error->message . 'functions_alternate_login.php:601');
 		}
 		
 		curl_close($ch);
@@ -648,6 +636,7 @@ if(!function_exists('post_to_fb_page'))
 		
 		if(isset($error_check->error))
 		{
+			add_log('critical', $error_check->error->message . 'functions_alternate_login.php:647');
 		   return false;
 		}
 		
@@ -728,7 +717,7 @@ if(!function_exists('publish_post_to_fb_user'))
 		
 		if(isset($fb_user->error))
 		{
-			add_log('critical', $fb_user->error->message);
+			add_log('critical', $fb_user->error->message . 'functions_alternate_login.php:727');
 			return $fb_user;
 		}
 		
