@@ -46,7 +46,7 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2014.02.08.01</mod-version> 
+		<mod-version>2014.02.09.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
@@ -54,6 +54,12 @@
 		</installation> 
                 <history>
 				<entry>
+					<date>2014.02.09</date>
+					<rev-version>2014.02.09.01</rev-version>
+					<changelog lang="en">
+						<change>functions_alternatelogin.php: Altered $fb_post->name to $fb_post->username.</change>
+						<change>functions_posting.php: Altered functions_posting.php to do all work after board has posted.</change>
+					</changelog>
 					<date>2014.02.08</date>
 					<rev-version>2014.02.08.01</rev-version>
 					<changelog lang="en">
