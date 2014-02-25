@@ -34,7 +34,7 @@ class CSAlternateLogin
 			$sql_array = array(
 				'SELECT'		=> '*',
 				'FROM'			=> array(POSTS_TABLE => 'p'),
-				'WHERE'			=> 'p.forum_id = ' .$forum_id . ' AND p.topic_id = ' . $topic_id,
+				'WHERE'			=> 'p.topic_id = ' . $topic_id,
 				'ORDER_BY'		=> 'p.post_id'
 			);
 			
