@@ -440,117 +440,47 @@ if(!function_exists('refresh_fb_access_token'))
    }
 }
 
-if(!function_exists('get_fb_data'))
-{
-   function get_fb_data($url)
-   { 
-      $ch = curl_init();
-      
-      curl_setopt($ch, CURLOPT_URL, $url);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      
-      curl_setopt($ch, CURLOPT_HTTPGET, true);
-      
-      
-      $data = curl_exec($ch);
-      
-      if(curl_errno($ch))
-      {
-         add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
-         return false;
-      }
-      
-      $error_check = json_decode($data);
-      
-      
-      curl_close($ch);
-      
-      return $data;
-   }
-}
+
 
 if(!function_exists('post_to_fb_user_wall'))
 {
    function post_to_fb_user_wall($data, $users = null)
    { 
-		global $user;
+		global $user, $facebook;
 		
-		$access_token = array();
-		
-		
-		if(!isset($user->data['al_fb_access_token']))
-		{
-			$data['access_token']		= $user->data['al_fb_access_token'];
-		}
-		$data_string = "";
-		foreach($data as $key=>$value) 
-		{ 
-			$data_string .= $key.'='.$value.'&'; 
-		}
-		rtrim($fields_string, '&');
 		
 		if($users == null)
 		{
-			$url = "https://graph.facebook.com/" . $user->data['al_fb_id'] . "/feed";
+			$result = $facebook->api('/' . $user->data['al_fb_id'] . '/feed', 'POST', $data);
 			
-			$ch = curl_init();
 			
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			
-			$data = curl_exec($ch);
-			
-			if(curl_errno($ch))
+			if(isset($result['error']))
 			{
-			   add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
+			   add_log('critical', $user->data['user_id'], $result['error']['message']);
 			   return false;
 			}
 			
-			$error_check = json_decode($data);
-			
-			if(isset($error_check->error))
-			{
-			   add_log('critical', $error_check->error->message . 'functions_alternate_login.php:517');
-			}
+			return true;
 		}
 		else
 		{
 			foreach($users as $u)
 			{
-				$url = "https://graph.facebook.com/" . $u . "/feed";
+				$result = $facebook->api('/' . $u . '/feed', 'POST', $data);
 			
-				$ch = curl_init();
-				
-				curl_setopt($ch, CURLOPT_URL, $url);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-				curl_setopt($ch, CURLOPT_POST, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				
-				$data = curl_exec($ch);
-				
-				if(curl_errno($ch))
+				if(isset($result['error']))
 				{
-				   add_log('critical', 'FB_GET_USER_ERROR', $u, 'FB_GET_USER_ERROR', curl_error($ch));
+				   add_log('critical', $user->data['user_id'], $result['error']['message']);
 				   return false;
 				}
+			
 				
-				$error_check = json_decode($data);
-				
-				if(isset($error_check->error))
-				{
-				   add_log('critical', $error_check->error->message . 'functions_alternate_login.php:547');
-				}
 			}
+			
+			return true;
 		}
-		curl_close($ch);
 		
-		return $data;
    }
 }
 
@@ -558,43 +488,29 @@ if(!function_exists('update_fb_user_status'))
 {
    function update_fb_user_status($data, $fb_id)
    { 
-		global $user;
-		
-		$data_string = "";
-		foreach($data as $key=>$value) 
-		{ 
-			$data_string .= $key.'='.$value.'&'; 
-		}
-		rtrim($fields_string, '&');
-		
-		$url = "https://graph.facebook.com/" . $fb_id . "/feed";
-		
-		$ch = curl_init();
-		
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		$data = curl_exec($ch);
-		
-		if(curl_errno($ch))
+		global $user, $facebook;
+		try
 		{
-		   add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
-		   return false;
+			
+			$result = $facebook->api('/' . $fb_id . '/feed', 'POST', $data);
+			echo 'here';	
+				
+				
+			if(isset($result['error']))
+			{
+			   add_log('critical', $user->data['user_id'], $result['error']['message']);
+			   return false;
+			}
+			
+			return true;
 		}
-		
-		$error_check = json_decode($data);
-		
-		if(isset($error_check->error))
+		catch(FacebookExceptionApi $ex)
 		{
-		    add_log('critical', $error_check->error->message . 'functions_alternate_login.php:593');
+			$result = $ex->getResult();
+			add_log('critical', $user->data['user_id'], $result['error']['message']);
+			trigger_error($result['error']['message']);
+		   	return false;
 		}
-		
-		curl_close($ch);
-		return $data;
    }
 }
 
@@ -602,47 +518,31 @@ if(!function_exists('post_to_fb_page'))
 {
    function post_to_fb_page($data)
    { 
-		global $config, $user;
+		global $config, $user, $facebook;
 		
-		
-		$data['access_token']		= $config['al_fb_page_token'];
-		
-		$data_string = "";
-		foreach($data as $key=>$value) 
-		{ 
-			$data_string .= $key.'='.$value.'&'; 
-		}
-		rtrim($fields_string, '&');
-		
-		$url = "https://graph.facebook.com/" . $config['al_fb_page_id'] . "/feed";
-		
-		$ch = curl_init();
-		
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		$data = curl_exec($ch);
-		if(curl_errno($ch))
+		try
 		{
-		   add_log('critical', 'FB_GET_USER_ERROR', $user->data['user_id'], 'FB_GET_USER_ERROR', curl_error($ch));
-		   return false;
+			$data['access_token']		= $config['al_fb_page_token'];
+			
+			$result = $facebook->api('/' . $config['al_fb_page_id'] . '/feed', 'POST', $data);
+				
+				
+				
+			if(isset($result['error']))
+			{
+			   add_log('critical', $user->data['user_id'], $result['error']['message']);
+			   return false;
+			}
+			
+			return true;
 		}
-		
-		$error_check = json_decode($data);
-		
-		if(isset($error_check->error))
+		catch(FacebookExceptionApi $ex)
 		{
-			add_log('critical', $error_check->error->message . 'functions_alternate_login.php:639');
-		   return false;
+			$result = $ex->getResult();
+			add_log('critical', $user->data['user_id'], $result['error']['message']);
+			trigger_error($result['error']['message']);
+		   	return false;
 		}
-		
-		curl_close($ch);
-		
-		return $data;
    }
 }
 
@@ -665,23 +565,8 @@ if(!function_exists('publish_topic_to_fb_page'))
 	function publish_topic_to_fb_page($data)
 	{
 		global $user;
-		if($data['post_fb'])
-		{
-			
-			$post_fb = json_decode($data['post_fb']);
-			$fb_id = $post_fb->fb_id;
-			$access_token = $post_fb->access_token;
-			$name = $post_fb->username;
-		}
-		else
-		{
-			
-			$access_token = $user->data['al_fb_access_token'];
-			$name = $user->data['username'];
-			$fb_id = $user->data['al_fb_id'];
-		}
 		$post_data = array(
-			'message'		=> vsprintf($user->lang['FB_TOPIC_PAGE_TITLE'], array($name, $data['topic_title'])),
+			'message'		=> vsprintf($user->lang['FB_TOPIC_PAGE_TITLE'], array($user->data['username'], $data['topic_title'])),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
 		);
 		
@@ -693,42 +578,52 @@ if(!function_exists('publish_post_to_fb_user'))
 {
 	function publish_post_to_fb_user($data)
 	{
-		global $user;
-		$access_token = $fb_id = $name = null;
-		
-		if($data['post_fb'])
+		global $user, $facebook;
+		try
 		{
+			$access_token = $fb_id = $name = null;
 			
-			$post_fb = json_decode($data['post_fb']);
-			$fb_id = $post_fb->fb_id;
-			$access_token = $post_fb->access_token;
-			$name = $post_fb->username;
-		}
-		else
-		{
+			if($data['post_fb'])
+			{
+				
+				$post_fb = json_decode($data['post_fb']);
+				$fb_id = $post_fb->fb_id;
+				$access_token = $post_fb->access_token;
+				$name = $post_fb->name;
+			}
+			else
+			{
+				
+				$access_token = $user->data['al_fb_access_token'];
+				$name = $user->data['username'];
+				$fb_id = $user->data['al_fb_id'];
+			}
 			
-			$access_token = $user->data['al_fb_access_token'];
-			$name = $user->data['username'];
-			$fb_id = $user->data['al_fb_id'];
+			$facebook->setAccessToken($access_token);
+			$fb_user = $facebook->api('/me', 'GET');
+			
+			if(isset($fb_user['error']))
+			{
+				add_log('critical', $fb_user['error']['message']);
+				return false;
+			}
+			
+			$post_data = array(
+				'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($fb_user['name'], $data['topic_title'])),
+				'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
+				'access_token'	=> $access_token,
+				'name'			=> $name,
+			);
+			
+			return update_fb_user_status($post_data, $fb_id);
 		}
-		$fb_user = get_fb_data('https://graph.facebook.com/' . $fb_id . '?access_token=' . $access_token);
-		
-		$fb_user = json_encode($fb_user);
-		
-		if(isset($fb_user->error))
+		catch(FacebookExceptionApi $ex)
 		{
-			add_log('critical', $fb_user->error->message . 'functions_alternate_login.php:720');
-			return $fb_user;
+			$result = $ex->getResult();
+			add_log('critical', $user->data['user_id'], $result['error']['message']);
+			trigger_error($result['error']['message']);
+		   	return false;
 		}
-		
-		$post_data = array(
-			'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($name, $data['topic_title'])),
-			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
-			'access_token'	=> $access_token,
-			'name'			=> $name,
-		);
-		
-		return update_fb_user_status($post_data, $fb_id);
 	}
 }
 

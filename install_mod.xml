@@ -783,35 +783,37 @@ if($submit_and_fb_post && $post_mode == 'reply')
 					'topic_id'		=> $post_data['topic_id'],
 				);
 			}]]></find> 
-				<action type="after-add"><![CDATA[if($config['al_facebook_topic_post_page'] && ($post_data['topic_first_post_id'] == $post_id))
+				<action type="after-add"><![CDATA[try
 			{
-				$fb_result = publish_topic_to_fb_page($post_data);
-				$fb_result = json_decode($fb_result);
-				if(isset($fb_result->error))
+				
+				if($config['al_facebook_topic_post_page'] && ($post_data['topic_first_post_id'] == $post_id))
 				{
-					add_log('critical', $fb_result->error->message . 'mcp_queue.php:552');
+					publish_topic_to_fb_page($post_data);
+					
+				}
+				
+				if($post_data['post_fb'] != '')
+				{
+					
+					if($post_data['topic_first_post_id'] == $post_id)
+					{
+						
+						$fb_result = publish_post_to_fb_user($post_data);
+						
+					}
+					else
+					{
+						$fb_result = publish_post_to_fb_user($post_data);
+					}
+					
 				}
 			}
-			
-			if($post_data['post_fb'] != '')
+			catch(FacebookExceptionApi $ex)
 			{
-				
-				if($post_data['topic_first_post_id'] == $post_id)
-				{
-					
-					$fb_result = publish_post_to_fb_user($post_data);
-					
-				}
-				else
-				{
-				
-					$fb_result = publish_post_to_fb_user($post_data);
-				}
-				$fb_result = json_decode($fb_result);
-				if(isset($fb_result->error))
-				{
-					add_log('critical', $fb_result->error->message . 'mcp_queue.php:571');
-				}
+				$result = $ex->getResult();
+				add_log('critical', $user->data['user_id'], $result['error']['message']);
+				trigger_error($result['error']['message']);
+				return false;
 			}]]></action> 
 			</edit> 
 			
