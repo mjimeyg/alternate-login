@@ -90,7 +90,7 @@ $versions = array(
                         array(USERS_TABLE, 'al_fb_hide_activity', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_hide_facepile', array('BOOL', '0')),
                         array(USERS_TABLE, 'al_fb_hide_like_box', array('BOOL', '0')),
-                        array(POSTS_TABLE, 'post_fb', array('VCHAR', 0)),
+                        array(POSTS_TABLE, 'post_fb', array('LONGTEXT', NULL)),
 		),
 
             
