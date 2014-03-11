@@ -456,7 +456,8 @@
                 </history>
 	</header> 
 	<action-group> 
-		<sql><![CDATA[ALTER TABLE  `phpbb_sessions` ADD  `session_wl_access_token` LONGTEXT NULL , ADD  `session_fb_access_token` LONGTEXT NULL]]></sql> 
+		<sql><![CDATA[ALTER TABLE  `phpbb_sessions` ADD  `session_wl_access_token` LONGTEXT NULL , ADD  `session_fb_access_token` LONGTEXT NULL;
+		ALTER TABLE  `phpbb_users` ADD  `fb_post` LONGTEXT NULL;]]></sql> 
 		
 		<copy> 
 			<file from="root/alternatelogin/*.*" to="alternatelogin/*.*"/> 
