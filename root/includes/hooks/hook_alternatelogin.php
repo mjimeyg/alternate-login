@@ -18,10 +18,8 @@ class CSAlternateLogin
 				'allowSignedRequest'	=> false,
 			);
 			
-			if(!isset($facebook))
-			{
-				$facebook = new Facebook($fb_config);
-			}
+			$facebook = new Facebook($fb_config);
+			
 			
 			$forum_id = request_var('f', 0);
 			$topic_id = request_var('t', 0);
@@ -30,12 +28,13 @@ class CSAlternateLogin
 			
 			
 			$user->add_lang('mods/info_ucp_alternatelogin');
-			if(isset($user->data['al_fb_access_token']))
+			if($user->data['al_fb_access_token'])
 			{
+			
 				$facebook->setAccessToken($user->data['al_fb_access_token']);
 				if(!$facebook->setExtendedAccessToken())
 				{
-					add_log('critical', 'Failed to get extended access token');
+					add_log('critical', 'Failed to get extended access token - hook_alternatelogin.php:36');
 				}
 				
 				
@@ -47,7 +46,21 @@ class CSAlternateLogin
 				
 				
 			}
+			if(!$facebook->getUser())
+			{
+				$params = array(
+					'scope'		=> 'user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email,publish_actions,manage_pages,publish_stream',
+					'redirect_uri'	=> generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}",
+				);
+				
+				$login_url = $facebook->getLoginUrl($params);
 			
+				
+			}
+			else
+			{
+				$login_url = $phpbb_root_path . '/alternatelogin/al_fb_connect.' . $phpEx;
+			}
 			if($topic_id && $forum_id)
 			{
 			
@@ -102,6 +115,7 @@ class CSAlternateLogin
 				'AL_FB_FRIENDS_LIST_MESSAGE'                    => isset($config['al_fb_friends_list_messgae']) ? $config['al_fb_friends_list_messgae'] : '',
 				'AL_FB_FRIENDS_LIST_LABEL'                    	=> isset($user->lang['AL_FB_FRIENDS_LIST_LABEL']) ? urlencode($user->lang['AL_FB_FRIENDS_LIST_LABEL']) : urlencode('Invite Friends'),
 				'AL_FB_LOGIN_BUTTON_TEXT'						=> isset($config['al_fb_login_text']) ? $config['al_fb_login_text'] : 'Facebook',
+				'AL_FB_LOGIN_URL'								=> $login_url,
 				'S_AL_WL_CLIENT_ID'								=> isset($config['al_wl_client_id']) ? $config['al_wl_client_id'] : false,
 				'S_AL_WL_WRAP_CHANNEL'                          => isset($config['al_wl_channel']) ? $config['al_wl_channel'] : false,
 				'AL_FB_APP_ID'                                  => isset($config['al_fb_id']) ? $config['al_fb_id'] : false,
@@ -132,6 +146,13 @@ class CSAlternateLogin
 			$result = $ex->getResult();
 			trigger_error($result['message']);
 		}
+		catch(OAuthException $ex)
+		{
+			add_log('critical', json_encode($ex->getMessage()));
+			$result = $ex->getMessage();
+			trigger_error($result);
+		}
+
 	}
 }
 

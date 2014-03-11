@@ -34,7 +34,7 @@ class ucp_alternatelogin
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
+		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx, $facebook;
 		
 		// Include the Alternate Login functions.
 		include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
@@ -53,33 +53,28 @@ class ucp_alternatelogin
 		if($user->data['al_fb_id'])
 		{
 			
-			$graph_url = "https://graph.facebook.com/me?fields,address,website,work,birthday&access_token=" . $user->data['al_fb_access_token'];
+			$fb_user = $facebook->api('/me?fields,address,website,work,birthday', 'GET');
 						
-            $fb_user = json_decode(get_fb_data($graph_url));
-			$fb_website = isset($fb_user->website) ? $fb_user->website : false;
-            $fb_location = isset($fb_user->location->name) ? $fb_user->location->name : false;
-            $fb_occupation = isset($fb_user->work[0]->employer->name) ? $fb_user->work[0]->employer->name : false;
+            $fb_website = isset($fb_user['website']) ? $fb_user['website'] : false;
+            $fb_location = isset($fb_user['location']['name']) ? $fb_user['location']['name'] : false;
+            $fb_occupation = isset($fb_user['work'][0]['employer']['name']) ? $fb_user['work'][0]['employer']['name'] : false;
 			
-			if(!$fb_user->birthday)
+			if(!$fb_user['birthday'])
 			{
 				$fb_birthday = false;
 			}
 			else
 			{
-				$birth_date = explode('/', $fb_user->birthday);
+				$birth_date = explode('/', $fb_user['birthday']);
 				$fb_birthday = $birth_date[1] . '-' . $birth_date[0] . '-' . $birth_date[2];
 			}
-			$graph_url = "https://graph.facebook.com/me?fields=picture&access_token=" . $user->data['al_fb_access_token'];
-
-            $fb_user = json_decode(get_fb_data($graph_url));
+			$fb_user = $facebook->api('/me?fields=picture', 'GET');
 			
-			$fb_avatar = (!$fb_user->picture) ? false : $fb_user->picture->data->url;
+			$fb_avatar = (!$fb_user['picture']) ? false : $fb_user['picture']['data']['url'];
 			
-			$graph_url = "https://graph.facebook.com/me?fields=statuses&access_token=" . $user->data['al_fb_access_token'];
+			$fb_user = $facebook->api('/me?fields=statuses', 'GET');
  
-            $fb_user = json_decode(get_fb_data($graph_url));
-			
-			$fb_status = (!$fb_user->statuses->data[0]->message) ? false : $fb_user->statuses->data[0]->message;
+			$fb_status = (!$fb_user['statuses']['data'][0]['message']) ? false : $fb_user['statuses']['data'][0]['message'];
 			
 			
 			
