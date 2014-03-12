@@ -27,10 +27,7 @@ $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
 include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 include_once($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);	// Custom Alternate Login functions.
-if(!class_exists('Facebook'))
-{
-	include_once($phpbb_root_path . 'alternatelogin/facebook/facebook.' . $phpEx);
-}
+
 // Set up a new user session.
 $user->session_begin();
 $auth->acl($user->data);
