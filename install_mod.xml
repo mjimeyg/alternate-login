@@ -902,7 +902,7 @@ if($submit_and_fb_post && $post_mode == 'reply')
         <!-- ENDIF --> 
  
         <!-- IF S_AL_FB_ENABLED --> 
-            <a onclick="window.location='alternatelogin/al_fb_connect.php';" href="#"><img src="{AL_PATH}create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
+            <a href="{AL_FB_LOGIN_URL}"><img src="{AL_PATH}create_fb_button.php?label={AL_FB_LOGIN_BUTTON_TEXT}"></a> <!-- ENDIF --> 
       
         <!-- IF S_AL_OI_ENABLED --> 
         <link type="text/css" rel="stylesheet" href="{T_TEMPLATE_PATH}/css/openid.css" />
