@@ -493,8 +493,6 @@ if(!function_exists('update_fb_user_status'))
 		{
 			
 			$result = $facebook->api('/' . $fb_id . '/feed', 'POST', $data);
-			echo 'here';	
-				
 				
 			if(isset($result['error']))
 			{
