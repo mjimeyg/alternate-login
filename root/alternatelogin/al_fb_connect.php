@@ -61,7 +61,7 @@ $fb_user_id = $facebook->getUser();
 
 
 $facebook->setExtendedAccessToken();
-echo 1;
+
 $return_to_page = base64_decode($return_to_page);
 $return_to_page = str_replace("../", "", $return_to_page);
 $return_to_page = str_replace("./", "", $return_to_page);
@@ -72,14 +72,14 @@ try
 	$sql_array = array(
 		'al_fb_access_token'   => $facebook->getAccessToken(),
 	);
-	echo 2;
+	
 	$sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
 	
 	$db->sql_query($sql);
 			
 	
 	$fb_user = $facebook->api('/me', 'GET');
-	echo 3;
+	
 }
 catch(FacebookExceptionApi $ex)
 {
