@@ -548,9 +548,22 @@ if(!function_exists('publish_post_to_fb_page'))
 {
 	function publish_post_to_fb_page($data)
 	{
-		global $user;
+		global $user, $db;
+		
+		$sql_array = array(
+			'SELECT'		=> 'username',
+			'FROM'			=> array(USERS_TABLE => 'u'),
+			'WHERE'			=> 'user_id=' . $data['poster_id'],
+		);
+		
+		$sql = $db->sql_build_query('SELECT', $sql_array);
+		
+		
+		$result = $db->sql_query($sql);
+		
+		$username = $db->sql_fetchrow($result);
 		$post_data = array(
-			'message'		=> sprintf($user->lang['FB_TEMPLATE_POST_PUBLISHED'], $user->data['username'], $data['topic_title']),
+			'message'		=> sprintf($user->lang['FB_TEMPLATE_POST_PUBLISHED'], $username, $data['topic_title']),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
 		);
 		
@@ -562,10 +575,22 @@ if(!function_exists('publish_topic_to_fb_page'))
 {
 	function publish_topic_to_fb_page($data)
 	{
-		global $user;
+		global $user, $db;
+		
+		$sql_array = array(
+			'SELECT'		=> 'username',
+			'FROM'			=> array(USERS_TABLE => 'u'),
+			'WHERE'			=> 'user_id=' . $data['poster_id'],
+		);
+		
+		$sql = $db->sql_build_query('SELECT', $sql_array);
+		
+		$username = $db->sql_fetchrow($result);
+		
 		$post_data = array(
 			'message'		=> vsprintf($user->lang['FB_TOPIC_PAGE_TITLE'], array($user->data['username'], $data['topic_title'])),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
+			'name'			=> $username,
 		);
 		
 		return post_to_fb_page($post_data);
@@ -587,7 +612,7 @@ if(!function_exists('publish_post_to_fb_user'))
 				$post_fb = json_decode($data['post_fb']);
 				$fb_id = $post_fb->fb_id;
 				$access_token = $post_fb->access_token;
-				$name = $post_fb->name;
+				$name = $post_fb->username;
 			}
 			else
 			{
