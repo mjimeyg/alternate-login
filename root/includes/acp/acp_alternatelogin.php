@@ -146,6 +146,10 @@ class acp_alternatelogin
 
 					set_config('al_facebook_topic_post_page', $facebook_topic_post_page);
 					
+					$facebook_topic_post_page_exclusions = request_var('facebook_topic_post_to_page_exclusions', array(0));
+					
+					set_config('al_facebook_topic_post_page_exclusions', json_encode($facebook_topic_post_page_exclusions));
+					
 					if($facebook_quick_accounts)
 					{
 						set_config('max_name_chars', 30);
@@ -212,6 +216,7 @@ class acp_alternatelogin
 					'FACEBOOK_FRIENDS_LIST_NO'              => $config['al_fb_friends_list'] ? '' : 'checked="checked"',
 					'FACEBOOK_TOPIC_POST_TO_PAGE_YES'       => $config['al_facebook_topic_post_page'] ? 'checked="checked"' : '',
 					'FACEBOOK_TOPIC_POST_TO_PAGE_NO'        => $config['al_facebook_topic_post_page'] ? '' : 'checked="checked"',
+					'S_FORUMS_LIST'							=> make_forum_select(json_decode($config['al_facebook_topic_post_page_exclusions'], true)),
 					'S_MODE_FACEBOOK'						=> true,
 					'U_ACTION'                              => $this->u_action,
 				));
