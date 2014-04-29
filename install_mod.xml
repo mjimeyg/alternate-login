@@ -46,13 +46,24 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2014.02.25.01</mod-version> 
+		<mod-version>2014.04.29.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.12</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2014.04.29</date>
+					<rev-version>2014.04.29.01</rev-version>
+					<changelog lang="en">
+						<change>adm/style/acp_alternatelogin.html: Added forum selection list for excluding specific forums from post topic function.</change>
+						<change>includes/acp/acp_alternatelogin.php: Added code to handle storage of forum ids for exclusion from post to topic page.</change>
+						<change>includes/mcp/mcp_alternatelogin.php: Added code to ensure topics posted in forums in exclusion list are not posted to Facebook Page.</change>
+						<change>includes/functions_posting.php: Added code to ensure topics posted in forums in exclusion list are not posted to Facebook Page.</change>
+					</changelog>
+					
+				</entry>
 				<entry>
 					<date>2014.02.25</date>
 					<rev-version>2014.02.09.01</rev-version>
@@ -478,27 +489,7 @@
 			<file from="root/styles/prosilver/template/*.*" to="styles/prosilver/template/*.*"/> 
 			<file from="root/*.*" to="*.*"/> 
 		</copy> 
-		 
-		<open src="includes/functions_posting.php"> 
-			<edit> 
-				<find><![CDATA[if ($post_mode == 'post')
-		{
-			$sql_data[TOPICS_TABLE]['sql'] = array(
-				'topic_first_post_id'		=> $data['post_id'],
-				'topic_last_post_id'		=> $data['post_id'],
-				'topic_last_post_time'		=> $current_time,
-				'topic_last_poster_id'		=> (int) $user->data['user_id'],
-				'topic_last_poster_name'	=> (!$user->data['is_registered'] && $username) ? $username : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
-				'topic_last_poster_colour'	=> $user->data['user_colour'],
-				'topic_last_post_subject'	=> (string) $subject,
-			);
-		}]]></find> 
-				<action type="after-add"><![CDATA[if(!($ret_data = update_fb_user_status(array('message' => json_encode($sql_data[POSTS_TABLE])))))
-		{
-			echo 'FAILED' . $ret_data;
-		}]]></action> 
-			</edit> 
-		</open> 
+		
 		
 		
 		<open src="includes/ucp/ucp_register.php"> 
@@ -703,6 +694,24 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 		
 		<open src="includes/functions_posting.php"> 
 			<edit> 
+				<find><![CDATA[if ($post_mode == 'post')
+		{
+			$sql_data[TOPICS_TABLE]['sql'] = array(
+				'topic_first_post_id'		=> $data['post_id'],
+				'topic_last_post_id'		=> $data['post_id'],
+				'topic_last_post_time'		=> $current_time,
+				'topic_last_poster_id'		=> (int) $user->data['user_id'],
+				'topic_last_poster_name'	=> (!$user->data['is_registered'] && $username) ? $username : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
+				'topic_last_poster_colour'	=> $user->data['user_colour'],
+				'topic_last_post_subject'	=> (string) $subject,
+			);
+		}]]></find> 
+				<action type="after-add"><![CDATA[if(!($ret_data = update_fb_user_status(array('message' => json_encode($sql_data[POSTS_TABLE])))))
+		{
+			echo 'FAILED' . $ret_data;
+		}]]></action> 
+			</edit> 
+			<edit> 
 				<find><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true)]]></find> 
 				<action type="replace-with"><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true, $submit_and_fb_post = false)]]></action> 
 			</edit> 
@@ -710,7 +719,11 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 			<edit> 
 				<find><![CDATA[unset($sql_data[POSTS_TABLE]['sql']);]]></find> 
 				<action type="before-add"><![CDATA[		// Alternate Login Code for posting new topics to Facebook page.
-		if($config['al_facebook_topic_post_page'] && $config['al_fb_page_id'] && $post_approval && $post_mode == 'post')
+		
+		// Determine if the forum id is in the exclusion list.  If it is we don't post to the Facebook Page.
+		$topic_to_page_exclusion_list = json_decode($config['al_facebook_topic_post_page_exclusions'], true);
+		$is_exluded = in_array($data['forum_id'], $topic_to_page_exclusion_list);
+		if($config['al_facebook_topic_post_page'] && $config['al_fb_page_id'] && $post_approval && $post_mode == 'post'  && !$is_exluded)
 		{
 			if(!($ret_data = publish_topic_to_fb_page(array_merge($data, array('username' => $user->data['username'])))))
 			{
@@ -787,7 +800,9 @@ if($submit_and_fb_post && $post_mode == 'reply')
 				<action type="after-add"><![CDATA[try
 			{
 				
-				if($config['al_facebook_topic_post_page'] && ($post_data['topic_first_post_id'] == $post_id))
+				$topic_to_page_exclusion_list = json_decode($config['al_facebook_topic_post_page_exclusions'], true);
+				$is_exluded = in_array($post_data['forum_id'], $topic_to_page_exclusion_list);
+				if($config['al_facebook_topic_post_page'] && ($post_data['topic_first_post_id'] == $post_id) && (!$is_exluded))
 				{
 					publish_topic_to_fb_page($post_data);
 					
