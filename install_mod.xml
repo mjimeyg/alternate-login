@@ -61,6 +61,7 @@
 						<change>includes/acp/acp_alternatelogin.php: Added code to handle storage of forum ids for exclusion from post to topic page.</change>
 						<change>includes/mcp/mcp_alternatelogin.php: Added code to ensure topics posted in forums in exclusion list are not posted to Facebook Page.</change>
 						<change>includes/functions_posting.php: Added code to ensure topics posted in forums in exclusion list are not posted to Facebook Page.</change>
+						<change>language/mods/info_acp_alternatelogin.php: Added language key for topics posted in forums in exclusion list.</change>
 					</changelog>
 					
 				</entry>
