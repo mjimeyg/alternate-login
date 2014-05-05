@@ -662,7 +662,7 @@ if(!function_exists('publish_post_to_fb_user'))
 *
 * @return string Avatar image
 */
-if(!function_exists(get_user_avatar_filename))
+if(!function_exists('get_user_avatar_filename'))
 {
 	function get_user_avatar_filename($avatar, $avatar_type)
 	{
