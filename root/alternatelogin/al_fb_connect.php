@@ -187,7 +187,7 @@ if ($row)   // User is registered already, let's log him in!
 					
 					$fb_user = $facebook->api('/me/statuses', 'GET');
 
-					$signature = $fb_use['data'][0]['message'];
+					$signature = $fb_user['data'][0]['message'];
 
 					$enable_bbcode                      = ($config['allow_sig_bbcode']) ? (bool) $user->optionget('sig_bbcode') : false;
 					$enable_smilies                     = ($config['allow_sig_smilies']) ? (bool) $user->optionget('sig_smilies') : false;
@@ -563,7 +563,7 @@ else
 				// Did we get data, if yes then the user has another account registered.
 				// We need to unlink that account as well.
 				$sql_array = array(
-					'al_fb_id'      => $fb_use['id'],
+					'al_fb_id'      => $fb_user['id'],
 					'al_wl_id'      => 0,
 					'al_oi_id'      => 0,
 				);
