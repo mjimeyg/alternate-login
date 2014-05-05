@@ -73,6 +73,7 @@ $lang = array_merge($lang, array(
         'FACEBOOK_DEFAULT_LANG'									=> 'Facebook Plugins default language',
 		'FACEBOOK_GET_PAGE_TOKEN'								=> 'Get%20Page%20Token',
 		'FACEBOOK_PAGE_TOKEN'									=> 'Facebook Page Token',
+		'FACEBOOK_TOPIC_POST_TO_PAGE_EXCLUSIONS'				=> 'Select forums to exclude from posting topics to Facebook Page.',
 		
         'SITE_DOMAIN'                                           => 'Site Domain',
 
