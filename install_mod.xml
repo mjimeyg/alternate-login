@@ -695,6 +695,10 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 		
 		<open src="includes/functions_posting.php"> 
 			<edit> 
+				<find><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true)]]></find> 
+				<action type="replace-with"><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true, $submit_and_fb_post = false)]]></action> 
+			</edit> 
+			<edit> 
 				<find><![CDATA[if ($post_mode == 'post')
 		{
 			$sql_data[TOPICS_TABLE]['sql'] = array(
@@ -712,10 +716,7 @@ $submit_and_fb_post = (isset($_POST['submit_and_fb_post'])) ? true : false;]]></
 			echo 'FAILED' . $ret_data;
 		}]]></action> 
 			</edit> 
-			<edit> 
-				<find><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true)]]></find> 
-				<action type="replace-with"><![CDATA[function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true, $submit_and_fb_post = false)]]></action> 
-			</edit> 
+			
 			
 			<edit> 
 				<find><![CDATA[unset($sql_data[POSTS_TABLE]['sql']);]]></find> 
