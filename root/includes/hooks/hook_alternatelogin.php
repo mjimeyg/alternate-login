@@ -23,6 +23,7 @@ class CSAlternateLogin
 			
 			$forum_id = request_var('f', 0);
 			$topic_id = request_var('t', 0);
+			$site_image = '';
 			
 			$result = $hook->previous_hook_result('phpbb_user_session_handler');
 			
@@ -77,7 +78,7 @@ class CSAlternateLogin
 				
 				$topic_data = $db->sql_fetchrow($result);
 				
-				$post_text = generate_text_for_display($topic_data['post_text'], $topic_data['bbcode_uid'], $row['bbcode_bitfield'], $topic_data['bbcode_options']);
+				$post_text = generate_text_for_display($topic_data['post_text'], $topic_data['bbcode_uid'], $topic_data['bbcode_bitfield'], $topic_data['bbcode_options']);
 				
 				$db->sql_freeresult($result);
 				
