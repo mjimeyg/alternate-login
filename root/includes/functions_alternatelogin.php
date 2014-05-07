@@ -602,53 +602,44 @@ if(!function_exists('publish_post_to_fb_user'))
 	function publish_post_to_fb_user($data)
 	{
 		global $user, $facebook;
-		try
+		$access_token = $fb_id = $name = null;
+		
+		if($data['post_fb'])
 		{
-			$access_token = $fb_id = $name = null;
 			
-			if($data['post_fb'])
-			{
-				
-				$post_fb = json_decode($data['post_fb']);
-				$fb_id = $post_fb->fb_id;
-				$access_token = $post_fb->access_token;
-				$name = $post_fb->username;
-			}
-			else
-			{
-				
-				$access_token = $user->data['al_fb_access_token'];
-				$name = $user->data['username'];
-				$fb_id = $user->data['al_fb_id'];
-			}
-			
-			$facebook->setAccessToken($access_token);
-			$fb_user = $facebook->api('/me', 'GET');
-			
-			if(isset($fb_user['error']))
-			{
-				add_log('critical', $fb_user['error']['message']);
-				return false;
-			}
-			
-			$post_data = array(
-				'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($fb_user['name'], $data['topic_title'])),
-				'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
-				'access_token'	=> $access_token,
-				'name'			=> $name,
-			);
-			
-			return update_fb_user_status($post_data, $fb_id);
+			$post_fb = json_decode($data['post_fb']);
+			$fb_id = $post_fb->fb_id;
+			$access_token = $post_fb->access_token;
+			$name = $post_fb->username;
 		}
-		catch(FacebookExceptionApi $ex)
+		else
 		{
-			$result = $ex->getResult();
-			add_log('critical', $user->data['user_id'], $result['error']['message']);
-			trigger_error($result['error']['message']);
-		   	return false;
+			
+			$access_token = $user->data['al_fb_access_token'];
+			$name = $user->data['username'];
+			$fb_id = $user->data['al_fb_id'];
 		}
+		$fb_user = $facebook->api('/' . $fb_id, 'GET', array('access_token' => $access_token));
+		
+		$fb_user = json_encode($fb_user);
+		
+		if(isset($fb_user->error))
+		{
+			add_log('critical', $fb_user->error->message . 'functions_alternate_login.php:720');
+			return $fb_user;
+		}
+		
+		$post_data = array(
+			'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($name, $data['topic_title'])),
+			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
+			'access_token'	=> $access_token,
+			'name'			=> $name,
+		);
+		print_r($post_data);
+		return update_fb_user_status($post_data, $fb_id);
 	}
 }
+
 
 /**
 * Get user avatar filename - Adapted from functions_display:get_user_avatar()
