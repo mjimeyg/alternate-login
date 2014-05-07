@@ -565,6 +565,7 @@ if(!function_exists('publish_post_to_fb_page'))
 		$post_data = array(
 			'message'		=> sprintf($user->lang['FB_TEMPLATE_POST_PUBLISHED'], $username, $data['topic_title']),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
+			'name'			=> $data['topic_title'],
 		);
 		
 		return post_to_fb_page($post_data);
@@ -590,7 +591,7 @@ if(!function_exists('publish_topic_to_fb_page'))
 		$post_data = array(
 			'message'		=> vsprintf($user->lang['FB_TOPIC_PAGE_TITLE'], array($user->data['username'], $data['topic_title'])),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
-			'name'			=> $username,
+			'name'			=> $data['topic_title'],
 		);
 		
 		return post_to_fb_page($post_data);
@@ -633,9 +634,8 @@ if(!function_exists('publish_post_to_fb_user'))
 			'message'		=> vsprintf($user->lang['FB_USER_POST_TO_FEED_TITLE'], array($name, $data['topic_title'])),
 			'link'			=> generate_board_url() . '/viewtopic.php?f=' . $data['forum_id'] . '&t=' . $data['topic_id'] . '#p' . $data['post_id'],
 			'access_token'	=> $access_token,
-			'name'			=> $name,
+			'name'			=> $data['topic_title'],
 		);
-		print_r($post_data);
 		return update_fb_user_status($post_data, $fb_id);
 	}
 }
