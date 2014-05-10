@@ -64,7 +64,7 @@ class CSAlternateLogin
 			}
 			if($topic_id && $forum_id)
 			{
-			
+				
 				$sql_array = array(
 					'SELECT'		=> '*',
 					'FROM'			=> array(POSTS_TABLE => 'p'),
@@ -78,7 +78,9 @@ class CSAlternateLogin
 				
 				$topic_data = $db->sql_fetchrow($result);
 				
-				$post_text = generate_text_for_display($topic_data['post_text'], $topic_data['bbcode_uid'], $topic_data['bbcode_bitfield'], $topic_data['bbcode_options']);
+				$post_text = $topic_data['post_text'];
+				
+				strip_bbcode($post_text, $topic_data['bbcode_uid']);
 				
 				$db->sql_freeresult($result);
 				
