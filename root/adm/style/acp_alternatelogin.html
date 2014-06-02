@@ -3,23 +3,22 @@
 <div id="fb-root"></div><script src="http://connect.facebook.net/{S_FB_LOCALE}/all.js#appId={AL_FB_APPID}&xfbml=1"></script>  
 <script> 
   window.fbAsyncInit = function() {
-    FB.init({appId: '{AL_FB_APPID}', status: true, cookie: true,
+    FB.init({appId: '{AL_FB_APP_ID}', status: true, cookie: true,
              xfbml: true});
 			 var page_id = "{AL_FB_PAGE_ID}";
 			$('#fb_get_page_token').unbind('click').bind('click', function(e){
-				//console.log('here');
 				
 				FB.login(function(response0){
 					var access_token = FB.getAuthResponse()['accessToken'];
-					//console.log(access_token);
+					console.log(access_token);
 					$.ajax('{AL_PATH}/generate_extended_token.php?access_token=' + access_token, {
 						dataType: 'json',
 						success: function(data){
-							//console.log(data);
+							console.log(data);
 							$.each(data.page_tokens.data, function(index, value){
 								//console.log(value);
 								if(page_id == value.id){
-									//console.log(value.access_token);
+									console.log(value.access_token);
 									
 									$('#facebook_page_token').val(value.access_token);
 								}
@@ -90,6 +89,32 @@
 </fieldset>
 {S_FORM_TOKEN}
 </form>
+
+<legend>{L_SOCIAL_LOGIN_STATS}</legend>
+<table>
+<col class="col1" /><col class="col2" /><col class="col2" />
+
+<tr class="row1">
+	<td>{L_FACEBOOK_USER_COUNT}</td>
+	<td>{S_FACEBOOK_USER_COUNT}</td>
+
+</tr>
+
+
+<tr class="row1">
+	<td>{L_WINDOWSLIVE_USER_COUNT}</td>
+        <td>{S_WINDOWSLIVE_USER_COUNT}</td>
+
+</tr>
+
+
+<tr class="row1">
+	<td>{L_OPENID_USER_COUNT}</td>
+        <td>{S_OPENID_USER_COUNT}</td>
+
+</tr>
+
+</table>
 
 <!-- ELSEIF S_MODE_FACEBOOK -->
 

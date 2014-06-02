@@ -285,6 +285,46 @@ class acp_alternatelogin
 						$openid_login_no = 'checked="checked"';
 						$openid_login_yes = '';
 					}
+					
+				// Get Alternate Login Stats
+				// Facebook
+				$sql_array = array(
+					'SELECT'	=> 'COUNT(al_fb_id) AS fb_count',
+					'FROM'		=> array(USERS_TABLE => 'u'),
+					'WHERE'		=> 'al_fb_id > 0',
+				);
+				
+				$sql = $db->sql_build_query('SELECT', $sql_array);
+				
+				$result = $db->sql_query($sql);
+				
+				$fb_user_count = $db->sql_fetchfield('fb_count');
+				
+				// Windows Live
+				$sql_array = array(
+					'SELECT'	=> 'COUNT(al_wl_id) AS wl_count',
+					'FROM'		=> array(USERS_TABLE => 'u'),
+					'WHERE'		=> 'al_wl_id > 0',
+				);
+				
+				$sql = $db->sql_build_query('SELECT', $sql_array);
+				
+				$result = $db->sql_query($sql);
+				
+				$wl_user_count = $db->sql_fetchfield('wl_count');
+				
+				// Open ID
+				$sql_array = array(
+					'SELECT'	=> 'COUNT(al_oi_id) AS oi_count',
+					'FROM'		=> array(USERS_TABLE => 'u'),
+					'WHERE'		=> 'al_oi_id > 0',
+				);
+				
+				$sql = $db->sql_build_query('SELECT', $sql_array);
+				
+				$result = $db->sql_query($sql);
+				
+				$oi_user_count = $db->sql_fetchfield('oi_count');
                       
 				$template->assign_vars(array(
 					'FACEBOOK_LOGIN_YES'		=> $facebook_login_yes,
@@ -295,6 +335,10 @@ class acp_alternatelogin
 					'OPENID_LOGIN_NO'			=> $openid_login_no,
 					'S_MODE_MAIN'				=> true,
 					'U_ACTION'					=> $this->u_action,
+					
+					'S_FACEBOOK_USER_COUNT'		=> $fb_user_count,
+					'S_WINDOWSLIVE_USER_COUNT'	=> $wl_user_count,
+					'S_OPENID_USER_COUNT'		=> $oi_user_count,
 				));
 					
 			break;

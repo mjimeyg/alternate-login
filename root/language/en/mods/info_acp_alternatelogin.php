@@ -57,6 +57,12 @@ $lang = array_merge($lang, array(
         'ACP_ALTERNATELOGIN_SETTINGS_UPDATED'                   => 'Settings updated.',
 
         'TITLE_ENABLE_LOGIN'                                    => 'Manage Login Types',
+		
+		'SOCIAL_LOGIN_STATS'									=> 'Social Login Stats',
+		
+		'FACEBOOK_USER_COUNT'									=> 'Facebook User Count',
+		'WINDOWSLIVE_USER_COUNT'									=> 'Windows Live User Count',
+		'OPENID_USER_COUNT'									=> 'OpenID User Count',
 
         'ENABLE_LOGIN'                                          => 'Enable Login',
 

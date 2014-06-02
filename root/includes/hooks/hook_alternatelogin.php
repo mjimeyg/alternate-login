@@ -9,8 +9,11 @@ class CSAlternateLogin
 			global $template, $user, $phpbb_root_path, $phpEx, $config, $al_data, $table_prefix, $db, $facebook;
 	
 			include $phpbb_root_path . '/includes/functions_alternatelogin.' . $phpEx;
-			include $phpbb_root_path . '/alternatelogin/facebook/facebook.' . $phpEx;
 			
+			if(!class_exists('facebook'))
+			{
+				include $phpbb_root_path . '/alternatelogin/facebook/facebook.' . $phpEx;
+			}
 			$fb_config = array(
 				'appId'					=> $config['al_fb_id'],
 				'secret'				=> $config['al_fb_secret'],
