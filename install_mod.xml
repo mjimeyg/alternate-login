@@ -52,13 +52,24 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2014.04.29.01</mod-version> 
+		<mod-version>2014.06.03.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.12</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2014.06.03</date>
+					<rev-version>2014.04.29.01</rev-version>
+					<changelog lang="en">
+						<change>hook_alternatelogin.php: Altered include of Facebook.php to see if it is already loaded to account for possible other MODS.</change>
+						<change>adm/style/acp_alternatelogin.html: Added statistics table to show how many users are using each of the login methods.</change>
+						<change>includes/acp/acp_alternatelogin.php: Added statistics table to show how many users are using each of the login methods.</change>
+						<change>language/mods/info_acp_alternatelogin.php: Added language keys for statistics table</change>
+					</changelog>
+					
+				</entry>
 				<entry>
 					<date>2014.04.29</date>
 					<rev-version>2014.04.29.01</rev-version>
