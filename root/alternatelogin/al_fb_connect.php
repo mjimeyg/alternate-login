@@ -69,11 +69,23 @@ $return_to_page = str_replace("./", "", $return_to_page);
 try
 {
 	// Store the access token for use with this session.
-	$sql_array = array(
-		'al_fb_access_token'   => $facebook->getAccessToken(),
-	);
-	
-	$sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
+	if($user->data['user_id'] == ANONYMOUS)
+	{
+		
+		$sql_array = array(
+			'session_fb_access_token'   => $facebook->getAccessToken(),
+		);
+		
+		$sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
+	}
+	else
+	{
+		$sql_array = array(
+			'al_fb_access_token'   => $facebook->getAccessToken(),
+		);
+		
+		$sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
+	}
 	
 	$db->sql_query($sql);
 			
