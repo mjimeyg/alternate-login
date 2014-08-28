@@ -32,7 +32,7 @@ class CSAlternateLogin
 			
 			
 			$user->add_lang('mods/info_ucp_alternatelogin');
-			if($user->data['al_fb_access_token'])
+			if($user->data['al_fb_access_token']  && $user->data['user_id'] != ANONYMOUS)
 			{
 			
 				$facebook->setAccessToken($user->data['al_fb_access_token']);
@@ -63,7 +63,7 @@ class CSAlternateLogin
 			}
 			else
 			{
-				$login_url = $phpbb_root_path . '/alternatelogin/al_fb_connect.' . $phpEx;
+				$login_url = $phpbb_root_path . 'alternatelogin/al_fb_connect.' . $phpEx;
 			}
 			if($topic_id && $forum_id)
 			{

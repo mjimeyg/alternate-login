@@ -103,6 +103,11 @@ catch(OAuthException $ex)
 	$login_url = $facebook->getLoginUrl();
 	redirect($login_url, false, true);
 }
+catch(Exception $ex)
+{
+	$login_url = $facebook->getLoginUrl();
+	redirect($login_url, false, true);
+}
 
 // Check to see if we have a valid Facebook user.
 if(!$fb_user || isset($fb_user['error']))
