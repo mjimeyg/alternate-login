@@ -60,6 +60,14 @@
 		</installation> 
                 <history>
 				<entry>
+					<date>2014.08.29</date>
+					<rev-version>2014.07.11.01</rev-version>
+					<changelog lang="en">
+						<change>hooks_alternatelogin: Added check for anonymous users.</change>
+					</changelog>
+					
+				</entry>
+				<entry>
 					<date>2014.07.11</date>
 					<rev-version>2014.07.11.01</rev-version>
 					<changelog lang="en">
