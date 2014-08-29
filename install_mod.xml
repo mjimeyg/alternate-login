@@ -52,7 +52,7 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2014.07.11.01</mod-version> 
+		<mod-version>2014.08.29.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
@@ -61,7 +61,7 @@
                 <history>
 				<entry>
 					<date>2014.08.29</date>
-					<rev-version>2014.07.11.01</rev-version>
+					<rev-version>2014.08.29.01</rev-version>
 					<changelog lang="en">
 						<change>hooks_alternatelogin: Added check for anonymous users.</change>
 					</changelog>
