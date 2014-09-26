@@ -34,7 +34,7 @@ class ucp_alternatelogin
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx, $facebook;
+		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx, $fb_session, $fb_helper;
 		
 		// Include the Alternate Login functions.
 		include($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);
@@ -53,11 +53,14 @@ class ucp_alternatelogin
 		if($user->data['al_fb_id'])
 		{
 			
-			$fb_user = $facebook->api('/me?fields,address,website,work,birthday', 'GET');
+			$request = new FacebookRequest($fb_session, 'GET', '/me');
+			$response = $request->execute();
+			
+			$fb_user = $response->getGraphObject(GraphObject::className())->asArray();
 						
             $fb_website = isset($fb_user['website']) ? $fb_user['website'] : false;
-            $fb_location = isset($fb_user['location']['name']) ? $fb_user['location']['name'] : false;
-            $fb_occupation = isset($fb_user['work'][0]['employer']['name']) ? $fb_user['work'][0]['employer']['name'] : false;
+            $fb_location = isset($fb_user['location']->name) ? $fb_user['location']->name : false;
+            $fb_occupation = isset($fb_user['work'][0]->employer->name) ? $fb_user['work'][0]->employer->name : false;
 			
 			if(!$fb_user['birthday'])
 			{
@@ -68,13 +71,20 @@ class ucp_alternatelogin
 				$birth_date = explode('/', $fb_user['birthday']);
 				$fb_birthday = $birth_date[1] . '-' . $birth_date[0] . '-' . $birth_date[2];
 			}
-			$fb_user = $facebook->api('/me?fields=picture', 'GET');
 			
-			$fb_avatar = (!$fb_user['picture']) ? false : $fb_user['picture']['data']['url'];
+			$request = new FacebookRequest($fb_session, 'GET', '/me?fields=picture');
+			$response = $request->execute();
 			
-			$fb_user = $facebook->api('/me?fields=statuses', 'GET');
+			$fb_user = $response->getGraphObject(GraphObject::className())->asArray();
+
+			$fb_avatar = (!$fb_user['picture']) ? false : $fb_user['picture']->data->url;
+			
+			$request = new FacebookRequest($fb_session, 'GET', '/me/statuses');
+			$response = $request->execute();
+			
+			$fb_user = $response->getGraphObject(GraphObject::className())->asArray();
  
-			$fb_status = (!$fb_user['statuses']['data'][0]['message']) ? false : $fb_user['statuses']['data'][0]['message'];
+			$fb_status = (!$fb_user['data'][0]->message) ? false : $fb_user['data'][0]->message;
 			
 			
 			

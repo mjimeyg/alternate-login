@@ -1,27 +1,43 @@
 <?php
+session_start();
+
 
 class CSAlternateLogin
 {
+	
 	function page_header(&$hook)
 	{
 		try
 		{
-			global $template, $user, $phpbb_root_path, $phpEx, $config, $al_data, $table_prefix, $db, $facebook;
+			global $template, $user, $phpbb_root_path, $phpEx, $config, $al_data, $table_prefix, $db, $fb_session, $fb_helper;
 	
 			include $phpbb_root_path . '/includes/functions_alternatelogin.' . $phpEx;
+			//require_once($phpbb_root_path .  '/alternatelogin/facebook/autoload.php' );
 			
-			if(!class_exists('facebook'))
-			{
-				include $phpbb_root_path . '/alternatelogin/facebook/facebook.' . $phpEx;
-			}
-			$fb_config = array(
-				'appId'					=> $config['al_fb_id'],
-				'secret'				=> $config['al_fb_secret'],
-				'fileUpload'			=> false,
-				'allowSignedRequest'	=> false,
-			);
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookHttpable.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookCurl.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookCurlHttpClient.php' );
 			
-			$facebook = new Facebook($fb_config);
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/Entities/AccessToken.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/Entities/SignedRequest.php' );
+			
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookSession.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRedirectLoginHelper.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRequest.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookResponse.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookSDKException.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRequestException.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookOtherException.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookAuthorizationException.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphObject.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphUser.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphAlbum.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphLocation.php' );
+			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphSessionInfo.php' );
+			
+				
+			
+			
 			
 			
 			$forum_id = request_var('f', 0);
@@ -30,35 +46,53 @@ class CSAlternateLogin
 			
 			$result = $hook->previous_hook_result('phpbb_user_session_handler');
 			
-			
 			$user->add_lang('mods/info_ucp_alternatelogin');
-			if($user->data['al_fb_access_token']  && $user->data['user_id'] != ANONYMOUS)
-			{
 			
-				$facebook->setAccessToken($user->data['al_fb_access_token']);
-				if(!$facebook->setExtendedAccessToken())
+			FacebookSession::setDefaultApplication($config['al_fb_id'], $config['al_fb_secret']);
+			
+			$fb_helper = new FacebookRedirectLoginHelper(generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}");
+			
+			if($user->data['al_fb_access_token'])
+			{
+				$fb_session = new FacebookSession($user->data['al_fb_access_token']);
+				if(!$fb_session->validate())
 				{
-					add_log('critical', 'Failed to get extended access token - hook_alternatelogin.php:36');
+					$fb_session = null;
 				}
-				
-				
-	
-	
-				$fb_user = $facebook->api("https://graph.facebook.com/me", 'GET');
-				
-				$fb_lang = $fb_user['locale'];
-				
+			}
+			elseif($user->data['session_fb_access_token'])
+			{
+				$fb_session = new FacebookSession($user->data['session_fb_access_token']);
+				if(!$fb_session->validate())
+				{
+					$fb_session = null;
+				}
+			}
+			else
+			{
+				$fb_session = $fb_helper->getSessionFromRedirect();
 				
 			}
-			if(!$facebook->getUser())
-			{
-				$params = array(
-					'scope'		=> 'user_location,user_activities,user_birthday,user_interests,user_status,user_website,user_work_history,email,publish_actions,manage_pages,publish_stream',
-					'redirect_uri'	=> generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}",
-				);
-				
-				$login_url = $facebook->getLoginUrl($params);
 			
+			if(!$fb_session)
+			{
+				
+				$fb_helper = new FacebookRedirectLoginHelper(generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}", $config['al_fb_id'], $config['al_fb_secret']);
+				
+				
+				$login_url = $fb_helper->getLoginUrl(array(
+													'user_location',
+													'user_activities',
+													'user_birthday',
+													'user_interests',
+													'user_status',
+													'user_website',
+													'user_work_history',
+													'email',
+													'publish_actions',
+													'manage_pages',
+													'publish_stream'
+												));
 				
 			}
 			else

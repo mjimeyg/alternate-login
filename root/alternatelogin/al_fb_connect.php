@@ -28,24 +28,14 @@ include($phpbb_root_path . 'common.' . $phpEx);
 include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 include_once($phpbb_root_path . 'includes/functions_alternatelogin.' . $phpEx);	// Custom Alternate Login functions.
 
+
+
 // Set up a new user session.
 $user->session_begin();
 $auth->acl($user->data);
 $user->setup('ucp');
 $user->add_lang('mods/info_acp_alternatelogin');	// Global Alternate Login language file.
 $user->add_lang('mods/info_ucp_alternatelogin');
-
-$fb_config = array(
-				'appId'					=> $config['al_fb_id'],
-				'secret'				=> $config['al_fb_secret'],
-				'fileUpload'			=> false,
-				'allowSignedRequest'	=> false,
-			);
-			
-if(!$facebook)
-{
-	$facebook = new Facebook($fb_config);
-}
 
 // Make sure that Facebook login is enabled for this site.
 if($config['al_fb_login'] == 0)
@@ -57,23 +47,42 @@ if($config['al_fb_login'] == 0)
 //$return_to_page = request_var('return_to_page', base64_encode("{$phpbb_root_path}index.{$phpEx}"));
 //$admin = request_var('admin', 0);
 
-$fb_user_id = $facebook->getUser();
 
-
-$facebook->setExtendedAccessToken();
-
-$return_to_page = base64_decode($return_to_page);
-$return_to_page = str_replace("../", "", $return_to_page);
-$return_to_page = str_replace("./", "", $return_to_page);
 
 try
 {
+	if(!$fb_session)
+	{
+		trigger_error("Could not connect to Facebook.");
+	}
+	$request = new FacebookRequest($fb_session, 'GET', '/me');
+	$response = $request->execute();
+	
+	$fb_user = $response->getGraphObject(GraphObject::className());
+	$fb_user_id = $fb_user->getProperty('id');
+	
+	$fb_work = $fb_user->work;
+	$fb_work = $fb_work[0];
+	
+	$fb_birthday = $fb_user->getProperty('birthday');
+	
+	$fb_website                    = $fb_user->getProperty('website');
+	$fb_country                   = $fb_user->location->name;
+	$fb_employer                 = $fb_work['employer']['name'];
+
+	$fb_location = $response->getGraphObject(GraphLocation::className());
+
+	$fb_session = $fb_session->getLongLivedSession($config['al_fb_id'], $config['al_fb_secret']);
+	
+	$return_to_page = base64_decode($return_to_page);
+	$return_to_page = str_replace("../", "", $return_to_page);
+	$return_to_page = str_replace("./", "", $return_to_page);
 	// Store the access token for use with this session.
 	if($user->data['user_id'] == ANONYMOUS)
 	{
 		
 		$sql_array = array(
-			'session_fb_access_token'   => $facebook->getAccessToken(),
+			'session_fb_access_token'   => $fb_session->getToken(),
 		);
 		
 		$sql = "UPDATE " . SESSIONS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE session_id='" . $user->data['session_id'] . "'";
@@ -81,7 +90,7 @@ try
 	else
 	{
 		$sql_array = array(
-			'al_fb_access_token'   => $facebook->getAccessToken(),
+			'al_fb_access_token'   => $fb_facebook->getAccessToken(),
 		);
 		
 		$sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
@@ -90,40 +99,36 @@ try
 	$db->sql_query($sql);
 			
 	
-	$fb_user = $facebook->api('/me', 'GET');
 	
 }
-catch(FacebookExceptionApi $ex)
+catch(FacebookRequestException $ex)
 {
-	$login_url = $facebook->getLoginUrl();
-	redirect($login_url, false, true);
-}
-catch(OAuthException $ex)
-{
-	$login_url = $facebook->getLoginUrl();
-	redirect($login_url, false, true);
+	//print_r($fb_user);
+	trigger_error($ex->getMessage() . '<p />' . $ex->getTraceAsString());
 }
 catch(Exception $ex)
 {
-	$login_url = $facebook->getLoginUrl();
-	redirect($login_url, false, true);
+	//print_r($fb_user);
+	trigger_error($ex->getMessage() . '<p />' . $ex->getTraceAsString());
+	//$login_url = $facebook->getLoginUrl();
+	//redirect($login_url, false, true);
 }
 
 // Check to see if we have a valid Facebook user.
-if(!$fb_user || isset($fb_user['error']))
+/*if(!$fb_user || isset($fb_user['error']))
 {
 	add_log('critical', $user->data['user_id'], 'FB_ERROR_USER');
 	// Inform the user that we couldn't get their Facebook Id.
 	trigger_error(sprintf($user->lang['FB_ERROR_USER'], $user->lang['FACEBOOK']));
-}
-$user->lang_name = substr($fb_user['locale'], 0, 2);
+}*/
+$user->lang_name = substr($fb_user->getProperty('locale'), 0, 2);
 // Select the user_id from the Alternate Login user data table which has the same Facebook Id.
 
 
 
 $sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
 		FROM ' . USERS_TABLE . "
-		WHERE al_fb_id = " . $fb_user['id'];
+		WHERE al_fb_id = " . $fb_user_id;
 		
 
 // Execute the query.
@@ -138,7 +143,6 @@ $db->sql_freeresult($result);
 // Check to see if we found a user_id with the associated Facebook Id.
 if ($row)   // User is registered already, let's log him in!
 {
-		
 	$old_session_id = $user->session_id;
 
 		if ($admin)
@@ -174,7 +178,7 @@ if ($row)   // User is registered already, let's log him in!
 
 				// Store the access token for use with this session.
 				$sql_array = array(
-					'al_fb_access_token'   => $facebook->getAccessToken(),
+					'al_fb_access_token'   => $fb_session->getToken(),
 				);
 		
 				$sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
@@ -185,14 +189,14 @@ if ($row)   // User is registered already, let's log him in!
 				if($user->data['al_fb_profile_sync'])
 				{
 
-					$fb_user = $facebook->api('/me', 'GET');
-
-					$data['user_website']                    = isset($fb_user['website']) ? $fb_user['website'] : '';
-					$data['user_from']                   = isset($fb_user['location']['name']) ? $fb_user['location']['name'] : '';
-					$data['user_occ']                 = isset($fb_user['work'][0]['employer']['name']) ? $fb_user['work'][0]['employer']['name'] : '';
-					if(isset($fb_user['birthday']))
+					
+					
+					$data['user_website']             = isset($fb_website) ? $fb_website : '';
+					$data['user_from']                = isset($fb_country) ? $fb_country : '';
+					$data['user_occ']                 = isset($fb_work['employer']['name']) ? $fb_work['employer']['name'] : '';
+					if(isset($fb_birthday))
 					{
-						$bday = explode('/', $fb_user['birthday']);
+						$bday = explode('/', $fb_birthday);
 						$data['user_birthday']              = sprintf('%2d-%2d-%4d', $bday[1], $bday[0], $bday[2]);
 					}
 
@@ -202,9 +206,13 @@ if ($row)   // User is registered already, let's log him in!
 				{
 					include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 					
-					$fb_user = $facebook->api('/me/statuses', 'GET');
+					$request = new FacebookRequest($fb_session, 'GET', '/me/statuses');
+					$response = $request->execute();
+					
+					$fb_status = $response->getGraphObject()->asArray();
+	
 
-					$signature = $fb_user['data'][0]['message'];
+					$signature = $fb_status['data'][0]['message'];
 
 					$enable_bbcode                      = ($config['allow_sig_bbcode']) ? (bool) $user->optionget('sig_bbcode') : false;
 					$enable_smilies                     = ($config['allow_sig_smilies']) ? (bool) $user->optionget('sig_smilies') : false;
@@ -245,19 +253,26 @@ if ($row)   // User is registered already, let's log him in!
 
 }
 
-$sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
-		FROM ' . USERS_TABLE . "
-		WHERE user_email = '" . mysql_escape_string($fb_user['email']) . "'";
-		
-
-// Execute the query.
-$result = $db->sql_query($sql);
-
-// Retrieve the row data.
-$row = $db->sql_fetchrow($result);
-
-// Free up the result handle from the query.
-$db->sql_freeresult($result);
+if(isset($fb_user->email) && $fb_user->email != '')
+{
+	$sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
+			FROM ' . USERS_TABLE . "
+			WHERE user_email = '" . mysql_escape_string($fb_user->getProperty('email')) . "'";
+			
+	
+	// Execute the query.
+	$result = $db->sql_query($sql);
+	
+	// Retrieve the row data.
+	$row = $db->sql_fetchrow($result);
+	
+	// Free up the result handle from the query.
+	$db->sql_freeresult($result);
+}
+else
+{
+	$row = false;
+}
 
 if($row)
 {
@@ -280,7 +295,7 @@ if($row)
 
 		// Store the access token for use with this session.
 		$sql_array = array(
-			'al_fb_access_token'   => $facebook->getAccessToken(),
+			'al_fb_access_token'   => $fb_session->getToken(),
 		);
 
 		$sql = "UPDATE " . USERS_TABLE . " SET " . $db->sql_build_array('UPDATE', $sql_array) . " WHERE user_id='" . $user->data['user_id'] . "'";
@@ -301,7 +316,7 @@ if($row)
 				}
 
 				$sql_array = array(
-					'al_fb_id'      => $fb_user['id'],
+					'al_fb_id'      => $fb_user_id,
 					'al_wl_id'      => 0,
 					'al_oi_id'      => 0,
 				);
@@ -337,13 +352,14 @@ else
 	// We will check to see if they wish to register.
 	if($user->data['user_id'] == ANONYMOUS)
 	{
+		
 			if(!$config['al_fb_quick_accounts'])
 			{
 				// Check to make sure the email is not already registered.
 				$sql_array = array(
 					'SELECT'    => 'COUNT(user_email) AS user_email',
 					'FROM'      => array(USERS_TABLE => 'u'),
-					'WHERE'     => "user_email ='" . mysql_escape_string($fb_user['email']) . "'",
+					'WHERE'     => "user_email ='" . mysql_escape_string($fb_user->getProperty('email')) . "'",
 				);
 				
 				$sql = $db->sql_build_query('SELECT', $sql_array);
@@ -360,7 +376,7 @@ else
 				// Most of this code comes straight out of ucp_register.php
 				$message = 'TERMS_OF_USE_CONTENT';
 				$title = 'TERMS_USE';
-				$user->lang_name = substr($fb_user['locale'], 0, 2);
+				$user->lang_name = substr($fb_user->locale, 0, 2);
 				if (empty($user->lang[$message]))
 				{
 						if ($user->data['is_registered'])
@@ -380,10 +396,11 @@ else
 
 				$s_hidden_fields = array(	'al_login' 		=> 1,
 																		'al_login_type'	=> AL_FACEBOOK_LOGIN,
-																		'al_fb_user'	=> $fb_user['id']
+																		'al_fb_user'	=> $fb_user_id
 				);
 
-				$add_lang                       = '&int=' . $fb_user['locale'];
+
+				$add_lang                       = '&int=' . $fb_user->locale;
 				$coppa				= (isset($_REQUEST['coppa'])) ? ((!empty($_REQUEST['coppa'])) ? 1 : 0) : false;
 						if ($coppa === false && $config['coppa_enable'])
 						{
@@ -421,11 +438,11 @@ else
 			else 
 			{
 				$data = array(
-					'username'		=> $fb_user['name'],
-					'email'			=> strtolower($fb_user['email']),
-					'email_confirm'		=> strtolower($fb_user['email']),
-					'lang'                   => substr($fb_user['locale'], 0, 2),
-					'tz'			=> (float) $fb_user['timezone'],
+					'username'		=> $fb_user->getName(),
+					'email'			=> strtolower($fb_user->getProperty('email')),
+					'email_confirm'		=> strtolower($fb_user->getProperty('email')),
+					'lang'                   => substr($fb_user->getProperty('locale'), 0, 2),
+					'tz'			=> (float) $fb_user->getProperty('timezone'),
 				);
 				
 				$validate_username = validate_username($data['username']);
@@ -440,7 +457,6 @@ else
 
 				$data['new_password'] = $new_password;
 				$data['password_confirm'] = $new_password;
-				add_log('critical', $user->data['user_id'], 'FB Password', $new_password);
 				$error = validate_data($data, array(
 					'username'			=> array(
 														array('string', false, $config['min_name_chars'], $config['max_name_chars']),
@@ -506,7 +522,7 @@ else
 						$user_inactive_reason = 0;
 						$user_inactive_time = 0;
 					
-					$bday = explode('/', $fb_user['birthday']);
+					$bday = explode('/', $fb_birthday);
 					$user_row = array(
 						'username'				=> $data['username'],
 						'user_password'			=> phpbb_hash($data['new_password']),
@@ -521,7 +537,7 @@ else
 						'user_regdate'			=> time(),
 						'user_inactive_reason'	=> $user_inactive_reason,
 						'user_inactive_time'	=> $user_inactive_time,
-						'al_fb_id'              => $fb_user['id'],
+						'al_fb_id'              => $fb_user_id,
 						'user_avatar_type'      => AVATAR_REMOTE,
 						'user_avatar_width'     => 100,
 						'user_avatar_height'    => 100,
@@ -529,11 +545,11 @@ else
 						'al_fb_avatar_sync'     => 1,
 						'al_fb_profile_sync'    => 1,
 					
-						'user_website'                    => (!$fb_user['website']) ? '' : $fb_user['website'],
-						'user_from'                   => (!$fb_user['location']['name']) ? '' : $fb_user['location']['name'],
-						'user_occ'                 => (!$fb_user['work'][0]['employer']['name']) ? '' : $fb_user['work'][0]['employer']['name'],
+						//'user_website'          => (!$fb_user->getProperty('website')) ? '' : $fb_user->getProperty('website'),
+						//'user_from'            	=> isset($fb_location->getCountry()) ? $fb_location->getCountry() : '',
+						//'user_occ'              => isset($fb_work['employer']['name']) ? $fb_work['employer']['name'] : '',
 
-						'user_birthday'              => sprintf('%2d-%2d-%4d', $bday[1], $bday[0], $bday[2]),
+						'user_birthday'         => sprintf('%2d-%2d-%4d', $bday[1], $bday[0], $bday[2]),
 					);
 					
 					if ($config['new_member_post_limit'])
@@ -580,7 +596,7 @@ else
 				// Did we get data, if yes then the user has another account registered.
 				// We need to unlink that account as well.
 				$sql_array = array(
-					'al_fb_id'      => $fb_user['id'],
+					'al_fb_id'      => $fb_user_id,
 					'al_wl_id'      => 0,
 					'al_oi_id'      => 0,
 				);
