@@ -45,6 +45,6 @@ $short_token = request_var('access_token', '');
 
 $data = get_fb_extended_tokens($short_token);
 
-echo json_encode($data);
+echo $data;
 
 ?>
