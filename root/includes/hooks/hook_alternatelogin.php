@@ -60,7 +60,7 @@ class CSAlternateLogin
 					$fb_session = null;
 				}
 			}
-			elseif($user->data['session_fb_access_token'])
+			elseif(isset($user->data['session_fb_access_token']))
 			{
 				$fb_session = new FacebookSession($user->data['session_fb_access_token']);
 				if(!$fb_session->validate())
