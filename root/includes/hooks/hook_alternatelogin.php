@@ -48,32 +48,34 @@ class CSAlternateLogin
 			
 			$user->add_lang('mods/info_ucp_alternatelogin');
 			
-			FacebookSession::setDefaultApplication($config['al_fb_id'], $config['al_fb_secret']);
-			
-			$fb_helper = new FacebookRedirectLoginHelper(generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}");
-			
-			if($user->data['al_fb_access_token'])
+			if(isset($config['al_fb_login']) && $config['al_fb_login'])
 			{
-				$fb_session = new FacebookSession($user->data['al_fb_access_token']);
-				if(!$fb_session->validate())
-				{
-					$fb_session = null;
-				}
-			}
-			elseif(isset($user->data['session_fb_access_token']))
-			{
-				$fb_session = new FacebookSession($user->data['session_fb_access_token']);
-				if(!$fb_session->validate())
-				{
-					$fb_session = null;
-				}
-			}
-			else
-			{
-				$fb_session = $fb_helper->getSessionFromRedirect();
+				FacebookSession::setDefaultApplication($config['al_fb_id'], $config['al_fb_secret']);
 				
+				$fb_helper = new FacebookRedirectLoginHelper(generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}");
+				
+				if($user->data['al_fb_access_token'])
+				{
+					$fb_session = new FacebookSession($user->data['al_fb_access_token']);
+					if(!$fb_session->validate())
+					{
+						$fb_session = null;
+					}
+				}
+				elseif(isset($user->data['session_fb_access_token']))
+				{
+					$fb_session = new FacebookSession($user->data['session_fb_access_token']);
+					if(!$fb_session->validate())
+					{
+						$fb_session = null;
+					}
+				}
+				else
+				{
+					$fb_session = $fb_helper->getSessionFromRedirect();
+					
+				}
 			}
-			
 			if(!$fb_session)
 			{
 				
