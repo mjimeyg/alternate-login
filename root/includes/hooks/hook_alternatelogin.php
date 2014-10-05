@@ -44,12 +44,15 @@ class CSAlternateLogin
 			$topic_id = request_var('t', 0);
 			$site_image = '';
 			
+			$fb_session = null;
+			
 			$result = $hook->previous_hook_result('phpbb_user_session_handler');
 			
 			$user->add_lang('mods/info_ucp_alternatelogin');
 			
 			if(isset($config['al_fb_login']) && $config['al_fb_login'])
 			{
+				
 				FacebookSession::setDefaultApplication($config['al_fb_id'], $config['al_fb_secret']);
 				
 				$fb_helper = new FacebookRedirectLoginHelper(generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}");
@@ -75,31 +78,32 @@ class CSAlternateLogin
 					$fb_session = $fb_helper->getSessionFromRedirect();
 					
 				}
-			}
-			if(!$fb_session)
-			{
-				
-				$fb_helper = new FacebookRedirectLoginHelper(generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}", $config['al_fb_id'], $config['al_fb_secret']);
-				
-				
-				$login_url = $fb_helper->getLoginUrl(array(
-													'user_location',
-													'user_activities',
-													'user_birthday',
-													'user_interests',
-													'user_status',
-													'user_website',
-													'user_work_history',
-													'email',
-													'publish_actions',
-													'manage_pages',
-													'publish_stream'
-												));
-				
-			}
-			else
-			{
-				$login_url = $phpbb_root_path . 'alternatelogin/al_fb_connect.' . $phpEx;
+			
+				if(!$fb_session)
+				{
+					
+					$fb_helper = new FacebookRedirectLoginHelper(generate_board_url() . "/alternatelogin/al_fb_connect.{$phpEx}", $config['al_fb_id'], $config['al_fb_secret']);
+					
+					
+					$login_url = $fb_helper->getLoginUrl(array(
+														'user_location',
+														'user_activities',
+														'user_birthday',
+														'user_interests',
+														'user_status',
+														'user_website',
+														'user_work_history',
+														'email',
+														'publish_actions',
+														'manage_pages',
+														'publish_stream'
+													));
+					
+				}
+				else
+				{
+					$login_url = $phpbb_root_path . 'alternatelogin/al_fb_connect.' . $phpEx;
+				}
 			}
 			if($topic_id && $forum_id)
 			{
