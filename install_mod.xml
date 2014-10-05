@@ -52,13 +52,27 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2014.08.29.01</mod-version> 
+		<mod-version>2014.10.05.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.12</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2014.10.05</date>
+					<rev-version>2014.10.05.01</rev-version>
+					<changelog lang="en">
+						<change>hooks_alternatelogin.php: Altered to make use of Facebook php SDK 4.0.</change>
+						<change>functions_alternatelogin.php: Altered to make use of Facebook php SDK 4.0.</change>
+						<change>ucp_alternatelogin.php: Altered to make use of Facebook php SDK 4.0.</change>
+						<change>al_fb_connect: Altered to make use of Facebook php SDK 4.0.</change>
+						<change>acp_alternatelogin.html: Altered to make use of Facebook php SDK 4.0.</change>
+						<change>generate_extended_token.php: Removed call to encode returned tokens as json as they are already json encoded.</change>
+						<change>altenatelogin/facebook/*.*: Replaced old SDK with Facebook PHP SDK 4.0.</change>
+					</changelog>
+					
+				</entry>
 				<entry>
 					<date>2014.08.29</date>
 					<rev-version>2014.08.29.01</rev-version>
