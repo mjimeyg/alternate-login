@@ -44,7 +44,6 @@ if($config['al_fb_login'] == 0)
 	trigger_error(sprintf($user->lang['AL_LOGIN_UNAVAILABLE'], $user->lang['FACEBOOK']));
 }
 
-//$return_to_page = request_var('return_to_page', base64_encode("{$phpbb_root_path}index.{$phpEx}"));
 //$admin = request_var('admin', 0);
 
 
@@ -74,9 +73,7 @@ try
 
 	$fb_session = $fb_session->getLongLivedSession($config['al_fb_id'], $config['al_fb_secret']);
 	
-	$return_to_page = base64_decode($return_to_page);
-	$return_to_page = str_replace("../", "", $return_to_page);
-	$return_to_page = str_replace("./", "", $return_to_page);
+	
 	// Store the access token for use with this session.
 	if($user->data['user_id'] == ANONYMOUS)
 	{
@@ -452,7 +449,7 @@ else
 					trigger_error($user->lang[$validate_username . '_USERNAME'] . ' <br /><br /><a href="' . $phpbb_root_path . '/alternatelogin/al_fb_registration.' . $phpEx . '?mode=register">' . $user->lang['BACK_TO_PREV'] . "</a>");            
 				}
 
-				$new_password = $fb_reg_data['user_id'] . $config['al_fb_key'] . $config['al_fb_secret'];
+				$new_password = $fb_user->getId() . $config['al_fb_key'] . $config['al_fb_secret'];
 
 
 				$data['new_password'] = $new_password;
