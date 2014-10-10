@@ -47,6 +47,7 @@ $lang = array_merge($lang, array(
 		'AUTHORIZE_FAILURE'						=> 'Failed to get authorisation code.',
         'AL_LOGIN'								=> 'Select and alternate login',
 		'AL_LOGIN_EXPLAIN'						=> 'You can select an alternate login method.  We will still need a user name and password.',
+		'TITLE_FACEBOOK_REGISTRATION'			=> 'Register with Facebook',
 		'AL_REGISTER_QUERY'						=> 'Do you wish to register with your %s account?',
 		'AL_REGISTRATION'						=> 'If you have an alternate social networking account you would like to use with this site please click one of the icons below <b>FIRST</b>.',
 		'AL_LOGIN_UNAVAILABLE'					=> '%s is unavailable at this site.',
