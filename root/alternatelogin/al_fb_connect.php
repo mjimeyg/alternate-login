@@ -57,19 +57,23 @@ try
 	$request = new FacebookRequest($fb_session, 'GET', '/me');
 	$response = $request->execute();
 	
-	$fb_user = $response->getGraphObject(GraphObject::className());
-	$fb_user_id = $fb_user->getProperty('id');
+	$fb_user = $response->getGraphObject(GraphObject::className())->asArray();
 	
-	$fb_work = $fb_user->work;
+	$fb_user_id = $fb_user['id'];
+	
+	$fb_work = $fb_user['work'];
 	$fb_work = $fb_work[0];
 	
-	$fb_birthday = $fb_user->getProperty('birthday');
+	$fb_birthday = $fb_user['birthday'];
 	
-	$fb_website                    = $fb_user->getProperty('website');
-	$fb_country                   = $fb_user->location->name;
-	$fb_employer                 = $fb_work['employer']['name'];
-
-	$fb_location = $response->getGraphObject(GraphLocation::className());
+	$fb_website                    = $fb_user['website'];
+	$fb_country                   = $fb_user['location'];
+	$fb_country 					= $fb_country->name;
+	$fb_employer                 = $fb_work->employer->name;
+	
+	$fb_locale						= $fb_user['locale'];
+	
+	$fb_email						= $fb_user['email'];
 
 	$fb_session = $fb_session->getLongLivedSession($config['al_fb_id'], $config['al_fb_secret']);
 	
@@ -118,7 +122,7 @@ catch(Exception $ex)
 	// Inform the user that we couldn't get their Facebook Id.
 	trigger_error(sprintf($user->lang['FB_ERROR_USER'], $user->lang['FACEBOOK']));
 }*/
-$user->lang_name = substr($fb_user->getProperty('locale'), 0, 2);
+$user->lang_name = substr($fb_locale, 0, 2);
 // Select the user_id from the Alternate Login user data table which has the same Facebook Id.
 
 
@@ -356,7 +360,7 @@ else
 				$sql_array = array(
 					'SELECT'    => 'COUNT(user_email) AS user_email',
 					'FROM'      => array(USERS_TABLE => 'u'),
-					'WHERE'     => "user_email ='" . mysql_escape_string($fb_user->getProperty('email')) . "'",
+					'WHERE'     => "user_email ='" . mysql_escape_string($fb_email) . "'",
 				);
 				
 				$sql = $db->sql_build_query('SELECT', $sql_array);
@@ -373,7 +377,7 @@ else
 				// Most of this code comes straight out of ucp_register.php
 				$message = 'TERMS_OF_USE_CONTENT';
 				$title = 'TERMS_USE';
-				$user->lang_name = substr($fb_user->locale, 0, 2);
+				$user->lang_name = substr($fb_locale, 0, 2);
 				if (empty($user->lang[$message]))
 				{
 						if ($user->data['is_registered'])
@@ -397,8 +401,9 @@ else
 				);
 
 
-				$add_lang                       = '&int=' . $fb_user->locale;
+				$add_lang                       = '&int=' . $fb_locale;
 				$coppa				= (isset($_REQUEST['coppa'])) ? ((!empty($_REQUEST['coppa'])) ? 1 : 0) : false;
+				$add_coppa = ($coppa !== false) ? '&amp;coppa=' . $coppa : '';
 						if ($coppa === false && $config['coppa_enable'])
 						{
 								$now = getdate();
@@ -435,10 +440,10 @@ else
 			else 
 			{
 				$data = array(
-					'username'		=> $fb_user->getName(),
-					'email'			=> strtolower($fb_user->getProperty('email')),
-					'email_confirm'		=> strtolower($fb_user->getProperty('email')),
-					'lang'                   => substr($fb_user->getProperty('locale'), 0, 2),
+					'username'		=> $fb_user['name'],
+					'email'			=> strtolower($fb_email),
+					'email_confirm'		=> strtolower($fb_email),
+					'lang'                   => substr($fb_locale, 0, 2),
 					'tz'			=> (float) $fb_user->getProperty('timezone'),
 				);
 				
@@ -449,7 +454,7 @@ else
 					trigger_error($user->lang[$validate_username . '_USERNAME'] . ' <br /><br /><a href="' . $phpbb_root_path . '/alternatelogin/al_fb_registration.' . $phpEx . '?mode=register">' . $user->lang['BACK_TO_PREV'] . "</a>");            
 				}
 
-				$new_password = $fb_user->getId() . $config['al_fb_key'] . $config['al_fb_secret'];
+				$new_password = $fb_user_id . $config['al_fb_key'] . $config['al_fb_secret'];
 
 
 				$data['new_password'] = $new_password;
@@ -538,7 +543,7 @@ else
 						'user_avatar_type'      => AVATAR_REMOTE,
 						'user_avatar_width'     => 100,
 						'user_avatar_height'    => 100,
-						'user_avatar'           => 'https://graph.facebook.com/' . $fb_user['id'] . '/picture?type=normal',
+						'user_avatar'           => 'https://graph.facebook.com/' . $fb_user_id . '/picture?type=normal',
 						'al_fb_avatar_sync'     => 1,
 						'al_fb_profile_sync'    => 1,
 					
