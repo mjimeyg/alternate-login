@@ -44,52 +44,6 @@ $user_lang		= request_var('lang', $user->lang_name);
 $al_login		= (request_var('al_login', 0) == 1) ? true : false;
 $al_login_type		= request_var('al_login_type', 0);
 $fb_user 		= request_var('al_fb_user', '');
-$signed_request         = request_var('signed_request', '');
-
-if($signed_request != '')
-{
-    
-    list($encoded_sig, $payload) = explode('.', $signed_request, 2);
-
-    $sig = base64_decode(strtr($encoded_sig, '-_', '+/'));
-
-    $fb_reg_data = json_decode(base64_decode(strtr($payload, '-_', '+/')), true);
-
-    if(strtoupper($fb_reg_data['algorithm']) !== 'HMAC-SHA256')
-    {
-        trigger_error('Unknown algorithm. Expected HMAC-SHA256');
-
-        return null;
-    }
-
-    $expected_sig = $expected_sig = hash_hmac('sha256', $payload, $config['al_fb_secret'], $raw = true);
-    if ($sig !== $expected_sig)
-    {
-        trigger_error('Bad Signed JSON signature!');
-        return null;
-    }
-
-}
-else
-{
-    trigger_error($user->lang['ERROR']);
-}
-
-$data = array(
-    'username'			=> $fb_reg_data['registration']['name_for_username'] ? utf8_normalize_nfc($fb_reg_data['registration']['name']) : utf8_normalize_nfc($fb_reg_data['registration']['username']),
-    'email'			=> strtolower($fb_reg_data['registration']['email']),
-    'email_confirm'		=> strtolower($fb_reg_data['registration']['email']),
-    'lang'                      => basename(request_var('lang', $user->lang_name)),
-    'tz'			=> request_var('tz', (float) $timezone),
-);
-
-
-
-$new_password = $fb_reg_data['registration']['password'];
-
-
-$data['new_password'] = $new_password;
-$data['password_confirm'] = $new_password;
 
 $error = validate_data($data, array(
     'username'			=> array(
