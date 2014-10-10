@@ -52,7 +52,7 @@ if(!$agreed)
 
 $add_lang               = request_var('int', 'en_GB');
 $coppa			= (isset($_REQUEST['coppa'])) ? ((!empty($_REQUEST['coppa'])) ? 1 : 0) : false;
-
+$add_coppa = ($coppa !== false) ? '&amp;coppa=' . $coppa : '';
 $template->assign_vars(array(
     'S_REDIRECT_URI'    => generate_board_url() . "/alternatelogin/al_fb_register.$phpEx?mode=register&al_login=$al_login&al_login_type=$al_login_type&al_fb_user=$fb_user&coppa=$coppa",
     'S_FB_APP_ID'       => $config['al_fb_id'],
