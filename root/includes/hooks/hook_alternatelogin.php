@@ -14,26 +14,7 @@ class CSAlternateLogin
 			include $phpbb_root_path . '/includes/functions_alternatelogin.' . $phpEx;
 			//require_once($phpbb_root_path .  '/alternatelogin/facebook/autoload.php' );
 			
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookHttpable.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookCurl.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookCurlHttpClient.php' );
 			
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/Entities/AccessToken.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/Entities/SignedRequest.php' );
-			
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookSession.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRedirectLoginHelper.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRequest.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookResponse.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookSDKException.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRequestException.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookOtherException.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookAuthorizationException.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphObject.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphUser.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphAlbum.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphLocation.php' );
-			require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphSessionInfo.php' );
 			
 				
 			
@@ -52,6 +33,26 @@ class CSAlternateLogin
 			
 			if(isset($config['al_fb_login']) && $config['al_fb_login'])
 			{
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookHttpable.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookCurl.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/HttpClients/FacebookCurlHttpClient.php' );
+				
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/Entities/AccessToken.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/Entities/SignedRequest.php' );
+				
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookSession.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRedirectLoginHelper.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRequest.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookResponse.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookSDKException.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookRequestException.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookOtherException.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/FacebookAuthorizationException.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphObject.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphUser.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphAlbum.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphLocation.php' );
+				require_once( $phpbb_root_path .  '/alternatelogin/facebook/src/Facebook/GraphSessionInfo.php' );
 				
 				FacebookSession::setDefaultApplication($config['al_fb_id'], $config['al_fb_secret']);
 				
