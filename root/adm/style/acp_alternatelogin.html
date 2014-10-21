@@ -59,8 +59,11 @@
 </thead>
 <tr class="row1">
 	<td>{L_FACEBOOK}</td>
+    <!-- IF FACEBOOK_ALLOWED -->
 	<td><input type="radio" name="facebook_login" value="1" {FACEBOOK_LOGIN_YES}/><label for="facebook_login">{L_YES}</label><input type="radio" name="facebook_login" value="0" {FACEBOOK_LOGIN_NO}/><label for="facebook_login">{L_NO}</label></td>
-
+	<!-- ELSE -->
+    <td><span style="color:red;">{FACEBOOK_PHP_VERSION_LOW}</span></td>
+    <!-- ENDIF -->
 </tr>
 
 
@@ -115,97 +118,99 @@
 </table>
 
 <!-- ELSEIF S_MODE_FACEBOOK -->
-
-<form method="post" action="{U_ACTION}">
-
-<fieldset>
-
-<legend>{L_TITLE_ENABLE_LOGIN}</legend>
-
-<dl>
-<dt>{L_FACEBOOK_APP_ID}</dt>
-<dd><input type="text" id="facebook_app_id" name="facebook_id" value="{FACEBOOK_APP_ID}"></dd>
-</dl>
-<dl>
-<dt>{L_FACEBOOK_SECRET}</dt>
-<dd><input type="text" id="facebook_secret" name="facebook_secret" value="{FACEBOOK_SECRET}"></dd>
-</dl>
-<dl>
-<dt>{L_FACEBOOK_PAGE_URL}</dt>
-<dd><input type="text" id="facebook_page_url" name="facebook_page_url" value="{FACEBOOK_PAGE_URL}"></dd>
-</dl>
-<dl>
-<dt>{L_FACEBOOK_PAGE_ID}</dt>
-<dd><input type="text" id="facebook_page_id" name="facebook_page_id" value="{FACEBOOK_PAGE_ID}"></dd>
-</dl>
-<dl>
-<dt>{L_FACEBOOK_PAGE_TOKEN}</dt>
-<dd><input type="text" id="facebook_page_token" name="facebook_page_token" value="{FACEBOOK_PAGE_TOKEN}" />&nbsp;<input type="button" name="fb_get_page_token" id="fb_get_page_token" value="Get Access Token" /></dd>
-</dl>
-<dl>
-<dt>{L_FACEBOOK_DEFAULT_LANG}</dt>
-<dd><select id="facebook_default_lang" name="facebook_default_lang">{FACEBOOK_DEFAULT_LANG}</select></dd>
-</dl>
-<dl>
-<dt>{L_SITE_DOMAIN}</dt>
-<dd><input type="text" id="site_domain" name="site_domain" value="{SITE_DOMAIN}"></dd>
-</dl>
-<dl>
-<dt>{L_LOGIN_BUTTON_TEXT}</dt>
-<dd><input type="text" id="facebook_login_button_text" name="facebook_login_button_text" value="{FACEBOOK_LOGIN_BUTTON_TEXT}"></dd>
-</dl>
-
-<p /></p>
-<table>
-<col class="col1" /><col class="col2" /><col class="col2" />
-<tr class="row2">
-	<td>{L_FACEBOOK_QUICK_ACCOUNTS}</td>
-	<td><input type="radio" name="facebook_quick_accounts" value="1" {FACEBOOK_QUICK_ACCOUNTS_YES}/><label for="facebook_quick_accounts">{L_YES}</label><input type="radio" name="facebook_quick_accounts" value="0" {FACEBOOK_QUICK_ACCOUNTS_NO}/><label for="facebook_quick_accounts">{L_NO}</label></td>
-
-</tr>
-<tr class="row1">
-	<td>{L_FACEBOOK_ACTIVITY}</td>
-	<td><input type="radio" name="facebook_activity" value="1" {FACEBOOK_ACTIVITY_YES}/><label for="facebook_activity">{L_YES}</label><input type="radio" name="facebook_activity" value="0" {FACEBOOK_ACTIVITY_NO}/><label for="facebook_activity">{L_NO}</label></td>
-
-</tr>
-<tr class="row2">
-	<td>{L_FACEBOOK_FACEPILE}</td>
-	<td><input type="radio" name="facebook_facepile" value="1" {FACEBOOK_FACEPILE_YES} /><label for="facebook_facepile">{L_YES}</label><input type="radio" name="facebook_facepile" value="0" {FACEBOOK_FACEPILE_NO} /><label for="facebook_facepile">{L_NO}</label></td>
-
-</tr>
-<tr class="row1">
-	<td>{L_FACEBOOK_LIKE_BOX}</td>
-	<td><input type="radio" name="facebook_like_box" value="1" {FACEBOOK_LIKE_BOX_YES} /><label for="facebook_page">{L_YES}</label><input type="radio" name="facebook_like_box" value="0" {FACEBOOK_LIKE_BOX_NO} /><label for="facebook_like_box">{L_NO}</label></td>
-
-</tr>
-<tr class="row2">
-	<td>{L_FACEBOOK_FRIENDS_INVITE}</td>
-	<td><input type="radio" name="facebook_friends_list" value="1" {FACEBOOK_FRIENDS_LIST_YES} /><label for="facebook_friends_list">{L_YES}</label><input type="radio" name="facebook_friends_list" value="0" {FACEBOOK_FRIENDS_LIST_NO} /><label for="facebook_friends_list">{L_NO}</label></td>
-
-</tr>
-<tr class="row1">
-	<td>{L_FACEBOOK_TOPIC_POST_TO_PAGE}</td>
-	<td><input type="radio" name="facebook_topic_post_page" value="1" {FACEBOOK_TOPIC_POST_TO_PAGE_YES} /><label for="facebook_topic_post_page">{L_YES}</label><input type="radio" name="facebook_topic_post_page" value="0" {FACEBOOK_TOPIC_POST_TO_PAGE_NO} /><label for="facebook_topic_post_page">{L_NO}</label></td>
-
-</tr>
-
-<tr class="row2">
-	<td>{L_FACEBOOK_TOPIC_POST_TO_PAGE_EXCLUSIONS}</td>
-	<td><select size="10" multiple="multiple" name="facebook_topic_post_to_page_exclusions[]">{S_FORUMS_LIST}</select></td>
-
-</tr>
-
-</table>
-<p class="submit-buttons">
-	<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
-	<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
-</p>
-{S_FORM_TOKEN}
-
-</fieldset>
-
-</form>
-
+    <!-- IF FACEBOOK_ALLOWED -->
+    <form method="post" action="{U_ACTION}">
+    
+    <fieldset>
+    
+    <legend>{L_TITLE_ENABLE_LOGIN}</legend>
+    
+    <dl>
+    <dt>{L_FACEBOOK_APP_ID}</dt>
+    <dd><input type="text" id="facebook_app_id" name="facebook_id" value="{FACEBOOK_APP_ID}"></dd>
+    </dl>
+    <dl>
+    <dt>{L_FACEBOOK_SECRET}</dt>
+    <dd><input type="text" id="facebook_secret" name="facebook_secret" value="{FACEBOOK_SECRET}"></dd>
+    </dl>
+    <dl>
+    <dt>{L_FACEBOOK_PAGE_URL}</dt>
+    <dd><input type="text" id="facebook_page_url" name="facebook_page_url" value="{FACEBOOK_PAGE_URL}"></dd>
+    </dl>
+    <dl>
+    <dt>{L_FACEBOOK_PAGE_ID}</dt>
+    <dd><input type="text" id="facebook_page_id" name="facebook_page_id" value="{FACEBOOK_PAGE_ID}"></dd>
+    </dl>
+    <dl>
+    <dt>{L_FACEBOOK_PAGE_TOKEN}</dt>
+    <dd><input type="text" id="facebook_page_token" name="facebook_page_token" value="{FACEBOOK_PAGE_TOKEN}" />&nbsp;<input type="button" name="fb_get_page_token" id="fb_get_page_token" value="Get Access Token" /></dd>
+    </dl>
+    <dl>
+    <dt>{L_FACEBOOK_DEFAULT_LANG}</dt>
+    <dd><select id="facebook_default_lang" name="facebook_default_lang">{FACEBOOK_DEFAULT_LANG}</select></dd>
+    </dl>
+    <dl>
+    <dt>{L_SITE_DOMAIN}</dt>
+    <dd><input type="text" id="site_domain" name="site_domain" value="{SITE_DOMAIN}"></dd>
+    </dl>
+    <dl>
+    <dt>{L_LOGIN_BUTTON_TEXT}</dt>
+    <dd><input type="text" id="facebook_login_button_text" name="facebook_login_button_text" value="{FACEBOOK_LOGIN_BUTTON_TEXT}"></dd>
+    </dl>
+    
+    <p /></p>
+    <table>
+    <col class="col1" /><col class="col2" /><col class="col2" />
+    <tr class="row2">
+        <td>{L_FACEBOOK_QUICK_ACCOUNTS}</td>
+        <td><input type="radio" name="facebook_quick_accounts" value="1" {FACEBOOK_QUICK_ACCOUNTS_YES}/><label for="facebook_quick_accounts">{L_YES}</label><input type="radio" name="facebook_quick_accounts" value="0" {FACEBOOK_QUICK_ACCOUNTS_NO}/><label for="facebook_quick_accounts">{L_NO}</label></td>
+    
+    </tr>
+    <tr class="row1">
+        <td>{L_FACEBOOK_ACTIVITY}</td>
+        <td><input type="radio" name="facebook_activity" value="1" {FACEBOOK_ACTIVITY_YES}/><label for="facebook_activity">{L_YES}</label><input type="radio" name="facebook_activity" value="0" {FACEBOOK_ACTIVITY_NO}/><label for="facebook_activity">{L_NO}</label></td>
+    
+    </tr>
+    <tr class="row2">
+        <td>{L_FACEBOOK_FACEPILE}</td>
+        <td><input type="radio" name="facebook_facepile" value="1" {FACEBOOK_FACEPILE_YES} /><label for="facebook_facepile">{L_YES}</label><input type="radio" name="facebook_facepile" value="0" {FACEBOOK_FACEPILE_NO} /><label for="facebook_facepile">{L_NO}</label></td>
+    
+    </tr>
+    <tr class="row1">
+        <td>{L_FACEBOOK_LIKE_BOX}</td>
+        <td><input type="radio" name="facebook_like_box" value="1" {FACEBOOK_LIKE_BOX_YES} /><label for="facebook_page">{L_YES}</label><input type="radio" name="facebook_like_box" value="0" {FACEBOOK_LIKE_BOX_NO} /><label for="facebook_like_box">{L_NO}</label></td>
+    
+    </tr>
+    <tr class="row2">
+        <td>{L_FACEBOOK_FRIENDS_INVITE}</td>
+        <td><input type="radio" name="facebook_friends_list" value="1" {FACEBOOK_FRIENDS_LIST_YES} /><label for="facebook_friends_list">{L_YES}</label><input type="radio" name="facebook_friends_list" value="0" {FACEBOOK_FRIENDS_LIST_NO} /><label for="facebook_friends_list">{L_NO}</label></td>
+    
+    </tr>
+    <tr class="row1">
+        <td>{L_FACEBOOK_TOPIC_POST_TO_PAGE}</td>
+        <td><input type="radio" name="facebook_topic_post_page" value="1" {FACEBOOK_TOPIC_POST_TO_PAGE_YES} /><label for="facebook_topic_post_page">{L_YES}</label><input type="radio" name="facebook_topic_post_page" value="0" {FACEBOOK_TOPIC_POST_TO_PAGE_NO} /><label for="facebook_topic_post_page">{L_NO}</label></td>
+    
+    </tr>
+    
+    <tr class="row2">
+        <td>{L_FACEBOOK_TOPIC_POST_TO_PAGE_EXCLUSIONS}</td>
+        <td><select size="10" multiple="multiple" name="facebook_topic_post_to_page_exclusions[]">{S_FORUMS_LIST}</select></td>
+    
+    </tr>
+    
+    </table>
+    <p class="submit-buttons">
+        <input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+        <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+    </p>
+    {S_FORM_TOKEN}
+    
+    </fieldset>
+    
+    </form>
+	<!-- ELSE -->
+    <span style="color:red;">{FACEBOOK_PHP_VERSION_LOW}</span>
+    <!-- ENDIF -->
 <!-- ELSEIF S_MODE_WINDOWSLIVE -->
 
 <form method="post" action="{U_ACTION}">
