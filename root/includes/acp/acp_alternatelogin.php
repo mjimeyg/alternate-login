@@ -187,6 +187,7 @@ class acp_alternatelogin
 			}
 		}
 		
+		$fb_valid_php_version = (version_compare(PHP_VERSION, '5.4.0') >= 0) ? true : false;
 		
 		// This section deals with preparing variables and values for the
 		// template.
@@ -195,6 +196,8 @@ class acp_alternatelogin
 			case 'facebook':
 				
 				$template->assign_vars(array(
+					'FACEBOOK_ALLOWED'						=> $fb_valid_php_version,
+					'FACEBOOK_PHP_VERSION_LOW'				=> sprintf($user->lang['FACEBOOK_PHP_VERSION_LOW'], PHP_VERSION),
 					'FACEBOOK_APP_ID'						=> $config['al_fb_id'],
 					'FACEBOOK_SECRET'						=> $config['al_fb_secret'],
 					'FACEBOOK_KEY'  						=> $config['al_fb_key'],
