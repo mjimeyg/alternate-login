@@ -42,19 +42,9 @@ $template->set_filenames(array(
 $al_login               = (request_var('al_login', 0) == 1) ? true : false;
 $al_login_type          = request_var('al_login_type', 0);
 $fb_user                = request_var('al_fb_user', '');
-$agreed                 = (!empty($_POST['agreed'])) ? 1 : 0;
 
-
-if(!$agreed)
-{
-    redirect("{$phpbb_root_path}index.$phpEx");
-}
-
-$add_lang               = request_var('int', 'en_GB');
-$coppa			= (isset($_REQUEST['coppa'])) ? ((!empty($_REQUEST['coppa'])) ? 1 : 0) : false;
-$add_coppa = ($coppa !== false) ? '&amp;coppa=' . $coppa : '';
 $template->assign_vars(array(
-    'S_REDIRECT_URI'    => generate_board_url() . "/alternatelogin/al_fb_register.$phpEx?mode=register&al_login=$al_login&al_login_type=$al_login_type&al_fb_user=$fb_user&coppa=$coppa",
+    'S_REDIRECT_URI'    => generate_board_url() . "/alternatelogin/al_fb_connect.$phpEx",
     'S_FB_APP_ID'       => $config['al_fb_id'],
     'S_FB_INT'          => $add_lang,
 ));
