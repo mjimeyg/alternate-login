@@ -74,6 +74,8 @@ try
 	$fb_locale						= $fb_user['locale'];
 	
 	$fb_email						= $fb_user['email'];
+	
+	$fb_timezone					= $fb_user['timezone'];
 
 	$fb_session = $fb_session->getLongLivedSession($config['al_fb_id'], $config['al_fb_secret']);
 	
@@ -354,242 +356,154 @@ else
 	if($user->data['user_id'] == ANONYMOUS)
 	{
 		
-			if(!$config['al_fb_quick_accounts'])
+			
+			$fb_username = isset($_POST['username']) ? $_POST['username'] : ($config['al_fb_quick_accounts'] ? $fb['name'] : false);
+			
+			if(!$fb_username)
 			{
-				// Check to make sure the email is not already registered.
-				$sql_array = array(
-					'SELECT'    => 'COUNT(user_email) AS user_email',
-					'FROM'      => array(USERS_TABLE => 'u'),
-					'WHERE'     => "user_email ='" . mysql_escape_string($fb_email) . "'",
-				);
-				
-				$sql = $db->sql_build_query('SELECT', $sql_array);
-				
+				redirect($phpbb_root_path . '/alternatelogin/al_fb_registration.' . $phpEx);
+			}
+			
+			$data = array(
+				'username'		=> $fb_username,
+				'email'			=> strtolower($fb_email),
+				'email_confirm'		=> strtolower($fb_email),
+				'lang'                   => substr($fb_locale, 0, 2),
+				'tz'			=> (float) $fb_timezone,
+			);
+			
+			$validate_username = validate_username($data['username']);
+
+			if($validate_username)
+			{
+				trigger_error($user->lang[$validate_username . '_USERNAME'] . ' <br /><br /><a href="' . $phpbb_root_path . '/alternatelogin/al_fb_registration.' . $phpEx . '?mode=register">' . $user->lang['BACK_TO_PREV'] . "</a>");            
+			}
+
+			$new_password = $fb_user_id . $config['al_fb_key'] . $config['al_fb_secret'];
+
+
+			$data['new_password'] = $new_password;
+			$data['password_confirm'] = $new_password;
+			$error = validate_data($data, array(
+				'username'			=> array(
+													array('string', false, $config['min_name_chars'], $config['max_name_chars']),
+													array('username', '')),
+
+				'email'                     => array(
+													array('string', false, 6, 60),
+													array('email')),
+				'email_confirm'		=> array('string', false, 6, 60),
+				'tz'			=> array('num', false, -14, 14),
+				'lang'			=> array('match', false, '#^[a-z_\-]{2,}$#i'),
+			));
+
+
+	
+			// DNSBL check
+			if ($config['check_dnsbl'])
+			{
+				if (($dnsbl = $user->check_dnsbl('register')) !== false)
+				{
+					$error[] = sprintf($user->lang['IP_BLACKLISTED'], $user->ip, $dnsbl[1]);
+				}
+			}
+
+			if (!sizeof($error))
+			{
+				if ($data['new_password'] != $data['password_confirm'])
+				{
+					$error[] = $user->lang['NEW_PASSWORD_ERROR'];
+				}
+
+				if ($data['email'] != $data['email_confirm'])
+				{
+					$error[] = $user->lang['NEW_EMAIL_ERROR'];
+				}
+			}
+
+			if (!sizeof($error))
+			{
+				$server_url = generate_board_url();
+
+				// Which group by default?
+				$group_name = ($coppa) ? 'REGISTERED_COPPA' : 'REGISTERED';
+
+				$sql = 'SELECT group_id
+						FROM ' . GROUPS_TABLE . "
+						WHERE group_name = '" . $db->sql_escape($group_name) . "'
+								AND group_type = " . GROUP_SPECIAL;
 				$result = $db->sql_query($sql);
-				
-				$email_registered = (int)$db->sql_fetchfield('user_email');
-				
-				if($email_registered > 0)
-				{
-					trigger_error($user->lang['EMAIL_TAKEN_EMAIL']);
-				}
-		
-				// Most of this code comes straight out of ucp_register.php
-				$message = 'TERMS_OF_USE_CONTENT';
-				$title = 'TERMS_USE';
-				$user->lang_name = substr($fb_locale, 0, 2);
-				if (empty($user->lang[$message]))
-				{
-						if ($user->data['is_registered'])
-						{
-								redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
-						}
+				$row = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
 
-						login_box();
+				if (!$row)
+				{
+					trigger_error('NO_GROUP');
 				}
 
-				$template->set_filenames(array(
-						'body'		=> 'ucp_agreement.html')
-				);
+				$group_id = $row['group_id'];
 
-				// Disable online list
-				page_header($user->lang[$title], false);
+				
+					$user_type = USER_NORMAL;
+					$user_actkey = '';
+					$user_inactive_reason = 0;
+					$user_inactive_time = 0;
+				
+				$bday = explode('/', $fb_birthday);
+				$user_row = array(
+					'username'				=> $data['username'],
+					'user_password'			=> phpbb_hash($data['new_password']),
+					'user_email'			=> $data['email'],
+					'group_id'				=> (int) $group_id,
+					'user_timezone'			=> (float) $data['tz'],
+					'user_dst'				=> $is_dst,
+					'user_lang'				=> $data['lang'],
+					'user_type'				=> $user_type,
+					'user_actkey'			=> $user_actkey,
+					'user_ip'				=> $user->ip,
+					'user_regdate'			=> time(),
+					'user_inactive_reason'	=> $user_inactive_reason,
+					'user_inactive_time'	=> $user_inactive_time,
+					'al_fb_id'              => $fb_user_id,
+					'user_avatar_type'      => AVATAR_REMOTE,
+					'user_avatar_width'     => 100,
+					'user_avatar_height'    => 100,
+					'user_avatar'           => 'https://graph.facebook.com/' . $fb_user_id . '/picture?type=normal',
+					'al_fb_avatar_sync'     => 1,
+					'al_fb_profile_sync'    => 1,
+				
+					//'user_website'          => (!$fb_user->getProperty('website')) ? '' : $fb_user->getProperty('website'),
+					//'user_from'            	=> isset($fb_location->getCountry()) ? $fb_location->getCountry() : '',
+					//'user_occ'              => isset($fb_work['employer']['name']) ? $fb_work['employer']['name'] : '',
 
-				$s_hidden_fields = array(	'al_login' 		=> 1,
-																		'al_login_type'	=> AL_FACEBOOK_LOGIN,
-																		'al_fb_user'	=> $fb_user_id
-				);
-
-
-				$add_lang                       = '&int=' . $fb_locale;
-				$coppa				= (isset($_REQUEST['coppa'])) ? ((!empty($_REQUEST['coppa'])) ? 1 : 0) : false;
-				$add_coppa = ($coppa !== false) ? '&amp;coppa=' . $coppa : '';
-						if ($coppa === false && $config['coppa_enable'])
-						{
-								$now = getdate();
-								$coppa_birthday = $user->format_date(mktime($now['hours'] + $user->data['user_dst'], $now['minutes'], $now['seconds'], $now['mon'], $now['mday'] - 1, $now['year'] - 13), $user->lang['DATE_FORMAT']);
-								unset($now);
-
-								$template->assign_vars(array(
-										'L_COPPA_NO'		=> sprintf($user->lang['UCP_COPPA_BEFORE'], $coppa_birthday),
-										'L_COPPA_YES'		=> sprintf($user->lang['UCP_COPPA_ON_AFTER'], $coppa_birthday),
-
-										'U_COPPA_NO'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register&amp;coppa=0' . $add_lang),
-										'U_COPPA_YES'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register&amp;coppa=1' . $add_lang),
-
-										'S_SHOW_COPPA'		=> true,
-										'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
-										'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register' . $add_lang),
-								));
-						}
-						else
-						{
-								$template->assign_vars(array(
-										'L_TERMS_OF_USE'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
-
-										'S_SHOW_COPPA'		=> false,
-										'S_REGISTRATION'	=> true,
-										'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
-										'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}alternatelogin/al_fb_registration.$phpEx", 'mode=register' . $add_lang . $add_coppa),
-										)
-								);
-						}
-
-				page_footer();
-			}
-			else 
-			{
-				$data = array(
-					'username'		=> $fb_user['name'],
-					'email'			=> strtolower($fb_email),
-					'email_confirm'		=> strtolower($fb_email),
-					'lang'                   => substr($fb_locale, 0, 2),
-					'tz'			=> (float) $fb_user->getProperty('timezone'),
+					'user_birthday'         => sprintf('%2d-%2d-%4d', $bday[1], $bday[0], $bday[2]),
 				);
 				
-				$validate_username = validate_username($data['username']);
-
-				if($validate_username)
+				if ($config['new_member_post_limit'])
 				{
-					trigger_error($user->lang[$validate_username . '_USERNAME'] . ' <br /><br /><a href="' . $phpbb_root_path . '/alternatelogin/al_fb_registration.' . $phpEx . '?mode=register">' . $user->lang['BACK_TO_PREV'] . "</a>");            
+					$user_row['user_new'] = 1;
 				}
-
-				$new_password = $fb_user_id . $config['al_fb_key'] . $config['al_fb_secret'];
-
-
-				$data['new_password'] = $new_password;
-				$data['password_confirm'] = $new_password;
-				$error = validate_data($data, array(
-					'username'			=> array(
-														array('string', false, $config['min_name_chars'], $config['max_name_chars']),
-														array('username', '')),
-
-					'email'                     => array(
-														array('string', false, 6, 60),
-														array('email')),
-					'email_confirm'		=> array('string', false, 6, 60),
-					'tz'			=> array('num', false, -14, 14),
-					'lang'			=> array('match', false, '#^[a-z_\-]{2,}$#i'),
-				));
-
-
-		
-				// DNSBL check
-				if ($config['check_dnsbl'])
-				{
-					if (($dnsbl = $user->check_dnsbl('register')) !== false)
-					{
-						$error[] = sprintf($user->lang['IP_BLACKLISTED'], $user->ip, $dnsbl[1]);
-					}
-				}
-
-				if (!sizeof($error))
-				{
-					if ($data['new_password'] != $data['password_confirm'])
-					{
-						$error[] = $user->lang['NEW_PASSWORD_ERROR'];
-					}
-
-					if ($data['email'] != $data['email_confirm'])
-					{
-						$error[] = $user->lang['NEW_EMAIL_ERROR'];
-					}
-				}
-
-				if (!sizeof($error))
-				{
-					$server_url = generate_board_url();
-
-					// Which group by default?
-					$group_name = ($coppa) ? 'REGISTERED_COPPA' : 'REGISTERED';
-
-					$sql = 'SELECT group_id
-							FROM ' . GROUPS_TABLE . "
-							WHERE group_name = '" . $db->sql_escape($group_name) . "'
-									AND group_type = " . GROUP_SPECIAL;
-					$result = $db->sql_query($sql);
-					$row = $db->sql_fetchrow($result);
-					$db->sql_freeresult($result);
-
-					if (!$row)
-					{
-						trigger_error('NO_GROUP');
-					}
-
-					$group_id = $row['group_id'];
-
-					
-						$user_type = USER_NORMAL;
-						$user_actkey = '';
-						$user_inactive_reason = 0;
-						$user_inactive_time = 0;
-					
-					$bday = explode('/', $fb_birthday);
-					$user_row = array(
-						'username'				=> $data['username'],
-						'user_password'			=> phpbb_hash($data['new_password']),
-						'user_email'			=> $data['email'],
-						'group_id'				=> (int) $group_id,
-						'user_timezone'			=> (float) $data['tz'],
-						'user_dst'				=> $is_dst,
-						'user_lang'				=> $data['lang'],
-						'user_type'				=> $user_type,
-						'user_actkey'			=> $user_actkey,
-						'user_ip'				=> $user->ip,
-						'user_regdate'			=> time(),
-						'user_inactive_reason'	=> $user_inactive_reason,
-						'user_inactive_time'	=> $user_inactive_time,
-						'al_fb_id'              => $fb_user_id,
-						'user_avatar_type'      => AVATAR_REMOTE,
-						'user_avatar_width'     => 100,
-						'user_avatar_height'    => 100,
-						'user_avatar'           => 'https://graph.facebook.com/' . $fb_user_id . '/picture?type=normal',
-						'al_fb_avatar_sync'     => 1,
-						'al_fb_profile_sync'    => 1,
-					
-						//'user_website'          => (!$fb_user->getProperty('website')) ? '' : $fb_user->getProperty('website'),
-						//'user_from'            	=> isset($fb_location->getCountry()) ? $fb_location->getCountry() : '',
-						//'user_occ'              => isset($fb_work['employer']['name']) ? $fb_work['employer']['name'] : '',
-
-						'user_birthday'         => sprintf('%2d-%2d-%4d', $bday[1], $bday[0], $bday[2]),
-					);
-					
-					if ($config['new_member_post_limit'])
-					{
-						$user_row['user_new'] = 1;
-					}
-					
-					// Register user...
-					$user_id = user_add($user_row, $cp_data);
-
-					// This should not happen, because the required variables are listed above...
-					if ($user_id === false)
-					{
-						trigger_error('NO_USER', E_USER_ERROR);
-					}
-					
-					redirect(append_sid("{$phpbb_root_path}/alternatelogin/al_fb_connect.{$phpEx}"));
-				}
-				else
-				{
-					trigger_error(implode('<br />', $error));
-				}
-			}
-		}
-		else
-		{
-			// No user was registered with the associate Facebook Id.
-			// We need to see if they are anonymous.
-			// If they are then that means they might want to register.
-			// We will check to see if they wish to register.
-			if($user->data['user_id'] == ANONYMOUS)
-			{
 				
-					redirect(append_sid("{$phpbb_root_path}ucp.$phpEx?mode=register"));
+				// Register user...
+				$user_id = user_add($user_row, $cp_data);
+
+				// This should not happen, because the required variables are listed above...
+				if ($user_id === false)
+				{
+					trigger_error('NO_USER', E_USER_ERROR);
+				}
 				
+				redirect(append_sid("{$phpbb_root_path}/alternatelogin/al_fb_connect.{$phpEx}"));
 			}
 			else
 			{
+				trigger_error(implode('<br />', $error));
+			}
+			
+		}
+		else
+		{
+			
 				// If they are not anonymous then we can assume they are current users wishing
 				// to link their accounts.
 		
@@ -628,7 +542,7 @@ else
 				{
 					trigger_error(sprintf($user->lang['AL_LINK_SUCCESS'], $user->lang['FACEBOOK'], $user->lang['FACEBOOK']));
 				}
-			}
+			
 		}
 }
 
