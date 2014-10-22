@@ -8,7 +8,7 @@
 		<license><![CDATA[http://opensource.org/licenses/gpl-license.php GNU General Public License v2]]></license> 
 		<title lang="en"><![CDATA[Alternate Login]]></title> 
 		<description lang="en"><![CDATA[Enable users to log in to a phpBB board via another website authentication method and synchronise profile information.  Currently available: Facebook, Twitter and Windows Live]]></description> 
-		<author-notes lang="en"><![CDATA[This is an RC version.  It has been tested on various servers but only a handful of users.]]></author-notes> 
+		<author-notes lang="en"><![CDATA[This is an BETA version.  It has been tested on various servers but only a handful of users. Facebook requires Php version 5.4 minimum.]]></author-notes> 
 		<author-group> 
 			<author> 
 				<realname><![CDATA[Michael J Goonawardena]]></realname> 
@@ -52,13 +52,21 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2014.10.05.01</mod-version> 
+		<mod-version>2014.10.22.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.12</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2014.10.22</date>
+					<rev-version>2014.10.22.01</rev-version>
+					<changelog lang="en">
+						<change>acp_alternatelogin.php: Added code to prevent activation of Facebook if php version is too low.</change>
+					</changelog>
+					
+				</entry>
 				<entry>
 					<date>2014.10.05</date>
 					<rev-version>2014.10.05.01</rev-version>
@@ -1415,7 +1423,7 @@ In the ACP Purge the cache.  If you don't do this it is unlikely this mod will w
 
 The following is dividing into sections, each section refers to a specific provider. Each provider acts independently of the others, you don't need to setup Windows Live to use Facebook, for example.
 
--- Facebook --
+-- Facebook --  WARNING!!! Facebook will not work without php 5.4 or greater!
 
 The first thing you need to do is head over to the Facebook Developers Site. Here you can create a new Application. Facebook requires you to create an Application to use their login authentication utilities.
 
