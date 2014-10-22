@@ -70,7 +70,7 @@ $lang = array_merge($lang, array(
         'WINDOWSLIVE'                                           => 'Windows Live',
         'OPENID'                                                => 'OpenID',
 
-		'FACEBOOK_PHP_VERSION_LOW'								=> 'Facebook login requires at least Php version 5.4.0.  Your version is: %s',
+		'FACEBOOK_PHP_VERSION_LOW'								=> 'Facebook login requires at least Php version 5.4.0.  Your version is: %s - Please contact your hosting service for upgrade details.',
         'FACEBOOK_QUICK_ACCOUNTS'                               => 'Facebook Quick Accounts',
         'FACEBOOK_APP_ID'                                       => 'Facebook App ID',
         'FACEBOOK_KEY'                                          => 'Facebook Key',
