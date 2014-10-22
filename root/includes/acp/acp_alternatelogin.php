@@ -330,6 +330,7 @@ class acp_alternatelogin
 				$oi_user_count = $db->sql_fetchfield('oi_count');
                       
 				$template->assign_vars(array(
+					'FACEBOOK_PHP_VERSION_LOW'				=> sprintf($user->lang['FACEBOOK_PHP_VERSION_LOW'], PHP_VERSION),
 					'FACEBOOK_LOGIN_YES'		=> $facebook_login_yes,
 					'FACEBOOK_LOGIN_NO'         => $facebook_login_no,
 					'WINDOWSLIVE_LOGIN_YES'		=> $windowslive_login_yes,
