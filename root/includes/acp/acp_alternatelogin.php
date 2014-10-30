@@ -187,7 +187,7 @@ class acp_alternatelogin
 			}
 		}
 		
-		$fb_valid_php_version = (version_compare(PHP_VERSION, '5.4.0') >= 0) ? true : false;
+		$fb_valid_php_version = (version_compare(phpversion(), '5.4.0', '>=')) ? true : false;
 		
 		// This section deals with preparing variables and values for the
 		// template.
