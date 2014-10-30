@@ -106,6 +106,7 @@ class CSAlternateLogin
 					$login_url = $phpbb_root_path . 'alternatelogin/al_fb_connect.' . $phpEx;
 				}
 			}
+			$post_text = "";
 			if($topic_id && $forum_id)
 			{
 				
