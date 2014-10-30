@@ -357,7 +357,7 @@ else
 	{
 		
 			
-			$fb_username = isset($_POST['username']) ? $_POST['username'] : ($config['al_fb_quick_accounts'] ? $fb['name'] : false);
+			$fb_username = isset($_POST['username']) ? $_POST['username'] : ((isset($config['al_fb_quick_accounts']) && $config['al_fb_quick_accounts']) ? $fb_user['name'] : false);
 			
 			if(!$fb_username)
 			{
