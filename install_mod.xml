@@ -52,13 +52,21 @@
 					<link type="contrib" href="root/contrib/install_mod_update_2012.05.13.01-2012.05.23.01.xml" lang="en">Update file from version 2012.05.13.01</link>
 					<link type="contrib" href="root/contrib/install_mod_update_2012.11.27.01-2012.12.10.01.xml" lang="en">Update file from version 2012.11.27.01</link>
                 </link-group>
-		<mod-version>2014.10.22.01</mod-version> 
+		<mod-version>2014.10.31.01</mod-version> 
 		<installation> 
 			<level>intermediate</level> 
 			<time>960</time> 
 			<target-version>3.0.12</target-version> 
 		</installation> 
                 <history>
+				<entry>
+					<date>2014.10.31</date>
+					<rev-version>2014.10.31.01</rev-version>
+					<changelog lang="en">
+						<change>acp_alternatelogin.php: Added isset() checks for various variables to eliminate debug messages.</change>
+						<change>hook_alternatelogin.php: Added isset() checks for various variables to eliminate debug messages.</change>
+						<change>al_fb_connect.php: Added isset() checks for various variables to eliminate debug messages.</change>
+					</changelog>
 				<entry>
 					<date>2014.10.22</date>
 					<rev-version>2014.10.22.01</rev-version>
